@@ -23,7 +23,19 @@ UASD · Arlen Marmolejo Hernández
 Versión HTML (quizá más legible),
 [aquí](https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional/practicas-interacciones-biologicas-dinamica-poblacional.html)
 
+> Donde quiera que veas el botón `Show`/`Hide`, haz clic para
+> expandir/colapsar la caja de código.
+
+``` r
+# ESTA ES UNA CAJA DE CÓDIGO DE EJEMPLO
+```
+
 # 1 **Competencia interespecífica** con el modelo de **Lotka–Volterra**
+
+> Objetivo: evaluar el tipo de competencia LV entre dos especies a
+> partir de una tabla pequeña (10 filas) de datos simulados y sus
+> parámetros asociados, trabajando **a mano** o con ayuda de una hoja de
+> cálculo, y R (opcionalmente).
 
 ## 1.1 Marco teórico — **Competencia interespecífica** con el modelo de **Lotka–Volterra**
 
@@ -141,10 +153,16 @@ Si las flechas del campo apuntan hacia el cruce, hay **coexistencia
 estable**; si “caen” a un **eje**, hay **exclusión** (extinción local de
 una especie).
 
+<!-- NOTA: AÑADIR UNA CAJA -->
+
 > **Figuras (del repo)**  
 > ![](isoclina-cero-n1.png) ![](isoclina-cero-n2.png)
 > ![](isoclinas-interseccion.jpg)
 > ![](cuatro-casos-competencia-lv-v2.png)
+
+### 1.1.3 Trayectoria
+
+<!-- COMPLETAR -->
 
 > **Referencia**: basadas en LibreTexts 15.5 (ver sección
 > **Referencias**).
@@ -152,11 +170,14 @@ una especie).
 ## 1.2 Práctica — **Competencia LV** con datos **pequeños** por estudiante
 
 > **Importante**: Cada estudiante trabaja el **mismo mandato** pero con
-> **datos distintos** y **pequeños** (≈10 filas) para poder **hacerlo a
+> **datos distintos** y **pequeños** (10 filas) para poder **hacerlo a
 > mano**. Se generan a partir de un **pseudónimo** (“Est01”, “Est02”,
 > …).
 
 ### 1.2.1 Preparación y **pseudónimo**
+
+Copia y pega este código en RStudio y ejecútalo (para ver el código haz
+clic en `Show`).
 
 ``` r
 # Paquetes usados
@@ -171,6 +192,8 @@ if (!exists("pseudonimos_clase")){
 }
 ```
 
+Esta es la lista de pseudónimos.
+
 ``` r
 cat("Pseudónimos: ", paste(pseudonimos_clase[-1], collapse=", "), "\n")
 ```
@@ -180,12 +203,21 @@ Est10, Est11, Est12, Est13, Est14, Est15, Est16, Est17, Est18, Est19,
 Est20, Est21, Est22, Est23, Est24, Est25, Est26, Est27, Est28, Est29,
 Est30
 
+En el código siguiente, cambia la cadena de caracteres “Est01” por tu
+pseudónimo (p. ej. “Est05”). Esto genera tus datos **únicos** y
+**reproducibles**. Anuncia tu elección en el foro.
+
 ``` r
 # Elige tu pseudónimo
 MI_PSEUDONIMO <- "Est01"  # <-- CAMBIA AQUÍ
 ```
 
-### 1.2.2 Generador **reproducible** (tabla pequeña + trayectoria)
+### 1.2.2 Generador de datos **reproducibles**
+
+Este es el código que genera la tabla de datos (10 filas) y los
+parámetros para trabajar **a mano**. Recuerda que para que este código
+produzca tus datos, debes haber ejecutado el bloque anterior con tu
+pseudónimo.
 
 ``` r
 seed_from_name <- function(x){
@@ -229,7 +261,7 @@ gen_competencia_lv <- function(seed, steps_small=10, steps_traj=300, dt=0.05){
   N20 <- round(runif(1, 0.15, 0.85)*K2)
   traj <- euler(N10, N20, steps_traj, dt)
 
-  # Submuestreo para tabla pequeña (~10 puntos) y redondeo “a mano”
+  # Submuestreo para tabla pequeña (10 puntos) y redondeo “a mano”
   take <- unique(round(seq(1, nrow(traj), length.out = steps_small)))
   small <- traj[take, c("t","N1","N2")]
   rnd5 <- function(x) 5*round(x/5)
@@ -243,11 +275,11 @@ SEED <- seed_from_name(MI_PSEUDONIMO)
 comp <- gen_competencia_lv(SEED)
 ```
 
-### 1.2.3 **Tu tabla pequeña** y parámetros (para trabajar **a mano**)
+### 1.2.3 **Tabla y parámetros**
 
 ``` r
 knitr::kable(comp$data_small, row.names = F,
-             caption="Competencia LV — tabla pequeña (≈10 filas) para graficar a mano")
+             caption="Competencia LV — tabla de 10 filas para realizar tu ejercicio a mano. El código original produce la tabla del Est01. Recuerda que para que este código produzca tu tabla, debes haber elegido y ejecutado el bloque correspondiente con tu pseudónimo.")
 ```
 
 |     t |  N1 |  N2 |
@@ -263,12 +295,15 @@ knitr::kable(comp$data_small, row.names = F,
 | 13.30 | 210 | 415 |
 | 14.95 | 205 | 420 |
 
-<span id="tab:tabla-pequena"></span>Table 1.1: Competencia LV — tabla
-pequeña (≈10 filas) para graficar a mano
+<span id="tab:tabla-pequena"></span>Table 1.1: Competencia LV — tabla de
+10 filas para realizar tu ejercicio a mano. El código original produce
+la tabla del Est01. Recuerda que para que este código produzca tu tabla,
+debes haber elegido y ejecutado el bloque correspondiente con tu
+pseudónimo.
 
 ``` r
 knitr::kable(as.data.frame(comp$pars),
-             caption="Competencia LV — parámetros",
+             caption="Competencia LV — parámetros. El código original produce la tabla del Est01. Recuerda que para que este código produzca tu tabla, debes haber elegido y ejecutado el bloque correspondiente con tu pseudónimo.",
              col.names=c("Parámetro","Valor"))
 ```
 
@@ -285,10 +320,14 @@ knitr::kable(as.data.frame(comp$pars),
 | N20       | 366.0000000 |
 
 <span id="tab:tabla-pequena"></span>Table 1.1: Competencia LV —
-parámetros
+parámetros. El código original produce la tabla del Est01. Recuerda que
+para que este código produzca tu tabla, debes haber elegido y ejecutado
+el bloque correspondiente con tu pseudónimo.
 
-### 1.2.4 **Mandatos (entregables a mano)**
+### 1.2.4 **Desarrolla este ejercicio a mano o con ayuda de una hoja de cálculo con tus datos**
 
+0.  Recuerda que debes **ejecutar el bloque con tu pseudónimo** para que
+    el código produzca tus datos.
 1.  **Calcula** los **interceptos** de las isoclinas y **anótalos** (1
     decimal):
     - Isoclina de 1: $(0,K_1)$ y $(K_1/\alpha_{12},0)$.
@@ -296,22 +335,17 @@ parámetros
 2.  **Dibuja a mano** ambas isoclinas en el plano $N_1$–$N_2$ y
     **sombrea** las 4 regiones por signos de $(dN_1/dt,\ dN_2/dt)$:
     `++`, `+-`, `-+`, `--`.
-3.  **Coloca** los ≈10 puntos $(N_1,N_2)$ de tu tabla (en orden de $t$)
-    y **traza** la trayectoria.
+3.  **Coloca** los 10 puntos de tu tabla en el plano $N_1$-$N_2$ (en
+    orden de $t$) y **traza** la trayectoria.
 4.  **Diagnostica** el resultado (**coexistencia estable / inestable /
     exclusión 1 / exclusión 2**) **argumentando** con los interceptos y
     el sombreado.
-5.  **Verifica** “a mano” el **signo** de $dN_1/dt$ y $dN_2/dt$ en un
-    punto de **cada región** (elige $(n_1,n_2)$ de referencia y evalúa
-    los signos).
+5.  **Verifica el signo** de $dN_1/dt$ y $dN_2/dt$ en un punto de **cada
+    región**. Elige $(n_1,n_2)$ de referencia y evalúa los signos.
 
 ### 1.2.5 **Demostración manual, usando datos de *Est01***
 
-> Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los
-> **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla
-> pequeña** (≈10 filas) y tu **tabla de parámetros** (con
-> $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para
-> *Est01*.
+<!-- > Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla pequeña** (10 filas) y tu **tabla de parámetros** (con $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para *Est01*. -->
 
 **Parámetros de *Est01***
 $r_1=0.7363,\; r_2=0.8316,\; K_1=420,\; K_2=620,\; \alpha_{12}=0.517814,\; \alpha_{21}=0.9469748$
@@ -374,7 +408,7 @@ Sombrea suavemente o escribe los símbolos en cada zona.
 
 #### 1.2.5.5 **Traza tu trayectoria** con la **tabla pequeña** de Est01
 
-Tus ≈10 puntos $(N_1,N_2)$:
+Tus 10 puntos $(N_1,N_2)$:
 
 $$
 (325,365)\to(275,355)\to(255,365)\to\cdots\to(205,420)
@@ -465,7 +499,7 @@ $$
   cruzan**; lo que cambia es la **estabilidad**.
 
 <!-- ### **Demostración manual, usando datos de *Est01*** -->
-<!-- > Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla pequeña** (≈10 filas) y tu **tabla de parámetros** (con $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para *Est01*. -->
+<!-- > Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla pequeña** (10 filas) y tu **tabla de parámetros** (con $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para *Est01*. -->
 <!-- --- -->
 <!-- #### Material y preparación -->
 <!-- * Hoja cuadriculada (opcional), o Excel/Google Sheets. -->
@@ -519,7 +553,7 @@ $$
 <!--   * **Encima** de ambas → `--` (bajan 1 y 2). -->
 <!-- Sombrea **suavemente** cada zona con un color distinto (o añade etiquetas `++`, `+-`, `-+`, `--`). -->
 <!-- --- -->
-<!-- #### **Trazado de tu trayectoria** con la **tabla pequeña** (≈10 filas) -->
+<!-- #### **Trazado de tu trayectoria** con la **tabla pequeña** (10 filas) -->
 <!-- * Toma tus ~10 pares $(N_1,N_2)$ (colúmnas **N1** y **N2**). -->
 <!--   En papel: coloca **punto por punto** y **únelos con flechas** siguiendo el **orden temporal**. -->
 <!--   En Excel: agrega esa tabla como **tercera serie** (línea con marcadores) y **ordénala** por `t`. -->
