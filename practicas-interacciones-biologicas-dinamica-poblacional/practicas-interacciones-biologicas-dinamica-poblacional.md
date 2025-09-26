@@ -6,14 +6,7 @@ UASD · Arlen Marmolejo Hernández
 <!-- README.md se genera a partir de README.Rmd. Por favor, edita ese archivo. -->
 
 Versión HTML (quizá más legible),
-[aquí](https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional.html)
-
-> **Nota editorial**: La **sección teórica** de competencia LV que sigue
-> está **basada fielmente** en *LibreTexts* (15.5 “Quantifying
-> Competition Using the Lotka–Volterra Model”), pero **parafraseada**
-> para respetar derechos de autor. Las **ecuaciones, derivaciones y
-> estructura** se mantienen. Figuras: usa los **archivos locales** del
-> repositorio (ver *llamados* en el texto).
+[aquí](https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional/practicas-interacciones-biologicas-dinamica-poblacional.html)
 
 # 1 **Competencia interespecífica** con el modelo de **Lotka–Volterra**
 
@@ -27,48 +20,50 @@ Lotka-Volterra Model* (Gettysburg College, Ecology for All).
 Partimos del crecimiento **logístico** para cada especie en ausencia de
 la otra (intraespecífica):
 
-$$ `\frac{d N_{1}}{dt}`{=tex}=r\_{1}
-N\_{1}`\left`{=tex}(`\frac{K_{1}-N_{1}}{K_{1}}`{=tex}`\right`{=tex}),`\qquad`{=tex}
-`\frac{d N_{2}}{dt}`{=tex}=r\_{2}
-N\_{2}`\left`{=tex}(`\frac{K_{2}-N_{2}}{K_{2}}`{=tex}`\right`{=tex}). $$
+$$
+\frac{d N_{1}}{dt}=r_{1} N_{1}\left(\frac{K_{1}-N_{1}}{K_{1}}\right),\qquad
+\frac{d N_{2}}{dt}=r_{2} N_{2}\left(\frac{K_{2}-N_{2}}{K_{2}}\right).
+$$
 
 Para incorporar **competencia interespecífica**, suponemos que
 individuos de la especie 2 reducen el crecimiento de la 1 en **unidades
-equivalentes** a (*{12}) individuos de 1 (y viceversa (*{21})). Esto
-produce las **ecuaciones de Lotka–Volterra (competencia)**:
+equivalentes** a $\alpha_{12}$ individuos de 1 (y viceversa
+$\alpha_{21}$). Esto produce las **ecuaciones de Lotka–Volterra
+(competencia)**:
 
-$$ `\frac{dN_{1}}{dt}`{=tex}=
-r\_{1}N\_{1}!`\left`{=tex}(`\frac{K_1 - N_{1} - \alpha_{12}N_{2}}{K_{1}}`{=tex}`\right`{=tex}),`\qquad`{=tex}
-`\frac{dN_{2}}{dt}`{=tex}=
-r\_{2}N\_{2}!`\left`{=tex}(`\frac{K_2 - N_{2}-\alpha_{21}N_{1}}{K_{2}}`{=tex}`\right`{=tex}).
+$$
+\frac{dN_{1}}{dt}= r_{1}N_{1}\!\left(\frac{K_1 - N_{1} - \alpha_{12}N_{2}}{K_{1}}\right),\qquad
+\frac{dN_{2}}{dt}= r_{2}N_{2}\!\left(\frac{K_2 - N_{2}-\alpha_{21}N_{1}}{K_{2}}\right).
 $$
 
-> (*{12}) y (*{21}) son **coeficientes de competencia**
+> $\alpha_{12}$ y $\alpha_{21}$ son **coeficientes de competencia**
 > (adimensionales): convierten individuos de una especie en
 > “**equivalentes**” de la otra en términos de uso de recursos.
 
 ### 1.1.2 **Isoclinas** (líneas de crecimiento cero) y **puntos de equilibrio**
 
-La isoclina de 1 ((dN_1/dt=0)) cumple (N\_{1}+*{12}N*{2}=K\_{1}).  
-La de 2 ((dN_2/dt=0)) cumple (N\_{2}+*{21}N*{1}=K\_{2}).
+La isoclina de 1 ($dN_1/dt=0$) cumple $N_{1}+\alpha_{12}N_{2}=K_{1}$.  
+La de 2 ($dN_2/dt=0$) cumple $N_{2}+\alpha_{21}N_{1}=K_{2}$.
 
 Sus **interceptos** con los ejes son:
 
-- Para 1: ((0,K_1)) y ((K_1/\_{12},0)).
-- Para 2: ((0,K_2)) y ((K_2/\_{21},0)).
+- Para 1: $(0,K_1)$ y $(K_1/\alpha_{12},0)$.
+- Para 2: $(0,K_2)$ y $(K_2/\alpha_{21},0)$.
 
-El **cruce** de isoclinas da el equilibrio interior ((N_1^{*},N_2^{*}))
+El **cruce** de isoclinas da el equilibrio interior $(N_1^{*},N_2^{*})$
 cuando existe. La **estabilidad** se evalúa comparando interceptos:
 
-- **1 excluye 2** si (K_1 \> K_2/*{21}) **y** (K_1/*{12} \> K_2).
-- **2 excluye 1** si (K_1 \< K_2/*{21}) **y** (K_1/*{12} \< K_2).
-- **Coexistencia (equilibrio) estable** si (K_1 \> K_2/*{21}) **y** (K_2
-  \> K_1/*{12}).
-- **Coexistencia (equilibrio) inestable** si (K_1 \< K_2/*{21}) **y**
-  (K_2 \< K_1/*{12}).
+- **1 excluye 2** si $K_1 > K_2/\alpha_{21}$ **y**
+  $K_1/\alpha_{12} > K_2$.
+- **2 excluye 1** si $K_1 < K_2/\alpha_{21}$ **y**
+  $K_1/\alpha_{12} < K_2$.
+- **Coexistencia (equilibrio) estable** si $K_1 > K_2/\alpha_{21}$ **y**
+  $K_2 > K_1/\alpha_{12}$.
+- **Coexistencia (equilibrio) inestable** si $K_1 < K_2/\alpha_{21}$
+  **y** $K_2 < K_1/\alpha_{12}$.
 
-**Lectura visual** del plano (N_1)–(N_2): debajo de la isoclina de una
-especie esa especie **crece** ((dN_i/dt\>0)); por encima **disminuye**.
+**Lectura visual** del plano $N_1$–$N_2$: debajo de la isoclina de una
+especie esa especie **crece** ($dN_i/dt>0$); por encima **disminuye**.
 Si las flechas del campo apuntan hacia el cruce, hay **coexistencia
 estable**; si “caen” a un **eje**, hay **exclusión** (extinción local de
 una especie).
@@ -223,18 +218,18 @@ parámetros
 
 1.  **Calcula** los **interceptos** de las isoclinas y **anótalos** (1
     decimal):
-    - Isoclina de 1: ((0,K_1)) y ((K_1/\_{12},0)).
-    - Isoclina de 2: ((0,K_2)) y ((K_2/\_{21},0)).
-2.  **Dibuja a mano** ambas isoclinas en el plano (N_1)–(N_2) y
-    **sombréa** las 4 regiones por signos de ((dN_1/dt, dN_2/dt)): `++`,
-    `+-`, `-+`, `--`.
-3.  **Coloca** los ≈10 puntos ((N_1,N_2)) de tu tabla (en orden de (t))
+    - Isoclina de 1: $(0,K_1)$ y $(K_1/\alpha_{12},0)$.
+    - Isoclina de 2: $(0,K_2)$ y $(K_2/\alpha_{21},0)$.
+2.  **Dibuja a mano** ambas isoclinas en el plano $N_1$–$N_2$ y
+    **sombrea** las 4 regiones por signos de $(dN_1/dt,\ dN_2/dt)$:
+    `++`, `+-`, `-+`, `--`.
+3.  **Coloca** los ≈10 puntos $(N_1,N_2)$ de tu tabla (en orden de $t$)
     y **traza** la trayectoria.
 4.  **Diagnostica** el resultado (**coexistencia estable / inestable /
     exclusión 1 / exclusión 2**) **argumentando** con los interceptos y
     el sombreado.
-5.  **Verifica** “a mano” el **signo** de (dN_1/dt) y (dN_2/dt) en un
-    punto de **cada región** (elige ((n_1,n_2)) de referencia y evalúa
+5.  **Verifica** “a mano” el **signo** de $dN_1/dt$ y $dN_2/dt$ en un
+    punto de **cada región** (elige $(n_1,n_2)$ de referencia y evalúa
     los signos).
 
 ### 1.2.5 **Demostración manual, usando datos de *Est01***
@@ -650,10 +645,10 @@ ggplot() +
 En el **modelo de Lotka–Volterra**:
 
 - Decimos **“1 excluye a 2”** cuando la trayectoria termina en
-  ((K_1,0)): la población 2 cae al **eje (N_2=0)** y no se recupera.
-- **Lectura del plano (N_1)–(N_2)**: si las **flechas** del campo llevan
-  hacia el eje (N_2=0), **2 se extingue localmente**; si llevan al eje
-  (N_1=0), la excluida es **1**; si llevan al **cruce de isoclinas**,
+  $(K_1,0)$: la población 2 cae al **eje $N_2=0$** y no se recupera.
+- **Lectura del plano $N_1$–$N_2$**: si las **flechas** del campo llevan
+  hacia el eje $N_2=0$, **2 se extingue localmente**; si llevan al eje
+  $N_1=0$, la excluida es **1**; si llevan al **cruce de isoclinas**,
   hay **coexistencia**.
 
 **Cuándo pasa**: cuando la **competencia interespecífica** sobre la
@@ -700,9 +695,10 @@ pp   <- gen_predpresa_lv(SEED)
 
 ## 2.2 **A mano** (entregable)
 
-1.  Con tus parámetros (r,a,b,m) calcula (N^*=), (P^*=).  
+1.  Con tus parámetros $r,a,b,m$ calcula $N^*=\frac{m}{ba}$,
+    $P^*=\frac{r}{a}$.  
 2.  Dibuja las **nullclines** (líneas de crecimiento cero) en el plano
-    (N)–(P).  
+    $N$–$P$.  
 3.  Señala la dirección cualitativa del campo de vectores en 4 regiones.
 
 ## 2.3 **En R**: series y plano de fase
@@ -728,8 +724,8 @@ pp_par[c("r","a","b","m","N_star","P_star")]
     ##   0.64442893   0.01133067   0.12625733   0.69500409 485.81962602  56.87472534
 
 **Interpretación**: cómo cambian amplitudes/períodos cuando
-aumentan/disminuyen (a,b,m); relación de fase (pico de (N) precede a
-(P)).
+aumentan/disminuyen $a,b,m$; relación de fase (pico de $N$ precede a
+$P$).
 
 # 3 Referencias
 
