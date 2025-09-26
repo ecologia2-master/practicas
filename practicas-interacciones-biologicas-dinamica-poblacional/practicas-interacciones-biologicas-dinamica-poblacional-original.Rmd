@@ -1,0 +1,399 @@
+---
+title: "Práctica 2. Interacciones biológicas con **datos de poblaciones**"
+subtitle: "Ecología II — Unidad 2 (Competencia LV · Depredador–Presa LV · Metapoblaciones de Levins)"
+author: "UASD · Arlen Marmolejo Hernández"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  bookdown::html_document2:
+    number_sections: false
+    code_folding: hide
+    fig_caption: true
+    toc: true
+    toc_depth: 2
+    md_extensions: "-fancy_lists"
+---
+
+> **Importante**: Estos ejercicios se basan en **datos de poblaciones** (series temporales) **fabricados de forma reproducible** para *cada estudiante*, a partir de **pseudónimos** ("Est01", "Est02", etc.).  
+> Puedes correr los análisis en **R** y también hacer la parte **a mano** con las tablas/figuras generadas.
+
+## 1) Preparación (una sola vez)
+
+```{r setup, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  out.width = '100%',
+  fig.retina = 4)
+req <- c("deSolve", "digest")
+to_install <- setdiff(req, rownames(installed.packages()))
+if (length(to_install)) install.packages(to_install, repos = "https://cloud.r-project.org")
+
+library(deSolve)
+library(digest)
+
+# Si no existe una tabla de clase, crea una de ejemplo:
+if (!exists("pseudonimos_clase")){
+  pseudonimos_clase <- paste0("Est", sprintf("%02d", 1:30))
+}
+```
+
+### 1.1 Elige tu **pseudónimo**
+
+Elige tu pseudónimo de esta lista.
+
+```{r, results='asis'}
+cat(pseudonimos_clase, sep = ', ')
+```
+
+Cambia la línea de abajo por **tu** pseudónimo (exacto como aparece en la lista de clase).
+
+```{r quien-soy}
+MI_PSEUDONIMO <- "Est01"  # <-- REEMPLAZA por tu pseudónimo
+```
+
+### 1.2 Generadores de **datos de poblaciones** (reproducibles)
+
+Cada generador devuelve **dos objetos**: una **tabla de datos** (serie temporal) y un **vector de parámetros** que describen el sistema.
+
+La **semilla** (aleatorización) se deriva criptográficamente del pseudónimo → cada estudiante obtiene **datos distintos** pero estables y reproducibles.
+
+```{r generadores}
+seed_from_name <- function(x) {
+  # hash hex (16 dígitos) con xxhash64; cae a crc32 si no está disponible
+  hx <- tryCatch(
+    digest::digest(x, algo = "xxhash64", serialize = FALSE),
+    error = function(e) digest::digest(x, algo = "crc32", serialize = FALSE)
+  )
+  # toma 4 bytes (8 dígitos hex) => valores 0..255 (sin overflow)
+  by <- vapply(seq(1, 8, 2),
+               function(i) strtoi(substr(hx, i, i + 1), base = 16L),
+               numeric(1))
+  # combina como little-endian en doble (evita overflow de enteros)
+  u32 <- sum(by * c(1, 256, 65536, 16777216))
+  # semilla en [1, .Machine$integer.max-1] (evita 0 y fuera de rango)
+  as.integer(1 + (u32 %% (.Machine$integer.max - 1)))
+}
+
+# 1) Competencia LV: dos especies (N1, N2)
+gen_competencia_lv <- function(seed, tmax=200, dt=0.02){
+  set.seed(seed + 501)
+  K1 <- sample(seq(300, 700, by=10), 1)
+  K2 <- sample(seq(250, 650, by=10), 1)
+  r1 <- runif(1, 0.3, 1.0)
+  r2 <- runif(1, 0.3, 1.0)
+  a12 <- runif(1, 0.15, 1.2)
+  a21 <- runif(1, 0.15, 1.2)
+
+  # Condición de caso (mezcla de escenarios):
+  # Forzamos algún equilibrio/coexistencia o exclusión variando un poco alphas
+  caso <- (seed %% 4) + 1
+  tweak <- runif(1, 0.85, 1.15)
+  if (caso == 1){ a12 <- max(0.15, a12 * 0.8); a21 <- min(1.2, a21 * 1.2) }       # 1 excluye 2
+  if (caso == 2){ a12 <- min(1.2, a12 * 1.2); a21 <- max(0.15, a21 * 0.8) }       # 2 excluye 1
+  if (caso == 3){ a12 <- a12 * 1.0; a21 <- a21 * 1.0 }                             # coexistencia estable (probable)
+  if (caso == 4){ a12 <- a12 * tweak; a21 <- a21 * (2 - tweak) }                   # coexistencia inestable (posible)
+
+  # Dinámica (Euler)
+  steps <- as.integer(tmax / dt)
+  N1 <- N2 <- numeric(steps); N1[1] <- max(1, round(runif(1, 0.05, 0.9)*K1))
+  N2[1] <- max(1, round(runif(1, 0.05, 0.9)*K2))
+  for (t in 2:steps){
+    dN1 <- r1*N1[t-1]*(1 - (N1[t-1] + a12*N2[t-1])/K1)
+    dN2 <- r2*N2[t-1]*(1 - (N2[t-1] + a21*N1[t-1])/K2)
+    N1[t] <- max(0, N1[t-1] + dN1*dt)
+    N2[t] <- max(0, N2[t-1] + dN2*dt)
+  }
+  data <- data.frame(time = seq(0, tmax - dt, by = dt), N1=N1, N2=N2)
+  pars <- c(r1=r1, r2=r2, K1=K1, K2=K2, a12=a12, a21=a21, caso=caso)
+  list(data=data, pars=pars)
+}
+
+# 2) Depredador–presa LV: presa (N) y depredador (P)
+gen_predpresa_lv <- function(seed, tmax=150, by=0.2){
+  set.seed(seed + 602)
+  r <- runif(1, 0.3, 1.1)
+  a <- runif(1, 0.006, 0.02)
+  b <- runif(1, 0.06, 0.2)
+  m <- runif(1, 0.25, 0.9)
+  N0 <- sample(20:80, 1)
+  P0 <- sample(6:20, 1)
+  pars <- c(r=r, a=a, b=b, m=m)
+  tt <- seq(0, tmax, by=by)
+  lv <- function(t, y, p){
+    N <- y[1]; P <- y[2]
+    with(as.list(p), {
+      dN <- r*N - a*N*P
+      dP <- b*a*N*P - m*P
+      list(c(dN, dP))
+    })
+  }
+  out <- as.data.frame(ode(y=c(N=N0, P=P0), times=tt, func=lv, parms=pars))
+  pars2 <- c(pars, N0=N0, P0=P0, N_star=m/(b*a), P_star=r/a)
+  list(data=out, pars=pars2)
+}
+
+# 3) Levins: fracción ocupada p(t)
+gen_levins <- function(seed, tmax=120){
+  set.seed(seed + 703)
+  modo <- c("estable","critico","extincion")[ (seed %% 3) + 1 ]
+  if (modo == "estable"){
+    c <- runif(1, 0.35, 0.8); e <- runif(1, 0.05, min(0.6, c - 0.05))
+  } else if (modo == "critico"){
+    c0 <- runif(1, 0.25, 0.7); delta <- runif(1, -0.02, 0.02); c <- c0; e <- max(0.01, min(0.95, c0 + delta))
+  } else {
+    e <- runif(1, 0.35, 0.8); c <- runif(1, 0.05, max(0.6, e - 0.05)); if (c >= e) { tmp <- c; c <- e - 0.05; e <- tmp }
+  }
+  p0 <- runif(1, 0.05, 0.9)
+  p <- numeric(tmax); p[1] <- p0
+  for (t in 2:tmax){
+    p[t] <- max(0, min(1, p[t-1] + c*p[t-1]*(1 - p[t-1]) - e*p[t-1]))
+  }
+  data <- data.frame(t = 1:tmax, p = p)
+  pars <- c(c=c, e=e, p0=p0); attr(data, "modo") <- modo; attr(data, "p_star") <- if (c>e) 1 - e/c else NA_real_
+  list(data=data, pars=pars)
+}
+
+# Construye datos para MI_PSEUDONIMO
+SEED <- seed_from_name(MI_PSEUDONIMO)
+comp <- gen_competencia_lv(SEED)
+pp   <- gen_predpresa_lv(SEED)
+lev  <- gen_levins(SEED)
+```
+
+### 1.3 Extractos de `r MI_PSEUDONIMO`
+
+- Datos para competencia interespecífica
+
+```{r, results='asis'}
+cat('Extracto de tabla de datos, tres primeras filas')
+knitr::kable(head(comp$data, 3))
+cat('Parámetros')
+knitr::kable(as.data.frame(comp$pars), col.names = c("Parámetro", 'Valor'))
+```
+
+- Datos para depredador–presa
+
+```{r, results='asis'}
+cat('Extracto de tabla de datos, tres primeras filas')
+knitr::kable(head(pp$data, 3))
+cat('Parámetros')
+knitr::kable(as.data.frame(pp$pars), col.names = c("Parámetro", 'Valor'))
+```
+
+- Datos para metapoblaciones (Levins)
+
+```{r, results='asis'}
+cat('Extracto de tabla de datos, tres primeras filas')
+knitr::kable(head(lev$data, 3))
+cat('Parámetros')
+knitr::kable(as.data.frame(lev$pars), col.names = c("Parámetro", 'Valor'))
+```
+
+> **Exporta (opcional)**: Si quieres guardar tus propios CSV, usa este código:
+
+```{r export, eval=FALSE}
+write.csv(comp$data, paste0("datos_competencia_", MI_PSEUDONIMO, ".csv"), row.names=FALSE)
+write.csv(pp$data,   paste0("datos_predpresa_",  MI_PSEUDONIMO, ".csv"), row.names=FALSE)
+write.csv(lev$data,  paste0("datos_levins_",    MI_PSEUDONIMO, ".csv"), row.names=FALSE)
+```
+
+---
+
+## 2) **Competencia interespecífica (LV)** — *con tus datos*
+
+### 2. Mandatos
+
+- Dibuja las isoclinas a mano (usa tus parámetros).
+- Haz lectura de tu caso, interpretando según el gráfico de regiones.
+
+
+
+### 2.A Conceptos clave (recordatorio breve)
+
+- **Isoclinas**: \(N_2 = K_1 - \alpha_{12}N_1\) y \(N_2 = K_2 - \alpha_{21}N_1\).  
+- **Casos** (comparando interceptos):  
+  - 1 excluye 2: \(K_1 > K_2/\alpha_{21}\) **y** \(K_1/\alpha_{12} > K_2\).  
+  - 2 excluye 1: \(K_1 < K_2/\alpha_{21}\) **y** \(K_1/\alpha_{12} < K_2\).  
+  - Coexistencia estable: \(K_1 > K_2/\alpha_{21}\) **y** \(K_2 > K_1/\alpha_{12}\).  
+  - Coexistencia inestable: \(K_1 < K_2/\alpha_{21}\) **y** \(K_2 < K_1/\alpha_{12}\).
+
+### 2.B **A mano** (entregable)
+1. Con los **parámetros** de tu caso, **traza** ambas isoclinas a escala y **determina** el resultado esperado.  
+2. Marca en tu gráfico la región hacia donde se movería el sistema.  
+3. Explica (4–6 líneas) el papel relativo de **competencia intra** vs. **interespecífica**.
+
+### 2.C **En R**: isoclinas, trayectoria y lectura del caso
+```{r comp-R, fig.width=6.5, fig.height=5}
+pars <- comp$pars; dat <- comp$data
+K1 <- pars["K1"]; K2 <- pars["K2"]; a12 <- pars["a12"]; a21 <- pars["a21"]
+r1 <- pars["r1"]; r2 <- pars["r2"]
+
+n1 <- seq(0, K1, length.out=200)
+n2_iso <- pmax(0, K2 - a21*n1)
+n2 <- seq(0, K2, length.out=200)
+n1_iso <- pmax(0, K1 - a12*n2)
+
+par(mfrow=c(1,2))
+plot(NA, xlim=c(0, K1), ylim=c(0, K2), xlab="N1", ylab="N2",
+     main=sprintf("Isoclinas\n(K1=%d,K2=%d,\na12=%.2f,a21=%.2f)",
+                  K1, K2, a12, a21))
+lines(n1, n2_iso, lwd=2)
+lines(n1_iso, n2, lwd=2, lty=2)
+legend("topright", c("Isoclina N2", "Isoclina N1"), lwd=2, lty=c(1,2), bty="n")
+
+plot(dat$N1, dat$N2, type="l", xlab="N1", ylab="N2",
+     main="Trayectoria (fase)")
+par(mfrow=c(1,1))
+
+# Diagnóstico rápido del caso con desigualdades
+c1 <- (K1 >  K2 / a21) && (K1 / a12 > K2)
+c2 <- (K1 <  K2 / a21) && (K1 / a12 < K2)
+c3 <- (K1 >  K2 / a21) && (K2 >  K1 / a12)
+c4 <- (K1 <  K2 / a21) && (K2 <  K1 / a12)
+cat("Diagnóstico teórico: ",
+    if (c1) "1 excluye 2"
+    else if (c2) "2 excluye 1"
+    else if (c3) "coexistencia estable"
+    else if (c4) "coexistencia inestable"
+    else "indeterminado", "\n")
+```
+
+**Qué leer en el gráfico**: si la trayectoria converge a intersección → coexistencia; si “cae” a un eje → exclusión.
+
+![](isoclina-cero-n1.png)
+
+![](isoclina-cero-n2.png)
+
+![](isoclinas-interseccion.jpg)
+
+![](cuatro-casos-competencia-lv.jpg)
+![](cuatro-casos-competencia-lv-v2.png)
+
+### 2.D Explicación en detalle
+
+#### 1) Qué son las isoclinas y qué “dicen”
+
+- **Isoclina de $N_1$**: $N_1 + \alpha_{12}N_2 = K_1$.  
+  Debajo de esa línea se cumple $N_1+\alpha_{12}N_2<K_1$ ⇒ $dN_1/dt>0$ (1 **aumenta**).  
+  Encima, $dN_1/dt<0$ (1 **disminuye**).
+
+- **Isoclina de $N_2$**: $N_2 + \alpha_{21}N_1 = K_2$.  
+  Debajo/izquierda de esa línea: $dN_2/dt>0$ (2 **aumenta**).  
+  Arriba/derecha: $dN_2/dt<0$ (2 **disminuye**).
+
+> Cada isoclina parte el plano en dos mitades: donde esa especie **crece** o **decrece**.
+
+---
+
+#### 2) “Converge a la intersección → coexistencia”
+
+El **único** punto del interior donde **ambas** derivadas son cero a la vez es el **cruce de isoclinas**.  
+Si las flechas del campo (según los signos de $dN_1$ y $dN_2$) apuntan **hacia** ese cruce, **el punto es estable**: las dos poblaciones se acercan a $(N_1^*,N_2^*)$ ⇒ **coexistencia estable**.
+
+**Regla visual rápida**:
+- Debajo de **ambas** isoclinas: flecha ↗︎ (suben las dos).  
+- Debajo de la de $N_1$ pero **encima** de la de $N_2$: 1 sube, 2 baja → flecha →.  
+- **Encima** de la de $N_1$ pero debajo de la de $N_2$: 1 baja, 2 sube → flecha ↑.  
+- Encima de **ambas**: flecha ↙︎ (bajan las dos).
+
+Si esas flechas rodean el cruce y lo “atrapan”, hay coexistencia estable.
+
+---
+
+#### 3) “Cae a un eje → exclusión”
+
+Los ejes $N_1=0$ (abajo) y $N_2=0$ (izquierda) representan **extinción** de una especie.
+
+- En el eje $N_2=0$: la ecuación de $N_2$ queda en 0 ⇒ si la trayectoria llega ahí, **2 queda extinta** y 1 evoluciona solo (logístico) hasta $(K_1,0)$.  
+- En el eje $N_1=0$: análogo para 1 ⇒ $(0,K_2)$.
+
+> Cuando la trayectoria “**cae a un eje**”, una especie se **va a 0**: **exclusión competitiva**.
+
+---
+
+#### 4) “2 excluye a 1” en el dibujo: por qué
+
+Mira los **interceptos** de las isoclinas en los ejes:
+
+- En el **eje $N_1$** (abajo): compara $K_1$ (corte de la isoclina de 1) con $K_2/\alpha_{21}$ (corte de la de 2).  
+- En el **eje $N_2$** (izquierda): compara $K_1/\alpha_{12}$ (de 1) con $K_2$ (de 2).
+
+**Casos geométricos clásicos**:
+- **2 excluye a 1** si la isoclina de 2 está **más afuera** que la de 1 en **ambos ejes**:  
+  $K_1 < K_2/\alpha_{21}$ **y** $K_1/\alpha_{12} < K_2$.  
+  *Intuición*: 2 “tolera” más densidad propia y del otro (intra > inter para 2); las flechas empujan hacia el **eje $N_1=0$** ⇒ $N_1 \to 0$.
+
+- **1 excluye a 2** si ocurre lo contrario (isoclina de 1 más afuera en ambos ejes).
+
+- **Cruce “alternado”** (uno gana en $x$ y el otro en $y$): hay cruce interior.  
+  - Si **intra > inter** para ambos ⇒ **coexistencia estable** (cruce atractor).  
+  - Si **inter > intra** ⇒ **coexistencia inestable** (efecto de prioridad: según condiciones iniciales, uno u otro excluye).
+
+> **Ojo**: con parámetros positivos las líneas **se cruzan** geométricamente; lo que cambia es si ese cruce es **estable** o **inestable**. **Puede haber exclusión aunque exista cruce** (si el cruce es un separador y las flechas se van a un eje).
+
+---
+
+#### 5) Receta rápida para leer un caso
+
+1. Dibuja los cortes en cada eje ($K_1$ vs $K_2/\alpha_{21}$; $K_1/\alpha_{12}$ vs $K_2$).  
+2. Marca regiones con $dN_1/dt>0$ (debajo de su isoclina) y $dN_2/dt>0$ (debajo de la suya).  
+3. Añade 3–4 flechas guía por región.  
+4. Si las flechas **entran** al cruce ⇒ **coexistencia**.  
+   Si **salen** y terminan en un eje ⇒ **exclusión** (la especie del eje opuesto se extingue).
+
+
+---
+
+## 3) **Depredador–presa (LV)** — *con tus datos*
+
+### 3.A **A mano** (entregable)
+1. Con tus parámetros \(r,a,b,m\) calcula \(N^*=\frac{m}{ba}\), \(P^*=\frac{r}{a}\).  
+2. Dibuja las **nullclines** (líneas de crecimiento cero) en el plano \(N\)–\(P\).  
+3. Señala la dirección cualitativa del campo de vectores en 4 regiones.
+
+### 3.B **En R**: series y plano de fase
+```{r pp-R, fig.width=7, fig.height=5}
+pp_dat <- pp$data; pp_par <- pp$pars
+Nstar <- pp_par["N_star"]; Pstar <- pp_par["P_star"]
+
+par(mfrow=c(1,2))
+plot(pp_dat$time, pp_dat$N, type="l", xlab="t", ylab="N (presa)", main="Serie temporal (presa)")
+plot(pp_dat$N, pp_dat$P, type="l", xlab="N", ylab="P", main="Plano de fase")
+abline(v = Nstar, h = Pstar, lty=2)
+par(mfrow=c(1,1))
+pp_par[c("r","a","b","m","N_star","P_star")]
+```
+
+**Interpretación**: cómo cambian amplitudes/períodos cuando aumentan/disminuyen \(a,b,m\); relación de fase (pico de \(N\) precede a \(P\)).
+
+---
+
+## 4) **Metapoblaciones (Levins)** — *con tus datos*
+
+### 4.A **A mano** (entregable)
+1. Calcula \(p^* = 1 - e/c\) si \(c>e\). Si \(c \le e\), explica el colapso.  
+2. Bosqueja \(p(t)\) con tu **modo** (estable/critico/extinción) y comenta un manejo posible (↑\(c\) conectividad; ↓\(e\) perturbación).
+
+### 4.B **En R**: trayectoria y equilibrio
+```{r levins-R, fig.width=6.5, fig.height=4.5}
+lev_dat <- lev$data; lev_par <- lev$pars
+modo <- attr(lev_dat, "modo"); pstar <- attr(lev_dat, "p_star")
+plot(lev_dat$t, lev_dat$p, type="l", lwd=2, xlab="t", ylab="p (fracción ocupada)",
+     main=sprintf("Levins (%s): c=%.2f, e=%.2f, p0=%.2f", modo, lev_par["c"], lev_par["e"], lev_par["p0"]))
+if (!is.na(pstar)) abline(h = pstar, lty=2)
+c(modo=modo, c=lev_par["c"], e=lev_par["e"], p0=lev_par["p0"], p_star=ifelse(is.na(pstar), NA, round(pstar,3)))
+```
+
+**Lectura**: si \(c>e\), \(p(t)\) converge a \(p^*\); si \(c\approx e\), trayectorias lentas y sensibles; si \(c<e\), \(p\to 0\).
+
+---
+
+## Entregables
+
+1. Portada con **pseudónimo**.  
+2. **2.A–2.C**: isoclinas a mano + lectura del caso (usa tus parámetros).  
+3. **3.A–3.B**: cálculo de \(N^*,P^*\), nullclines y fase.  
+4. **4.A–4.B**: \(p^*\), trayectoria y propuesta de manejo.  
+5. Anexa **CSV** si el docente lo requiere (chunk `export`).
+

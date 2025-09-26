@@ -1,116 +1,96 @@
----
-title: "Práctica 2. Interacciones biológicas con **datos de poblaciones**"
-subtitle: "Ecología II — Unidad 2 (Competencia LV · Depredador–Presa LV)"
-author: "UASD · Arlen Marmolejo Hernández"
-date: "`r format(Sys.Date(), '%Y-%m-%d')`"
-output:
-  # bookdown::github_document2:
-  #   fig_caption: yes
-  #   number_sections: true
-  bookdown::html_document2:
-    code_folding: hide
-    fig_caption: yes
-    md_extensions: "-fancy_lists"
-    toc: true
-    toc_depth: 3
-    number_sections: true
-editor_options: 
-  chunk_output_type: console
-always_allow_html: true
----
+Práctica 2. Interacciones biológicas con **datos de poblaciones**
+================
+UASD · Arlen Marmolejo Hernández
+2025-09-26
 
 <!-- README.md se genera a partir de README.Rmd. Por favor, edita ese archivo. -->
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, out.width = '100%', fig.retina = 4)
-```
+Versión HTML (quizá más legible),
+[aquí](https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional.html)
 
-```{r, include=F}
-output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
-repo_url <- system("git config --get remote.origin.url", intern = TRUE)
-repo_name <- sub(".git$", "", basename(repo_url))
-org_name <- basename(dirname(repo_url))
-rmd_filename <- tools::file_path_sans_ext(basename(knitr::current_input()))
-github_pages_url <- paste0("https://", org_name, ".github.io/", repo_name, "/", rmd_filename, ".html")
-```
+> **Nota editorial**: La **sección teórica** de competencia LV que sigue
+> está **basada fielmente** en *LibreTexts* (15.5 “Quantifying
+> Competition Using the Lotka–Volterra Model”), pero **parafraseada**
+> para respetar derechos de autor. Las **ecuaciones, derivaciones y
+> estructura** se mantienen. Figuras: usa los **archivos locales** del
+> repositorio (ver *llamados* en el texto).
 
-```{r, results='asis', echo=F}
-if (grepl('gfm', output_format)) {
-  cat('Versión HTML (quizá más legible), [aquí](', github_pages_url, ')\n', sep = '')
-} else if (output_format == 'latex') {
-  cat('Versión HTML (quizá más legible), [aquí](', github_pages_url, ')\n', sep = '')
-}
-```
+# 1 **Competencia interespecífica** con el modelo de **Lotka–Volterra**
 
-> **Nota editorial**: La **sección teórica** de competencia LV que sigue está **basada fielmente** en *LibreTexts* (15.5 “Quantifying Competition Using the Lotka–Volterra Model”), pero **parafraseada** para respetar derechos de autor. Las **ecuaciones, derivaciones y estructura** se mantienen. Figuras: usa los **archivos locales** del repositorio (ver *llamados* en el texto).
+## 1.1 Marco teórico — **Competencia interespecífica** con el modelo de **Lotka–Volterra**
 
-```{r paquetes, include=FALSE}
-suppressPackageStartupMessages({
-  library(ggplot2)
-  library(digest)
-  library(deSolve)
-})
-theme_set(theme_minimal())
-```
+**Fuente base**: *LibreTexts* — *15.5: Quantifying Competition Using the
+Lotka-Volterra Model* (Gettysburg College, Ecology for All).
 
-# **Competencia interespecífica** con el modelo de **Lotka–Volterra**
+### 1.1.1 Del **logístico** de una especie a la competencia de **dos especies**
 
-## Marco teórico — **Competencia interespecífica** con el modelo de **Lotka–Volterra**
+Partimos del crecimiento **logístico** para cada especie en ausencia de
+la otra (intraespecífica):
 
-**Fuente base**: *LibreTexts* — *15.5: Quantifying Competition Using the Lotka-Volterra Model* (Gettysburg College, Ecology for All).
+$$ `\frac{d N_{1}}{dt}`{=tex}=r\_{1}
+N\_{1}`\left`{=tex}(`\frac{K_{1}-N_{1}}{K_{1}}`{=tex}`\right`{=tex}),`\qquad`{=tex}
+`\frac{d N_{2}}{dt}`{=tex}=r\_{2}
+N\_{2}`\left`{=tex}(`\frac{K_{2}-N_{2}}{K_{2}}`{=tex}`\right`{=tex}). $$
 
-### Del **logístico** de una especie a la competencia de **dos especies**
+Para incorporar **competencia interespecífica**, suponemos que
+individuos de la especie 2 reducen el crecimiento de la 1 en **unidades
+equivalentes** a (*{12}) individuos de 1 (y viceversa (*{21})). Esto
+produce las **ecuaciones de Lotka–Volterra (competencia)**:
 
-Partimos del crecimiento **logístico** para cada especie en ausencia de la otra (intraespecífica):
+$$ `\frac{dN_{1}}{dt}`{=tex}=
+r\_{1}N\_{1}!`\left`{=tex}(`\frac{K_1 - N_{1} - \alpha_{12}N_{2}}{K_{1}}`{=tex}`\right`{=tex}),`\qquad`{=tex}
+`\frac{dN_{2}}{dt}`{=tex}=
+r\_{2}N\_{2}!`\left`{=tex}(`\frac{K_2 - N_{2}-\alpha_{21}N_{1}}{K_{2}}`{=tex}`\right`{=tex}).
+$$
 
-\[
-\frac{d N_{1}}{dt}=r_{1} N_{1}\left(\frac{K_{1}-N_{1}}{K_{1}}\right),\qquad
-\frac{d N_{2}}{dt}=r_{2} N_{2}\left(\frac{K_{2}-N_{2}}{K_{2}}\right).
-\]
+> (*{12}) y (*{21}) son **coeficientes de competencia**
+> (adimensionales): convierten individuos de una especie en
+> “**equivalentes**” de la otra en términos de uso de recursos.
 
-Para incorporar **competencia interespecífica**, suponemos que individuos de la especie 2 reducen el crecimiento de la 1 en **unidades equivalentes** a \(\alpha_{12}\) individuos de 1 (y viceversa \(\alpha_{21}\)). Esto produce las **ecuaciones de Lotka–Volterra (competencia)**:
+### 1.1.2 **Isoclinas** (líneas de crecimiento cero) y **puntos de equilibrio**
 
-\[
-\frac{dN_{1}}{dt}= r_{1}N_{1}\!\left(\frac{K_1 - N_{1} - \alpha_{12}N_{2}}{K_{1}}\right),\qquad
-\frac{dN_{2}}{dt}= r_{2}N_{2}\!\left(\frac{K_2 - N_{2}-\alpha_{21}N_{1}}{K_{2}}\right).
-\]
-
-> \(\alpha_{12}\) y \(\alpha_{21}\) son **coeficientes de competencia** (adimensionales): convierten individuos de una especie en “**equivalentes**” de la otra en términos de uso de recursos.
-
-### **Isoclinas** (líneas de crecimiento cero) y **puntos de equilibrio**
-
-La isoclina de 1 (\(dN_1/dt=0\)) cumple \(N_{1}+\alpha_{12}N_{2}=K_{1}\).  
-La de 2 (\(dN_2/dt=0\)) cumple \(N_{2}+\alpha_{21}N_{1}=K_{2}\).
+La isoclina de 1 ((dN_1/dt=0)) cumple (N\_{1}+*{12}N*{2}=K\_{1}).  
+La de 2 ((dN_2/dt=0)) cumple (N\_{2}+*{21}N*{1}=K\_{2}).
 
 Sus **interceptos** con los ejes son:
 
-- Para 1: \((0,K_1)\) y \((K_1/\alpha_{12},0)\).
-- Para 2: \((0,K_2)\) y \((K_2/\alpha_{21},0)\).
+- Para 1: ((0,K_1)) y ((K_1/\_{12},0)).
+- Para 2: ((0,K_2)) y ((K_2/\_{21},0)).
 
-El **cruce** de isoclinas da el equilibrio interior \((N_1^{*},N_2^{*})\) cuando existe. La **estabilidad** se evalúa comparando interceptos:
+El **cruce** de isoclinas da el equilibrio interior ((N_1^{*},N_2^{*}))
+cuando existe. La **estabilidad** se evalúa comparando interceptos:
 
-- **1 excluye 2** si \(K_1 > K_2/\alpha_{21}\) **y** \(K_1/\alpha_{12} > K_2\).
-- **2 excluye 1** si \(K_1 < K_2/\alpha_{21}\) **y** \(K_1/\alpha_{12} < K_2\).
-- **Coexistencia (equilibrio) estable** si \(K_1 > K_2/\alpha_{21}\) **y** \(K_2 > K_1/\alpha_{12}\).
-- **Coexistencia (equilibrio) inestable** si \(K_1 < K_2/\alpha_{21}\) **y** \(K_2 < K_1/\alpha_{12}\).
+- **1 excluye 2** si (K_1 \> K_2/*{21}) **y** (K_1/*{12} \> K_2).
+- **2 excluye 1** si (K_1 \< K_2/*{21}) **y** (K_1/*{12} \< K_2).
+- **Coexistencia (equilibrio) estable** si (K_1 \> K_2/*{21}) **y** (K_2
+  \> K_1/*{12}).
+- **Coexistencia (equilibrio) inestable** si (K_1 \< K_2/*{21}) **y**
+  (K_2 \< K_1/*{12}).
 
-**Lectura visual** del plano \(N_1\)–\(N_2\): debajo de la isoclina de una especie esa especie **crece** (\(dN_i/dt>0\)); por encima **disminuye**. Si las flechas del campo apuntan hacia el cruce, hay **coexistencia estable**; si “caen” a un **eje**, hay **exclusión** (extinción local de una especie).
+**Lectura visual** del plano (N_1)–(N_2): debajo de la isoclina de una
+especie esa especie **crece** ((dN_i/dt\>0)); por encima **disminuye**.
+Si las flechas del campo apuntan hacia el cruce, hay **coexistencia
+estable**; si “caen” a un **eje**, hay **exclusión** (extinción local de
+una especie).
 
 > **Figuras (del repo)**  
-> ![](isoclina-cero-n1.png)
-> ![](isoclina-cero-n2.png)
+> ![](isoclina-cero-n1.png) ![](isoclina-cero-n2.png)
 > ![](isoclinas-interseccion.jpg)
 > ![](cuatro-casos-competencia-lv-v2.png)
 
-> **Referencia**: basadas en LibreTexts 15.5 (ver sección **Referencias**).
+> **Referencia**: basadas en LibreTexts 15.5 (ver sección
+> **Referencias**).
 
-## Práctica — **Competencia LV** con datos **pequeños** por estudiante
+## 1.2 Práctica — **Competencia LV** con datos **pequeños** por estudiante
 
-> **Importante**: Cada estudiante trabaja el **mismo mandato** pero con **datos distintos** y **pequeños** (≈10 filas) para poder **hacerlo a mano**. Se generan a partir de un **pseudónimo** (“Est01”, “Est02”, …).
+> **Importante**: Cada estudiante trabaja el **mismo mandato** pero con
+> **datos distintos** y **pequeños** (≈10 filas) para poder **hacerlo a
+> mano**. Se generan a partir de un **pseudónimo** (“Est01”, “Est02”,
+> …).
 
-### Preparación y **pseudónimo**
+### 1.2.1 Preparación y **pseudónimo**
 
-```{r prep}
+``` r
 # Paquetes usados
 suppressPackageStartupMessages({
   library(ggplot2)
@@ -123,20 +103,23 @@ if (!exists("pseudonimos_clase")){
 }
 ```
 
-
-```{r prep2, results='asis'}
+``` r
 cat("Pseudónimos: ", paste(pseudonimos_clase[-1], collapse=", "), "\n")
 ```
 
-```{r prep3}
+Pseudónimos: Est02, Est03, Est04, Est05, Est06, Est07, Est08, Est09,
+Est10, Est11, Est12, Est13, Est14, Est15, Est16, Est17, Est18, Est19,
+Est20, Est21, Est22, Est23, Est24, Est25, Est26, Est27, Est28, Est29,
+Est30
 
+``` r
 # Elige tu pseudónimo
 MI_PSEUDONIMO <- "Est01"  # <-- CAMBIA AQUÍ
 ```
 
-### Generador **reproducible** (tabla pequeña + trayectoria)
+### 1.2.2 Generador **reproducible** (tabla pequeña + trayectoria)
 
-```{r generador}
+``` r
 seed_from_name <- function(x){
   # hash a 32 bits reproducible
   hx <- tryCatch(digest::digest(x, algo="xxhash64", serialize=FALSE),
@@ -192,50 +175,80 @@ SEED <- seed_from_name(MI_PSEUDONIMO)
 comp <- gen_competencia_lv(SEED)
 ```
 
-### **Tu tabla pequeña** y parámetros (para trabajar **a mano**)
+### 1.2.3 **Tu tabla pequeña** y parámetros (para trabajar **a mano**)
 
-```{r tabla-pequena, results='asis'}
+``` r
 knitr::kable(comp$data_small, row.names = F,
              caption="Competencia LV — tabla pequeña (≈10 filas) para graficar a mano")
+```
+
+|     t |  N1 |  N2 |
+|------:|----:|----:|
+|  0.00 | 325 | 365 |
+|  1.65 | 275 | 355 |
+|  3.30 | 255 | 365 |
+|  5.00 | 240 | 380 |
+|  6.65 | 230 | 390 |
+|  8.30 | 225 | 400 |
+|  9.95 | 220 | 405 |
+| 11.65 | 215 | 415 |
+| 13.30 | 210 | 415 |
+| 14.95 | 205 | 420 |
+
+<span id="tab:tabla-pequena"></span>Table 1.1: Competencia LV — tabla
+pequeña (≈10 filas) para graficar a mano
+
+``` r
 knitr::kable(as.data.frame(comp$pars),
              caption="Competencia LV — parámetros",
              col.names=c("Parámetro","Valor"))
 ```
 
-### **Mandatos (entregables a mano)**
+| Parámetro |       Valor |
+|:----------|------------:|
+| r1        |   0.7362978 |
+| r2        |   0.8315835 |
+| K1        | 420.0000000 |
+| K2        | 620.0000000 |
+| a12       |   0.5178140 |
+| a21       |   0.9469748 |
+| caso      |   3.0000000 |
+| N10       | 327.0000000 |
+| N20       | 366.0000000 |
 
-1. **Calcula** los **interceptos** de las isoclinas y **anótalos** (1 decimal):
-   - Isoclina de 1: \((0,K_1)\) y \((K_1/\alpha_{12},0)\).
-   - Isoclina de 2: \((0,K_2)\) y \((K_2/\alpha_{21},0)\).
-2. **Dibuja a mano** ambas isoclinas en el plano \(N_1\)–\(N_2\) y **sombréa** las 4 regiones por signos de \((dN_1/dt,\ dN_2/dt)\): `++`, `+-`, `-+`, `--`.
-3. **Coloca** los ≈10 puntos \((N_1,N_2)\) de tu tabla (en orden de \(t\)) y **traza** la trayectoria.
-4. **Diagnostica** el resultado (**coexistencia estable / inestable / exclusión 1 / exclusión 2**) **argumentando** con los interceptos y el sombreado.
-5. **Verifica** “a mano” el **signo** de \(dN_1/dt\) y \(dN_2/dt\) en un punto de **cada región** (elige \((n_1,n_2)\) de referencia y evalúa los signos).
+<span id="tab:tabla-pequena"></span>Table 1.1: Competencia LV —
+parámetros
 
+### 1.2.4 **Mandatos (entregables a mano)**
 
+1.  **Calcula** los **interceptos** de las isoclinas y **anótalos** (1
+    decimal):
+    - Isoclina de 1: ((0,K_1)) y ((K_1/\_{12},0)).
+    - Isoclina de 2: ((0,K_2)) y ((K_2/\_{21},0)).
+2.  **Dibuja a mano** ambas isoclinas en el plano (N_1)–(N_2) y
+    **sombréa** las 4 regiones por signos de ((dN_1/dt, dN_2/dt)): `++`,
+    `+-`, `-+`, `--`.
+3.  **Coloca** los ≈10 puntos ((N_1,N_2)) de tu tabla (en orden de (t))
+    y **traza** la trayectoria.
+4.  **Diagnostica** el resultado (**coexistencia estable / inestable /
+    exclusión 1 / exclusión 2**) **argumentando** con los interceptos y
+    el sombreado.
+5.  **Verifica** “a mano” el **signo** de (dN_1/dt) y (dN_2/dt) en un
+    punto de **cada región** (elige ((n_1,n_2)) de referencia y evalúa
+    los signos).
 
+### 1.2.5 **Demostración manual, usando datos de *Est01***
 
-
-
-
-
-
-
-
-
-
-
-
-
-### **Demostración manual, usando datos de *Est01***
-
-> Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla pequeña** (≈10 filas) y tu **tabla de parámetros** (con $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para *Est01*.
+> Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los
+> **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla
+> pequeña** (≈10 filas) y tu **tabla de parámetros** (con
+> $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para
+> *Est01*.
 
 **Parámetros de *Est01***
 $r_1=0.7363,\; r_2=0.8316,\; K_1=420,\; K_2=620,\; \alpha_{12}=0.517814,\; \alpha_{21}=0.9469748$
 
-
-#### **Calcula los interceptos** de las isoclinas (anota a 1 decimal)
+#### 1.2.5.1 **Calcula los interceptos** de las isoclinas (anota a 1 decimal)
 
 Modelo LV de competencia:
 
@@ -246,48 +259,52 @@ $$
 
 Isoclinas (líneas de crecimiento cero):
 
-* **Isoclina de 1** ($dN_1/dt=0$): $N_1=K_1-\alpha_{12}N_2$
-  Interceptos: $(K_1,0)=(\mathbf{420.0},0)$ y $(0,K_1/\alpha_{12})=(0,\mathbf{811.1})$
-  (cálculo: $420/0.517814=811.102\rightarrow \mathbf{811.1}$)
-* **Isoclina de 2** ($dN_2/dt=0$): $N_2=K_2-\alpha_{21}N_1$
-  Interceptos: $(0,K_2)=(0,\mathbf{620.0})$ y $(K_2/\alpha_{21},0)=(\mathbf{654.7},0)$
-  (cálculo: $620/0.9469748=654.716\rightarrow \mathbf{654.7}$)
+- **Isoclina de 1** ($dN_1/dt=0$): $N_1=K_1-\alpha_{12}N_2$ Interceptos:
+  $(K_1,0)=(\mathbf{420.0},0)$ y
+  $(0,K_1/\alpha_{12})=(0,\mathbf{811.1})$ (cálculo:
+  $420/0.517814=811.102\rightarrow \mathbf{811.1}$)
+- **Isoclina de 2** ($dN_2/dt=0$): $N_2=K_2-\alpha_{21}N_1$ Interceptos:
+  $(0,K_2)=(0,\mathbf{620.0})$ y
+  $(K_2/\alpha_{21},0)=(\mathbf{654.7},0)$ (cálculo:
+  $620/0.9469748=654.716\rightarrow \mathbf{654.7}$)
 
-**En Excel (opcional):** con celdas `K1=420`, `K2=620`, `a12=0.517814`, `a21=0.9469748`
-`=K1/a12` → **811.1**;   `=K2/a21` → **654.7**.
+**En Excel (opcional):** con celdas `K1=420`, `K2=620`, `a12=0.517814`,
+`a21=0.9469748` `=K1/a12` → **811.1**;   `=K2/a21` → **654.7**.
 
-
-#### **Fija escalas de ejes** para que entren todos los interceptos
+#### 1.2.5.2 **Fija escalas de ejes** para que entren todos los interceptos
 
 Usa límites algo superiores al mayor intercepto de cada eje:
 
-* Horizontal $x_{\max}\approx 1.1\times \max(K_1,\;K_2/\alpha_{21})=1.1\times 654.7\approx \mathbf{720}$.
-* Vertical $y_{\max}\approx 1.1\times \max(K_2,\;K_1/\alpha_{12})=1.1\times 811.1\approx \mathbf{900}$.
+- Horizontal
+  $x_{\max}\approx 1.1\times \max(K_1,\;K_2/\alpha_{21})=1.1\times 654.7\approx \mathbf{720}$.
+- Vertical
+  $y_{\max}\approx 1.1\times \max(K_2,\;K_1/\alpha_{12})=1.1\times 811.1\approx \mathbf{900}$.
 
 Traza ejes $N_1$ (0…720) y $N_2$ (0…900). Rejilla cómoda: pasos de 50.
 
+#### 1.2.5.3 **Dibuja las isoclinas** con regla (o con Dispersión en Excel)
 
-#### **Dibuja las isoclinas** con regla (o con Dispersión en Excel)
+- **Isoclina N1** (**sólida**, p.ej. naranja): une $(\mathbf{420},0)$
+  con $(0,\mathbf{811.1})$. Etiqueta: *Isoclina N1 (dN1/dt = 0)*.
+- **Isoclina N2** (**punteada**, p.ej. azul): une $(0,\mathbf{620})$ con
+  $(\mathbf{654.7},0)$. Etiqueta: *Isoclina N2 (dN2/dt = 0)*.
 
-* **Isoclina N1** (**sólida**, p.ej. naranja): une $(\mathbf{420},0)$ con $(0,\mathbf{811.1})$.
-  Etiqueta: *Isoclina N1 (dN1/dt = 0)*.
-* **Isoclina N2** (**punteada**, p.ej. azul): une $(0,\mathbf{620})$ con $(\mathbf{654.7},0)$.
-  Etiqueta: *Isoclina N2 (dN2/dt = 0)*.
+**En Excel:** crea dos series con esos dos puntos por línea → Gráfico de
+**Dispersión con líneas**. Formatea N1 **sólida** y N2 **discontinua**.
 
-**En Excel:** crea dos series con esos dos puntos por línea → Gráfico de **Dispersión con líneas**. Formatea N1 **sólida** y N2 **discontinua**.
+#### 1.2.5.4 **Sombréa las 4 regiones** por signos de $(dN_1/dt,\ dN_2/dt)$
 
-#### **Sombréa las 4 regiones** por signos de $(dN_1/dt,\ dN_2/dt)$
+Regla memotécnica: **debajo** de una isoclina esa especie **crece**;
+**encima**, **disminuye**.
 
-Regla memotécnica: **debajo** de una isoclina esa especie **crece**; **encima**, **disminuye**.
-
-* Debajo de ambas → **`++`** (suben 1 y 2).
-* Debajo de N1 y **encima** de N2 → **`+-`** (1 sube, 2 baja).
-* **Encima** de N1 y debajo de N2 → **`-+`** (1 baja, 2 sube).
-* Encima de ambas → **`--`** (bajan 1 y 2).
+- Debajo de ambas → **`++`** (suben 1 y 2).
+- Debajo de N1 y **encima** de N2 → **`+-`** (1 sube, 2 baja).
+- **Encima** de N1 y debajo de N2 → **`-+`** (1 baja, 2 sube).
+- Encima de ambas → **`--`** (bajan 1 y 2).
 
 Sombrea suavemente o escribe los símbolos en cada zona.
 
-#### **Traza tu trayectoria** con la **tabla pequeña** de Est01
+#### 1.2.5.5 **Traza tu trayectoria** con la **tabla pequeña** de Est01
 
 Tus ≈10 puntos $(N_1,N_2)$:
 
@@ -295,45 +312,59 @@ $$
 (325,365)\to(275,355)\to(255,365)\to\cdots\to(205,420)
 $$
 
-Colócalos en orden de $t$ y **únelos con flechas** para indicar el sentido temporal.
+Colócalos en orden de $t$ y **únelos con flechas** para indicar el
+sentido temporal.
 
-> Observación de Est01: del primer al segundo punto $N_1\downarrow$ y $N_2\downarrow$ (zona `--`), luego $N_1\downarrow$ y $N_2\uparrow$ (zona `-+`), con flechas **hacia arriba–izquierda** (tendencia al eje $N_1=0$).
+> Observación de Est01: del primer al segundo punto $N_1\downarrow$ y
+> $N_2\downarrow$ (zona `--`), luego $N_1\downarrow$ y $N_2\uparrow$
+> (zona `-+`), con flechas **hacia arriba–izquierda** (tendencia al eje
+> $N_1=0$).
 
+#### 1.2.5.6 **Verificación numérica “a mano”** del **signo** en 4 puntos
 
-#### **Verificación numérica “a mano”** del **signo** en 4 puntos
-
-Evalúa el paréntesis de cada derivada (no necesitas los valores exactos):
+Evalúa el paréntesis de cada derivada (no necesitas los valores
+exactos):
 
 $$
 dN_1/dt\propto\Big(1-\frac{N_1+\alpha_{12}N_2}{K_1}\Big),\qquad
 dN_2/dt\propto\Big(1-\frac{N_2+\alpha_{21}N_1}{K_2}\Big).
 $$
 
-Ejemplos con *Est01* ($\alpha_{12}=0.517814,\ \alpha_{21}=0.9469748,\ K_1=420,\ K_2=620$):
+Ejemplos con *Est01*
+($\alpha_{12}=0.517814,\ \alpha_{21}=0.9469748,\ K_1=420,\ K_2=620$):
 
-* **`++`** en $(100,100)$:
+- **`++`** en $(100,100)$:
   $100+0.5178\cdot100=151.8<420\Rightarrow dN_1>0$;
   $100+0.9470\cdot100=194.7<620\Rightarrow dN_2>0$.
-* **`+-`** en $(100,540)$:
+- **`+-`** en $(100,540)$:
   $100+0.5178\cdot540=379.6<420\Rightarrow dN_1>0$;
   $540+0.9470\cdot100=634.7>620\Rightarrow dN_2<0$.
-* **`-+`** en $(400,100)$:
+- **`-+`** en $(400,100)$:
   $400+0.5178\cdot100=451.8>420\Rightarrow dN_1<0$;
   $100+0.9470\cdot400=478.8<620\Rightarrow dN_2>0$.
-* **`--`** en $(500,600)$:
+- **`--`** en $(500,600)$:
   $500+0.5178\cdot600=810.7>420\Rightarrow dN_1<0$;
   $600+0.9470\cdot500=1073.5>620\Rightarrow dN_2<0$.
 
-#### **Diagnóstico por interceptos** (casos clásicos) con números de Est01
+#### 1.2.5.7 **Diagnóstico por interceptos** (casos clásicos) con números de Est01
 
 Compara:
 
-* $K_1\stackrel{?}{>}K_2/\alpha_{21}$ → $420\stackrel{?}{>}654.7$ → **FALSO**.
-* $K_1/\alpha_{12}\stackrel{?}{>}K_2$ → $811.1\stackrel{?}{>}620$ → **VERDADERO**.
+- $K_1\stackrel{?}{>}K_2/\alpha_{21}$ → $420\stackrel{?}{>}654.7$ →
+  **FALSO**.
+- $K_1/\alpha_{12}\stackrel{?}{>}K_2$ → $811.1\stackrel{?}{>}620$ →
+  **VERDADERO**.
 
-Patrón (**FALSO**, **VERDADERO**) ⇒ **coexistencia inestable** (*punto silla*, **efecto de prioridad**).
+Patrón (**FALSO**, **VERDADERO**) ⇒ **coexistencia inestable** (*punto
+silla*, **efecto de prioridad**).
 
-> Con las **condiciones iniciales** de Est01 $(N_{1,0}\approx327,\ N_{2,0}\approx366)$, los primeros puntos caen en `--` y luego en `-+` (flechas hacia **arriba–izquierda**), lo que **sugiere** que la trayectoria se dirige hacia el **eje $N_1=0$** ⇒ **2 excluye a 1** en este montaje (coherente con “coexistencia inestable”: el resultado depende del lado del separador donde caiga el estado inicial).
+> Con las **condiciones iniciales** de Est01
+> $(N_{1,0}\approx327,\ N_{2,0}\approx366)$, los primeros puntos caen en
+> `--` y luego en `-+` (flechas hacia **arriba–izquierda**), lo que
+> **sugiere** que la trayectoria se dirige hacia el **eje $N_1=0$** ⇒
+> **2 excluye a 1** en este montaje (coherente con “coexistencia
+> inestable”: el resultado depende del lado del separador donde caiga el
+> estado inicial).
 
 *(Opcional)* Cruce de isoclinas (equilibrio interior):
 
@@ -344,224 +375,135 @@ $$
 
 (existe, pero es **inestable** con estos parámetros).
 
+#### 1.2.5.8 **Redacción corta** (modelo de respuesta)
 
-#### **Redacción corta** (modelo de respuesta)
+- **Interceptos**: $(420,0),\ (0,811.1),\ (0,620),\ (654.7,0)$.
+- **Gráfico**: N1 **sólida**, N2 **punteada**; zonas `++`, `+-`, `-+`,
+  `--`; trayectoria con flechas.
+- **Diagnóstico**: por desigualdades → **coexistencia inestable**; con
+  mis iniciales, **2 excluye a 1**.
+- **Interpretación ecológica**: bajo condiciones constantes, 2
+  **reduce** a 1 hasta densidad $\approx0$ (extinción **local**); 1
+  podría persistir en otro hábitat o volver por inmigración.
 
-* **Interceptos**: $(420,0),\ (0,811.1),\ (0,620),\ (654.7,0)$.
-* **Gráfico**: N1 **sólida**, N2 **punteada**; zonas `++`, `+-`, `-+`, `--`; trayectoria con flechas.
-* **Diagnóstico**: por desigualdades → **coexistencia inestable**; con mis iniciales, **2 excluye a 1**.
-* **Interpretación ecológica**: bajo condiciones constantes, 2 **reduce** a 1 hasta densidad $\approx0$ (extinción **local**); 1 podría persistir en otro hábitat o volver por inmigración.
+#### 1.2.5.9 **Errores comunes** (revísalos antes de entregar)
 
-#### **Errores comunes** (revísalos antes de entregar)
-
-* Dibujar la **isoclina N1** usando $(0,K_1)$ en vez de $(0,K_1/\alpha_{12})$.
-* Elegir límites de ejes **demasiado cortos** que **cortan** los interceptos.
-* No seguir el **orden temporal** al unir los puntos de la trayectoria.
-* Concluir “no hay cruce” por mala escala: **las rectas siempre se cruzan**; lo que cambia es la **estabilidad**.
-
-
-
+- Dibujar la **isoclina N1** usando $(0,K_1)$ en vez de
+  $(0,K_1/\alpha_{12})$.
+- Elegir límites de ejes **demasiado cortos** que **cortan** los
+  interceptos.
+- No seguir el **orden temporal** al unir los puntos de la trayectoria.
+- Concluir “no hay cruce” por mala escala: **las rectas siempre se
+  cruzan**; lo que cambia es la **estabilidad**.
 
 <!-- ### **Demostración manual, usando datos de *Est01*** -->
-
 <!-- > Objetivo: reproducir **a mano** (o con **Excel**) lo pedido en los **Mandatos** de competencia LV, **sin usar R**. Usa **tu tabla pequeña** (≈10 filas) y tu **tabla de parámetros** (con $K_1,K_2,r_1,r_2,\alpha_{12},\alpha_{21}$) que ya aparecen arriba para *Est01*. -->
-
 <!-- --- -->
-
 <!-- #### Material y preparación -->
-
 <!-- * Hoja cuadriculada (opcional), o Excel/Google Sheets. -->
 <!-- * Regla, lápiz, borrador y **colores** (dos para las isoclinas; uno para la trayectoria). -->
 <!-- * Copia en la parte superior de la hoja (o en celdas de Excel) **estos seis parámetros**: -->
 <!--   $K_1, K_2, r_1, r_2, \alpha_{12}, \alpha_{21}$. -->
-
 <!-- --- -->
-
 <!-- #### **Calcula los interceptos** de las isoclinas (1 decimal) -->
-
 <!-- Modelo LV de competencia: -->
-
 <!-- $$ -->
 <!-- \frac{dN_1}{dt}=r_1N_1\!\left(\frac{K_1 - N_1 - \alpha_{12}N_2}{K_1}\right), -->
 <!-- \qquad -->
 <!-- \frac{dN_2}{dt}=r_2N_2\!\left(\frac{K_2 - N_2 - \alpha_{21}N_1}{K_2}\right). -->
 <!-- $$ -->
-
 <!-- Isoclinas (líneas de crecimiento cero): -->
-
 <!-- * **Isoclina de 1 (d$N_1$/dt = 0):** $N_1=\;K_1-\alpha_{12}N_2$ -->
 <!--   **Interceptos:** $(K_1,\,0)$ en el eje **$N_1$** y $(0,\,K_1/\alpha_{12})$ en el eje **$N_2$**. -->
 <!-- * **Isoclina de 2 (d$N_2$/dt = 0):** $N_2=\;K_2-\alpha_{21}N_1$ -->
 <!--   **Interceptos:** $(0,\,K_2)$ en el eje **$N_2$** y $(K_2/\alpha_{21},\,0)$ en el eje **$N_1$**. -->
-
 <!-- **En Excel (opcional):** -->
-
 <!-- * En celdas con nombres/etiquetas `K1`, `K2`, `a12`, `a21`, escribe: -->
-
 <!--   * `=K1/a12`  → $K_1/\alpha_{12}$ -->
 <!--   * `=K2/a21`  → $K_2/\alpha_{21}$ -->
-
 <!-- Redondea a **1 decimal** para anotar en el dibujo. -->
-
 <!-- --- -->
-
 <!-- #### **Define las escalas** de los ejes antes de dibujar -->
-
 <!-- Para que **siempre entren los cuatro interceptos**, usa: -->
-
 <!-- * Límite horizontal $x_{\max} \approx 1{.}1 \times \max\big(K_1,\;K_2/\alpha_{21}\big)$. -->
 <!-- * Límite vertical $y_{\max} \approx 1{.}1 \times \max\big(K_2,\;K_1/\alpha_{12}\big)$. -->
-
 <!-- Marca los ejes $N_1$ (horizontal) y $N_2$ (vertical) desde 0 hasta esos límites con una **grilla cómoda** (p. ej., pasos de 50). -->
-
 <!-- --- -->
-
 <!-- #### **Traza las isoclinas** con regla (o con Dispersión en Excel) -->
-
 <!-- * **Isoclina N1 (sólida, p. ej. naranja):** une los puntos $(K_1,0)$ y $(0, K_1/\alpha_{12})$. -->
 <!--   Etiqueta cerca de la línea: *“Isoclina N1 (dN1/dt = 0)”*. -->
 <!-- * **Isoclina N2 (punteada, p. ej. azul):** une $(0,K_2)$ y $(K_2/\alpha_{21},0)$. -->
 <!--   Etiqueta: *“Isoclina N2 (dN2/dt = 0)”*. -->
-
 <!-- **En Excel:** -->
-
 <!-- 1. Crea una tabla con cuatro filas, dos por cada recta: -->
-
 <!--    * Serie **Isoclina N1**: `x = K1, y = 0` y `x = 0, y = K1/a12`. -->
 <!--    * Serie **Isoclina N2**: `x = 0, y = K2` y `x = K2/a21, y = 0`. -->
 <!-- 2. Inserta **Gráfico de dispersión (XY)** con líneas rectas. -->
 <!-- 3. Formato de series: N1 **línea sólida**; N2 **línea discontinua**. -->
-
 <!-- --- -->
-
 <!-- #### **Sombréa las 4 regiones** por signos de $(dN_1/dt,\ dN_2/dt)$ -->
-
 <!-- Regla memotécnica (vale tanto en papel como en Excel): -->
-
 <!-- * **Debajo** de cada isoclina, esa especie **crece**. **Encima**, **disminuye**. -->
 <!-- * Por tanto: -->
-
 <!--   * Debajo de **ambas** → `++` (suben 1 y 2). -->
 <!--   * Debajo de N1 y **encima** de N2 → `+-` (1 sube, 2 baja). -->
 <!--   * **Encima** de N1 y debajo de N2 → `-+` (1 baja, 2 sube). -->
 <!--   * **Encima** de ambas → `--` (bajan 1 y 2). -->
-
 <!-- Sombrea **suavemente** cada zona con un color distinto (o añade etiquetas `++`, `+-`, `-+`, `--`). -->
-
 <!-- --- -->
-
 <!-- #### **Trazado de tu trayectoria** con la **tabla pequeña** (≈10 filas) -->
-
 <!-- * Toma tus ~10 pares $(N_1,N_2)$ (colúmnas **N1** y **N2**). -->
 <!--   En papel: coloca **punto por punto** y **únelos con flechas** siguiendo el **orden temporal**. -->
 <!--   En Excel: agrega esa tabla como **tercera serie** (línea con marcadores) y **ordénala** por `t`. -->
-
 <!-- **Consejo:** añade **flechas** en 2–3 tramos para indicar el **sentido temporal**. -->
-
 <!-- --- -->
-
 <!-- #### **Verificación numérica “a mano”** del signo en 4 puntos -->
-
 <!-- Elige un punto representativo en cada región (por ejemplo, un cruce de la grilla). Calcula los **signos** de: -->
-
 <!-- $$ -->
 <!-- dN_1/dt=r_1N_1\Big(1-\frac{N_1+\alpha_{12}N_2}{K_1}\Big),\qquad -->
 <!-- dN_2/dt=r_2N_2\Big(1-\frac{N_2+\alpha_{21}N_1}{K_2}\Big). -->
 <!-- $$ -->
-
 <!-- No necesitas el valor exacto, **solo el signo** (+/−). Basta con evaluar el paréntesis: -->
-
 <!-- * Si $N_1+\alpha_{12}N_2<K_1$ ⇒ $dN_1/dt>0$. -->
 <!-- * Si $N_2+\alpha_{21}N_1<K_2$ ⇒ $dN_2/dt>0$. -->
-
 <!-- **En Excel:** con $n_1$ en `A2` y $n_2$ en `B2`, y con parámetros en celdas `K1`,`K2`,`r1`,`r2`,`a12`,`a21`: -->
-
 <!-- * `=r1*A2*(1 - (A2 + a12*B2)/K1)` → valor de $dN_1/dt$. -->
 <!-- * `=r2*B2*(1 - (B2 + a21*A2)/K2)` → valor de $dN_2/dt$. -->
 <!-- * Muestra el **signo** con `=IF(C2>0,"+","-")` (ajusta separadores `,`/`;` según tu configuración regional). -->
-
 <!-- --- -->
-
 <!-- #### **Diagnóstico** por **interceptos** (casos clásicos) -->
-
 <!-- Compara **dos desigualdades**: -->
-
 <!-- * $K_1 \stackrel{?}{>} K_2/\alpha_{21}$  y  $K_1/\alpha_{12} \stackrel{?}{>} K_2$. -->
-
 <!-- Conclusión: -->
-
 <!-- * **1 excluye 2** si **ambas** son **verdaderas**. -->
 <!-- * **2 excluye 1** si **ambas** son **falsas**. -->
 <!-- * **Coexistencia estable** si la **primera es verdadera** y la **segunda falsa**. -->
 <!-- * **Coexistencia inestable** si la **primera es falsa** y la **segunda verdadera**. -->
-
 <!-- **En Excel (texto automático):** -->
-
 <!-- ```text -->
 <!-- =IF(AND(K1>K2/a21, K1/a12>K2), "1 excluye 2", -->
 <!--   IF(AND(K1<=K2/a21, K1/a12<=K2), "2 excluye 1", -->
 <!--     IF(AND(K1>K2/a21, K1/a12<=K2), "Coexistencia estable", -->
 <!--        "Coexistencia inestable"))) -->
 <!-- ``` -->
-
 <!-- (Ajusta `,` por `;` si tu Excel lo requiere.) -->
-
 <!-- --- -->
-
 <!-- #### **Redacción corta** de resultados (para entregar) -->
-
 <!-- 1. **Interceptos:** anota $(K_1,0), (0,K_1/\alpha_{12}), (0,K_2), (K_2/\alpha_{21},0)$. -->
 <!-- 2. **Gráfico:** incluye las dos isoclinas con **convención** (N1 **sólida**, N2 **punteada**), **regiones** y **trayectoria**. -->
 <!-- 3. **Verificación:** tabla con 4 puntos y signos $(dN_1/dt,\ dN_2/dt)$. -->
 <!-- 4. **Diagnóstico final** (una línea): “**Resultado:** … (justifica con interceptos y regiones)”. -->
 <!-- 5. **Interpretación ecológica (3–5 líneas):** explica **quién excluye a quién** (si aplica) o por qué **coexisten**. -->
-
 <!-- --- -->
-
 <!-- #### **Errores comunes** (revísalos antes de entregar) -->
-
 <!-- * Dibujar la **isoclina N1** usando $(0,K_1)$ en vez de $(0,K_1/\alpha_{12})$. -->
 <!-- * Elegir límites de ejes **demasiado cortos** que **cortan** los interceptos. -->
 <!-- * No seguir el **orden temporal** al unir los puntos de la trayectoria. -->
 <!-- * Concluir “no hay cruce” por mala escala: **las rectas siempre se cruzan**; lo que cambia es la **estabilidad**. -->
 
+### 1.2.6 **Demostración con R usando datos de *Est01*** (puedes aplicarlo a tu caso también)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### **Demostración con R usando datos de _Est01_** (puedes aplicarlo a tu caso también)
-
-```{r demo-est01, results='asis'}
+``` r
 pars <- comp$pars
 K1 <- pars["K1"]; K2 <- pars["K2"]; a12 <- pars["a12"]; a21 <- pars["a21"]; r1 <- pars["r1"]; r2 <- pars["r2"]
 
@@ -572,7 +514,12 @@ int_N2_y <- K2
 
 cat(sprintf("Interceptos calculados:\n  Isoclina N1: (0, %.1f) y (%.1f, 0)\n  Isoclina N2: (0, %.1f) y (%.1f, 0)\n",
             int_N1_y, int_N1_x, int_N2_y, int_N2_x))
+```
 
+Interceptos calculados: Isoclina N1: (0, 420.0) y (811.1, 0) Isoclina
+N2: (0, 620.0) y (654.7, 0)
+
+``` r
 # Diagnóstico por desigualdades (teórico)
 c1 <- (K1 >  K2 / a21) && (K1 / a12 > K2)
 c2 <- (K1 <  K2 / a21) && (K1 / a12 < K2)
@@ -582,9 +529,11 @@ diag <- if (c1) "1 excluye 2" else if (c2) "2 excluye 1" else if (c3) "coexisten
 cat("Diagnóstico teórico por interceptos:", diag, "\n")
 ```
 
-### Gráfico interpretativo (**sombras + flechas + trayectoria**)
+Diagnóstico teórico por interceptos: coexistencia inestable
 
-```{r grafico-interpretativo1, fig.width=8, fig.height=5.2}
+### 1.2.7 Gráfico interpretativo (**sombras + flechas + trayectoria**)
+
+``` r
 # --- Interceptos correctos y límites adecuados ---
 
 # Interceptos por isoclina
@@ -685,28 +634,42 @@ ggplot() +
         legend.box.margin = margin(t = 2, r = 2, b = 2, l = 2))
 ```
 
+<img src="practicas-interacciones-biologicas-dinamica-poblacional_files/figure-gfm/grafico-interpretativo1-1.png" width="100%" />
+
 > **Figuras complementarias (del repo)**  
 > ![](cuatro-casos-competencia-lv-v2.png)
 
-## **Exclusión competitiva** — texto guía para interpretar
+## 1.3 **Exclusión competitiva** — texto guía para interpretar
 
-> **Definición operativa**: **exclusión competitiva** significa que, bajo condiciones constantes, **una especie reduce a la otra hasta densidad ≈ 0 en esa comunidad** (*extinción local*). Coloquialmente: “**1 saca a 2 del sitio**”. No implica extinción global; la especie excluida puede persistir en otro hábitat o volver por inmigración.
+> **Definición operativa**: **exclusión competitiva** significa que,
+> bajo condiciones constantes, **una especie reduce a la otra hasta
+> densidad ≈ 0 en esa comunidad** (*extinción local*). Coloquialmente:
+> “**1 saca a 2 del sitio**”. No implica extinción global; la especie
+> excluida puede persistir en otro hábitat o volver por inmigración.
 
 En el **modelo de Lotka–Volterra**:
 
-- Decimos **“1 excluye a 2”** cuando la trayectoria termina en \((K_1,0)\): la población 2 cae al **eje \(N_2=0\)** y no se recupera.
-- **Lectura del plano \(N_1\)–\(N_2\)**: si las **flechas** del campo llevan hacia el eje \(N_2=0\), **2 se extingue localmente**; si llevan al eje \(N_1=0\), la excluida es **1**; si llevan al **cruce de isoclinas**, hay **coexistencia**.
+- Decimos **“1 excluye a 2”** cuando la trayectoria termina en
+  ((K_1,0)): la población 2 cae al **eje (N_2=0)** y no se recupera.
+- **Lectura del plano (N_1)–(N_2)**: si las **flechas** del campo llevan
+  hacia el eje (N_2=0), **2 se extingue localmente**; si llevan al eje
+  (N_1=0), la excluida es **1**; si llevan al **cruce de isoclinas**,
+  hay **coexistencia**.
 
-**Cuándo pasa**: cuando la **competencia interespecífica** sobre la especie perdedora es tan fuerte que su crecimiento es **negativo** frente a la otra, incluso a bajas densidades.  
-**Cuándo no**: con **partición de nicho**, **variación ambiental**, **heterogeneidad espacial** o **rescate por inmigración**, la coexistencia puede mantenerse.
+**Cuándo pasa**: cuando la **competencia interespecífica** sobre la
+especie perdedora es tan fuerte que su crecimiento es **negativo**
+frente a la otra, incluso a bajas densidades.  
+**Cuándo no**: con **partición de nicho**, **variación ambiental**,
+**heterogeneidad espacial** o **rescate por inmigración**, la
+coexistencia puede mantenerse.
 
----
+------------------------------------------------------------------------
 
-# **Depredador–presa (LV)** — *con tus datos*
+# 2 **Depredador–presa (LV)** — *con tus datos*
 
-## Datos
+## 2.1 Datos
 
-```{r}
+``` r
 # Depredador–presa LV: presa (N) y depredador (P)
 gen_predpresa_lv <- function(seed, tmax=150, by=0.2){
   set.seed(seed + 602)
@@ -735,13 +698,16 @@ gen_predpresa_lv <- function(seed, tmax=150, by=0.2){
 pp   <- gen_predpresa_lv(SEED)
 ```
 
-## **A mano** (entregable)
-1. Con tus parámetros \(r,a,b,m\) calcula \(N^*=\frac{m}{ba}\), \(P^*=\frac{r}{a}\).  
-2. Dibuja las **nullclines** (líneas de crecimiento cero) en el plano \(N\)–\(P\).  
-3. Señala la dirección cualitativa del campo de vectores en 4 regiones.
+## 2.2 **A mano** (entregable)
 
-## **En R**: series y plano de fase
-```{r pp-R, fig.width=7, fig.height=5}
+1.  Con tus parámetros (r,a,b,m) calcula (N^*=), (P^*=).  
+2.  Dibuja las **nullclines** (líneas de crecimiento cero) en el plano
+    (N)–(P).  
+3.  Señala la dirección cualitativa del campo de vectores en 4 regiones.
+
+## 2.3 **En R**: series y plano de fase
+
+``` r
 pp_dat <- pp$data; pp_par <- pp$pars
 Nstar <- pp_par["N_star"]; Pstar <- pp_par["P_star"]
 
@@ -749,14 +715,25 @@ par(mfrow=c(1,2))
 plot(pp_dat$time, pp_dat$N, type="l", xlab="t", ylab="N (presa)", main="Serie temporal (presa)")
 plot(pp_dat$N, pp_dat$P, type="l", xlab="N", ylab="P", main="Plano de fase")
 abline(v = Nstar, h = Pstar, lty=2)
+```
+
+<img src="practicas-interacciones-biologicas-dinamica-poblacional_files/figure-gfm/pp-R-1.png" width="100%" />
+
+``` r
 par(mfrow=c(1,1))
 pp_par[c("r","a","b","m","N_star","P_star")]
 ```
 
-**Interpretación**: cómo cambian amplitudes/períodos cuando aumentan/disminuyen \(a,b,m\); relación de fase (pico de \(N\) precede a \(P\)).
+    ##            r            a            b            m       N_star       P_star 
+    ##   0.64442893   0.01133067   0.12625733   0.69500409 485.81962602  56.87472534
 
+**Interpretación**: cómo cambian amplitudes/períodos cuando
+aumentan/disminuyen (a,b,m); relación de fase (pico de (N) precede a
+(P)).
 
+# 3 Referencias
 
-# Referencias
-
-- *LibreTexts*: **15.5: Quantifying Competition Using the Lotka–Volterra Model** (Gettysburg College, *Ecology for All*). Licencia **CC BY-NC-SA**. URL: https://bio.libretexts.org/Courses/Gettysburg_College/01%3A_Ecology_for_All/15%3A_Competition/15.05%3A_Quantifying_Competition_Using_the_Lotka-Volterra_Model
+- *LibreTexts*: **15.5: Quantifying Competition Using the Lotka–Volterra
+  Model** (Gettysburg College, *Ecology for All*). Licencia **CC
+  BY-NC-SA**. URL:
+  <https://bio.libretexts.org/Courses/Gettysburg_College/01%3A_Ecology_for_All/15%3A_Competition/15.05%3A_Quantifying_Competition_Using_the_Lotka-Volterra_Model>
