@@ -464,6 +464,21 @@ display: none;
 </div>
 
 <!-- README.md se genera a partir de README.Rmd. Por favor, edita ese archivo. -->
+<style type="text/css">
+.exp-box summary{
+display:inline-block; cursor:pointer;
+background:#f5f5f5; border:1px solid #ddd;
+padding:.4em .8em; border-radius:.4em; font-weight:600;
+}
+.exp-box[open] summary{ background:#e8f5e9; border-color:#c8e6c9; }
+.exp-box .content{
+margin:.8em 0 0 0; padding:1em;
+border-left:4px solid #2E8B57; background:#fafafa;
+}
+.exp-box summary .label-open{ display:none; }
+.exp-box[open] summary .label-closed{ display:none; }
+.exp-box[open] summary .label-open{ display:inline; }
+</style>
 <div id="competencia-interespecífica-con-el-modelo-de-lotkavolterra" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> <strong>Competencia interespecífica</strong> con el modelo de <strong>Lotka–Volterra</strong></h1>
 <div id="marco-teórico-competencia-interespecífica-con-el-modelo-de-lotkavolterra" class="section level2" number="1.1">
@@ -476,14 +491,33 @@ display: none;
 \frac{d N_{1}}{dt}=r_{1} N_{1}\left(\frac{K_{1}-N_{1}}{K_{1}}\right),\qquad
 \frac{d N_{2}}{dt}=r_{2} N_{2}\left(\frac{K_{2}-N_{2}}{K_{2}}\right).
 \]</span></p>
+<!-- NOTA: AÑADIR LOS TÉRMINOS -->
 <p>Para incorporar <strong>competencia interespecífica</strong>, suponemos que individuos de la especie 2 reducen el crecimiento de la 1 en <strong>unidades equivalentes</strong> a <span class="math inline">\(\alpha_{12}\)</span> individuos de 1 (y viceversa <span class="math inline">\(\alpha_{21}\)</span>). Esto produce las <strong>ecuaciones de Lotka–Volterra (competencia)</strong>:</p>
 <p><span class="math display">\[
 \frac{dN_{1}}{dt}= r_{1}N_{1}\!\left(\frac{K_1 - N_{1} - \alpha_{12}N_{2}}{K_{1}}\right),\qquad
 \frac{dN_{2}}{dt}= r_{2}N_{2}\!\left(\frac{K_2 - N_{2}-\alpha_{21}N_{1}}{K_{2}}\right).
 \]</span></p>
+<!-- NOTA: AÑADIR LOS TÉRMINOS -->
 <blockquote>
 <p><span class="math inline">\(\alpha_{12}\)</span> y <span class="math inline">\(\alpha_{21}\)</span> son <strong>coeficientes de competencia</strong> (adimensionales): convierten individuos de una especie en “<strong>equivalentes</strong>” de la otra en términos de uso de recursos.</p>
 </blockquote>
+<details class="exp-box">
+<summary>
+<span class="label-closed">Más información</span>
+<span class="label-open">Ocultar</span>
+</summary>
+<div class="content">
+<p>Sobre el modelo logístico, construimos el modelo con competencia. Para ello, incorporamos la competencia interespecífica en cada una de estas ecuaciones. Suponemos que cada nuevo integrante de la Población 1 reduce los recursos disponibles para cada integrante de la Población 2 y, por lo tanto, disminuye su tasa de crecimiento poblacional. Del mismo modo, los nuevos integrantes de la Población 2 también reducirán los recursos disponibles para los miembros de la Población 1; eso es, en esencia, lo que significa competencia interespecífica.</p>
+<p>La forma más simple de modelar esto sería modificar el término correspondiente al efecto de la densidad. Sin embargo, esa opción supone que cada individuo adicional de la Población 2 afecta a la Población 1 exactamente igual que lo haría un individuo adicional de la propia Población 1. Como esto no tiene por qué ser cierto, introducimos un <strong>coeficiente de competencia</strong> que expresa cuánto influye, en términos relativos, cada individuo adicional de la Población 2 sobre la Población 1 (comparado con el efecto de un individuo adicional de la Población 1). El modelo para la Población 2 se modifica de manera paralela. El resultado es el modelo de Lotka–Volterra para competencia entre dos especies.</p>
+<p>Observa los subíndices de los coeficientes de competencia: el que va “de 2 a 1” expresa el efecto de un miembro de la Población 2 sobre la tasa de crecimiento de la Población 1; el que va “de 1 a 2” expresa el efecto de un miembro de la Población 1 sobre la tasa de crecimiento de la Población 2.</p>
+<p>El valor del coeficiente de competencia nos dice algo sobre la importancia relativa de la competencia <strong>interespecífica</strong> frente a la <strong>intraespecífica</strong> en la dinámica de una especie:</p>
+<ul>
+<li><p>Si el coeficiente es <strong>menor que 1</strong>, la competencia <strong>intraespecífica</strong> tiene un impacto per cápita más fuerte en la disponibilidad de recursos para esa especie.</p></li>
+<li><p>Si el coeficiente es <strong>mayor que 1</strong>, la competencia <strong>interespecífica</strong> tiene un impacto per cápita más fuerte.</p></li>
+<li><p>Si el coeficiente es <strong>igual a 1</strong>, ambos tipos de competencia tienen un impacto per cápita similar sobre la disponibilidad de recursos para esa especie.</p>
+</div>
+</details></li>
+</ul>
 </div>
 <div id="isoclinas-líneas-de-crecimiento-cero-y-puntos-de-equilibrio" class="section level3" number="1.1.2">
 <h3><span class="header-section-number">1.1.2</span> <strong>Isoclinas</strong> (líneas de crecimiento cero) y <strong>puntos de equilibrio</strong></h3>
