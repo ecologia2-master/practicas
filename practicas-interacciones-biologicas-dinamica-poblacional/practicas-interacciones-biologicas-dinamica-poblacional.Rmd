@@ -658,10 +658,38 @@ Copia y pega este código en RStudio y ejecútalo (para ver el código haz clic 
 
 
 ```{r prep}
-# Paquetes usados
+# Repos por defecto (evita el prompt de selección)
+if (is.null(getOption("repos")) || getOption("repos")[["CRAN"]] %in% c("@CRAN@", NA)) {
+  options(repos = c(CRAN = "https://cloud.r-project.org"))
+}
+
+# Paquetes CRAN a asegurar
+cran_pkgs <- c("ggplot2", "digest", "deSolve", "patchwork", "devtools")
+
+install_if_missing <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg, dependencies = TRUE, quiet = TRUE)
+  }
+}
+
+invisible(lapply(cran_pkgs, install_if_missing))
+
+# ecostudy sólo en GitHub
+if (!requireNamespace("ecostudy", quietly = TRUE)) {
+  # Asegura devtools (por si no se pudo cargar arriba)
+  if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools", dependencies = TRUE, quiet = TRUE)
+  }
+  devtools::install_github("jarioksa/ecostudy", upgrade = "never", dependencies = TRUE)
+}
+
 suppressPackageStartupMessages({
   library(ggplot2)
   library(digest)
+  library(deSolve)
+  library(patchwork)
+  library(devtools)
+  library(ecostudy)
 })
 
 # Lista ejemplo (puedes sustituir por la de clase)
