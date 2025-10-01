@@ -850,17 +850,17 @@ $$
 Ejemplos con *Est01* ($\alpha_{12}=0.517814,\ \alpha_{21}=0.9469748,\ K_1=420,\ K_2=620$):
 
 * **`++`** en $(100,100)$:
-  $100+0.5178\cdot100=151.8<420\Rightarrow dN_1>0$;
-  $100+0.9470\cdot100=194.7<620\Rightarrow dN_2>0$.
+  * $100+0.5178\cdot100=151.8<420\Rightarrow dN_1>0$
+  * $100+0.9470\cdot100=194.7<620\Rightarrow dN_2>0$
 * **`+-`** en $(100,540)$:
-  $100+0.5178\cdot540=379.6<420\Rightarrow dN_1>0$;
-  $540+0.9470\cdot100=634.7>620\Rightarrow dN_2<0$.
+  * $100+0.5178\cdot540=379.6<420\Rightarrow dN_1>0$
+  * $540+0.9470\cdot100=634.7>620\Rightarrow dN_2<0$
 * **`-+`** en $(400,100)$:
-  $400+0.5178\cdot100=451.8>420\Rightarrow dN_1<0$;
-  $100+0.9470\cdot400=478.8<620\Rightarrow dN_2>0$.
+  * $400+0.5178\cdot100=451.8>420\Rightarrow dN_1<0$
+  * $100+0.9470\cdot400=478.8<620\Rightarrow dN_2>0$
 * **`--`** en $(500,600)$:
-  $500+0.5178\cdot600=810.7>420\Rightarrow dN_1<0$;
-  $600+0.9470\cdot500=1073.5>620\Rightarrow dN_2<0$.
+  * $500+0.5178\cdot600=810.7>420\Rightarrow dN_1<0$
+  * $600+0.9470\cdot500=1073.5>620\Rightarrow dN_2<0$
 
 #### **Diagnóstico por interceptos** (casos clásicos) y análisis de la trayectoria con números de Est01
 
@@ -1168,61 +1168,771 @@ mod <- lotkacomp(0.9, 0.3, 10, 20); plot(mod, arrows = 10)
 mod <- lotkacomp(0.5, 0.9, 20, 10); plot(mod, arrows = 10)
 ```
 
+---
+
+
+
+
+
+
+
+
+
+
+# Ejercicio 2. **Depredador–presa** con el modelo de **Lotka–Volterra**
+
+> Objetivo: analizar la dinámica depredador–presa a partir de una tabla de datos simulados y sus parámetros asociados, trabajando **a mano** o con ayuda de una hoja de cálculo, y R.
+
+## Marco teórico — **Depredador–presa** con el modelo de **Lotka–Volterra**
+
+### El modelo clásico de **Lotka–Volterra**
+
+El modelo depredador–presa de Lotka–Volterra describe la interacción entre dos especies: una **presa** ($N$) y un **depredador** ($P$) que se alimenta de ella. Las ecuaciones del modelo son:
+
+$$
+\frac{dN}{dt} = rN - aNP,\qquad
+\frac{dP}{dt} = baNP - mP
+$$
+
+**Interpretación de variables y parámetros:**
+
+$$
+\begin{aligned}
+t &:\ \text{tiempo},\\[2pt]
+N &:\ \text{tamaño poblacional de la presa (individuos)},\\[2pt]
+P &:\ \text{tamaño poblacional del depredador (individuos)},\\[2pt]
+\frac{dN}{dt} &:\ \text{tasa de cambio de la población de presas},\\[2pt]
+\frac{dP}{dt} &:\ \text{tasa de cambio de la población de depredadores},\\[2pt]
+r &:\ \text{tasa intrínseca de crecimiento de la presa (tiempo}^{-1}\text{)},\\[2pt]
+a &:\ \text{tasa de ataque o captura del depredador (individuos}^{-1}\text{·tiempo}^{-1}\text{)},\\[2pt]
+b &:\ \text{eficiencia de conversión (presas consumidas en nuevos depredadores)},\\[2pt]
+m &:\ \text{tasa de mortalidad del depredador (tiempo}^{-1}\text{)}.
+\end{aligned}
+$$
+
+<details class="exp-box">
+  <summary>
+    <span class="label-closed">Interpretación de cada término</span>
+    <span class="label-open">Ocultar</span>
+  </summary>
+  <div class="content">
+
+**Ecuación de la presa:** $\frac{dN}{dt} = rN - aNP$
+
+* $rN$: crecimiento exponencial de la presa en ausencia de depredadores
+* $-aNP$: pérdida de presas por depredación (proporcional al producto de ambas poblaciones, representa encuentros)
+
+**Ecuación del depredador:** $\frac{dP}{dt} = baNP - mP$
+
+* $baNP$: ganancia de depredadores por consumo de presas (la eficiencia $b$ convierte presas en nuevos depredadores)
+* $-mP$: mortalidad natural del depredador
+
+  </div>
+</details>
+
+### **Nullclines** y **punto de equilibrio**
+
+Las **nullclines** o **isoclinas de crecimiento cero** son las líneas donde el crecimiento de cada población es cero:
+
+**Nullcline de la presa** ($dN/dt = 0$):
+$$rN - aNP = 0 \quad \Rightarrow \quad N(r - aP) = 0$$
+
+Esto da dos soluciones:
+
+- $N = 0$ (eje vertical, extinción de la presa)
+- $P = \frac{r}{a} \equiv P^*$ (línea horizontal)
+
+**Nullcline del depredador** ($dP/dt = 0$):
+$$baNP - mP = 0 \quad \Rightarrow \quad P(baN - m) = 0$$
+
+Esto da dos soluciones:
+
+- $P = 0$ (eje horizontal, extinción del depredador)
+- $N = \frac{m}{ba} \equiv N^*$ (línea vertical)
+
+**Punto de equilibrio interior:**
+$$\left(N^*, P^*\right) = \left(\frac{m}{ba}, \frac{r}{a}\right)$$
+
+Este es un **centro neutral**: las trayectorias forman **órbitas cerradas** alrededor de él, produciendo **oscilaciones periódicas** sin amortiguamiento.
+
+### Diagrama de fase y **dinámica oscilatoria**
+
+En el plano $N$–$P$, las nullclines dividen el espacio en **4 regiones** con diferentes comportamientos:
+
+| Región | Condición | Signo de $dN/dt$ | Signo de $dP/dt$ | Dirección |
+|:------:|:---------:|:----------------:|:----------------:|:---------:|
+| I | $N > N^*, P < P^*$ | $+$ | $+$ | ↗ (ambos crecen) |
+| II | $N > N^*, P > P^*$ | $-$ | $+$ | ↖ (N baja, P sube) |
+| III | $N < N^*, P > P^*$ | $-$ | $-$ | ↙ (ambos bajan) |
+| IV | $N < N^*, P < P^*$ | $+$ | $-$ | ↘ (N sube, P baja) |
+
+<details class="exp-box">
+  <summary>
+    <span class="label-closed">Más información sobre las regiones</span>
+    <span class="label-open">Ocultar</span>
+  </summary>
+  <div class="content">
+
+**Cómo determinar el signo en cada región:**
+
+* **Para $dN/dt = N(r - aP)$:**
+  - Si $P < P^* = r/a$, entonces $r - aP > 0$ → $dN/dt > 0$ (la presa crece)
+  - Si $P > P^* = r/a$, entonces $r - aP < 0$ → $dN/dt < 0$ (la presa decrece)
+
+* **Para $dP/dt = P(baN - m)$:**
+  - Si $N > N^* = m/(ba)$, entonces $baN - m > 0$ → $dP/dt > 0$ (el depredador crece)
+  - Si $N < N^* = m/(ba)$, entonces $baN - m < 0$ → $dP/dt < 0$ (el depredador decrece)
+
+**Interpretación biológica del ciclo:**
+
+1. **Región I** ($N$ alto, $P$ bajo): Abundancia de presas permite crecimiento de ambas poblaciones
+2. **Región II** ($N$ alto, $P$ alto): Muchos depredadores reducen las presas
+3. **Región III** ($N$ bajo, $P$ alto): Escasez de presas causa declive de depredadores
+4. **Región IV** ($N$ bajo, $P$ bajo): Pocos depredadores permiten recuperación de presas
+
+  </div>
+</details>
+
+### **Características de las oscilaciones**
+
+* Las trayectorias son **órbitas cerradas** (ciclos)
+* El **período** y la **amplitud** dependen de las condiciones iniciales
+* El **pico de presas precede** al pico de depredadores (desfase temporal)
+* El equilibrio $(N^*, P^*)$ es un **centro neutral** (no estable ni inestable)
+
+```{r nullclines-diagram, echo=FALSE, fig.width=8, fig.height=6}
+# Diagrama conceptual de nullclines
+library(ggplot2)
+
+# Parámetros de ejemplo
+r_ex <- 0.8; a_ex <- 0.015; b_ex <- 0.12; m_ex <- 0.5
+N_star_ex <- m_ex/(b_ex*a_ex)
+P_star_ex <- r_ex/a_ex
+
+# Límites del gráfico
+N_max <- 1.5 * N_star_ex
+P_max <- 1.5 * P_star_ex
+
+# Crear grid para sombreado
+grid_ex <- expand.grid(
+  N = seq(0, N_max, length.out = 100),
+  P = seq(0, P_max, length.out = 100)
+)
+
+grid_ex$dN <- with(grid_ex, r_ex*N - a_ex*N*P)
+grid_ex$dP <- with(grid_ex, b_ex*a_ex*N*P - m_ex*P)
+
+grid_ex$region <- with(grid_ex,
+  ifelse(dN>0 & dP>0, "I: ++ (↗)",
+  ifelse(dN<0 & dP>0, "II: -+ (↖)",
+  ifelse(dN<0 & dP<0, "III: -- (↙)",
+                      "IV: +- (↘)"))))
+
+grid_ex$region <- factor(grid_ex$region,
+  levels = c("I: ++ (↗)", "II: -+ (↖)", "III: -- (↙)", "IV: +- (↘)"))
+
+ggplot() +
+  geom_raster(data = grid_ex, aes(N, P, fill = region), alpha = 0.3) +
+  scale_fill_manual(values = c(
+    "I: ++ (↗)" = "#90EE90",
+    "II: -+ (↖)" = "#FFB74D",
+    "III: -- (↙)" = "#BA68C8",
+    "IV: +- (↘)" = "#64B5F6"
+  ), name = "Regiones") +
+  geom_vline(xintercept = N_star_ex, linetype = "solid", color = "#E69138", linewidth = 1.2) +
+  geom_hline(yintercept = P_star_ex, linetype = "22", color = "#3C78D8", linewidth = 1.2) +
+  geom_point(aes(x = N_star_ex, y = P_star_ex), size = 4, shape = 21, 
+             fill = "black", color = "white", stroke = 1.5) +
+  annotate("text", x = N_star_ex, y = P_star_ex, 
+           label = "  (N*, P*)", hjust = -0.1, vjust = -0.5, size = 4) +
+  annotate("text", x = N_star_ex * 0.5, y = P_max * 0.95, 
+           label = "Nullcline del\ndepredador\n(N = N*)", 
+           color = "#E69138", size = 3.5, fontface = "bold") +
+  annotate("text", x = N_max * 0.85, y = P_star_ex * 1.15, 
+           label = "Nullcline de\nla presa\n(P = P*)", 
+           color = "#3C78D8", size = 3.5, fontface = "bold") +
+  coord_cartesian(xlim = c(0, N_max), ylim = c(0, P_max), expand = TRUE) +
+  labs(title = "Diagrama de fase depredador-presa: nullclines y regiones",
+       subtitle = "Las flechas indican la dirección del cambio en cada región",
+       x = "N (Presa)", y = "P (Depredador)") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "right")
+```
+
+## Práctica — **Depredador–presa LV**
+
+### Preparación (usa el mismo pseudónimo del Ejercicio 1)
+
+Si aún no lo has hecho, ejecuta los bloques de código de preparación del Ejercicio 1 para establecer tu pseudónimo.
+
+### Generador de datos
+
+```{r gen-pp}
+# Depredador–presa LV: presa (N) y depredador (P)
+gen_predpresa_lv <- function(seed, tmax=150, by=0.2, steps_small=10){
+  set.seed(seed + 602)
+  r <- runif(1, 0.3, 1.1)
+  a <- runif(1, 0.006, 0.02)
+  b <- runif(1, 0.06, 0.2)
+  m <- runif(1, 0.25, 0.9)
+  N0 <- sample(20:80, 1)
+  P0 <- sample(6:20, 1)
+  pars <- c(r=r, a=a, b=b, m=m)
+  tt <- seq(0, tmax, by=by)
+  lv <- function(t, y, p){
+    N <- y[1]; P <- y[2]
+    with(as.list(p), {
+      dN <- r*N - a*N*P
+      dP <- b*a*N*P - m*P
+      list(c(dN, dP))
+    })
+  }
+  out <- as.data.frame(ode(y=c(N=N0, P=P0), times=tt, func=lv, parms=pars))
+  
+  # Submuestreo para tabla pequeña
+  take <- unique(round(seq(1, nrow(out), length.out = steps_small)))
+  small <- out[take, c("time","N","P")]
+  rnd1 <- function(x) round(x, 1)
+  small$N <- rnd1(small$N)
+  small$P <- rnd1(small$P)
+  
+  pars2 <- c(pars, N0=N0, P0=P0, N_star=m/(b*a), P_star=r/a)
+  list(data_full=out, data_small=small, pars=pars2)
+}
+
+# Construye datos para MI_PSEUDONIMO (debe estar definido del Ejercicio 1)
+if (!exists("MI_PSEUDONIMO")) MI_PSEUDONIMO <- "Est01"
+if (!exists("SEED")) SEED <- seed_from_name(MI_PSEUDONIMO)
+pp <- gen_predpresa_lv(SEED)
+```
+
+### **Tabla y parámetros**
+
+```{r tabla-pp, results='asis'}
+knitr::kable(pp$data_small, row.names = FALSE,
+             caption="Depredador-presa LV — tabla de 10 filas para realizar tu ejercicio a mano.")
+knitr::kable(as.data.frame(pp$pars),
+             caption="Depredador-presa LV — parámetros.",
+             col.names=c("Parámetro","Valor"))
+```
+
+### **Desarrolla este ejercicio a mano o con ayuda de una hoja de cálculo con tus datos**
+
+> Ver demostración en la sección \@ref(sec-demo-manual-est01-depredador-presa)
+
+0. Recuerda que debes **ejecutar los bloques de código anteriores con tu pseudónimo**.
+1. **Calcula** el **punto de equilibrio** $(N^*, P^*)$ usando:
+   $$N^* = \frac{m}{ba}, \qquad P^* = \frac{r}{a}$$
+2. **Dibuja** las **nullclines** en el plano $N$–$P$:
+   - Nullcline de la presa: línea horizontal en $P = P^*$
+   - Nullcline del depredador: línea vertical en $N = N^*$
+3. **Identifica** las **4 regiones** y determina el signo de $(dN/dt, dP/dt)$ en cada una.
+4. **Coloca** los 10 puntos de tu tabla en el plano $N$–$P$ (en orden de $t$) y **traza** la trayectoria.
+5. **Describe** el comportamiento: ¿se observan oscilaciones? ¿La trayectoria gira alrededor del equilibrio?
+
+### **Demostración manual con Est01** {#sec-demo-manual-est01-depredador-presa}
+
+**Parámetros de Est01 para depredador-presa:**
+
+```{r params-est01-pp, results='asis'}
+pp_pars <- pp$pars
+cat(sprintf("r = %.4f, a = %.4f, b = %.4f, m = %.4f\n", 
+            pp_pars["r"], pp_pars["a"], pp_pars["b"], pp_pars["m"]))
+cat(sprintf("N0 = %.1f, P0 = %.1f\n", pp_pars["N0"], pp_pars["P0"]))
+```
+
+#### **Paso 1: Calcular el punto de equilibrio**
+
+$$N^* = \frac{m}{ba} = \frac{`r round(pp_pars["m"],4)`}{`r round(pp_pars["b"],4)` \times `r round(pp_pars["a"],4)`} = `r round(pp_pars["N_star"],1)`$$
+
+$$P^* = \frac{r}{a} = \frac{`r round(pp_pars["r"],4)`}{`r round(pp_pars["a"],4)`} = `r round(pp_pars["P_star"],1)`$$
+
+**En una hoja de cálculo:** 
+- Celda `N_star`: `=m/(b*a)`
+- Celda `P_star`: `=r/a`
+
+#### **Paso 2: Fijar escalas de ejes**
+
+Usa límites que contengan todos los datos y el equilibrio:
+
+* Horizontal: $N$ desde 0 hasta $\approx 1.5 \times N^*$ o el máximo de tus datos
+* Vertical: $P$ desde 0 hasta $\approx 1.5 \times P^*$ o el máximo de tus datos
+
+#### **Paso 3: Dibujar las nullclines**
+
+* **Nullcline de la presa** (horizontal, azul punteada): línea en $P = P^* = `r round(pp_pars["P_star"],1)`$
+* **Nullcline del depredador** (vertical, naranja sólida): línea en $N = N^* = `r round(pp_pars["N_star"],1)`$
+
+Marca el punto de equilibrio $(N^*, P^*)$ donde se cruzan.
+
+#### **Paso 4: Identificar las 4 regiones**
+
+```{r regiones-signos, results='asis'}
+N_test <- c(pp_pars["N_star"]*1.3, pp_pars["N_star"]*1.3, 
+            pp_pars["N_star"]*0.5, pp_pars["N_star"]*0.5)
+P_test <- c(pp_pars["P_star"]*0.6, pp_pars["P_star"]*1.4,
+            pp_pars["P_star"]*1.4, pp_pars["P_star"]*0.6)
+
+regiones <- c("I (N>N*, P<P*)", "II (N>N*, P>P*)", 
+              "III (N<N*, P>P*)", "IV (N<N*, P<P*)")
+
+for(i in 1:4){
+  N_val <- N_test[i]; P_val <- P_test[i]
+  dN_sign <- ifelse(P_val < pp_pars["P_star"], "+", "-")
+  dP_sign <- ifelse(N_val > pp_pars["N_star"], "+", "-")
+  
+  cat(sprintf("* **Región %s**: punto de prueba (%.1f, %.1f)\n", 
+              regiones[i], N_val, P_val))
+  cat(sprintf("  - $P = %.1f$ %s $P^* = %.1f$ → $dN/dt$ es **%s**\n",
+              P_val, ifelse(P_val < pp_pars["P_star"], "<", ">"),
+              pp_pars["P_star"], dN_sign))
+  cat(sprintf("  - $N = %.1f$ %s $N^* = %.1f$ → $dP/dt$ es **%s**\n\n",
+              N_val, ifelse(N_val > pp_pars["N_star"], ">", "<"),
+              pp_pars["N_star"], dP_sign))
+}
+```
+
+#### **Paso 5: Trazar la trayectoria**
+
+Coloca los 10 puntos de tu tabla en orden temporal y únelos con flechas.
+
+**Para Est01:**
+```{r tray-est01-pp, results='asis'}
+cat("Trayectoria (primeros 5 puntos):\n")
+head_traj <- head(pp$data_small, 5)
+cat(paste(sprintf("t=%.1f: (N=%.1f, P=%.1f)", 
+                  head_traj$time, head_traj$N, head_traj$P), 
+          collapse=" → "), "→ ...\n")
+```
+
+**Observación:** La trayectoria debe mostrar un patrón cíclico, girando alrededor del punto de equilibrio.
+
+#### **Interpretación ecológica**
+
+```{r interp-eco, results='asis'}
+cat(sprintf("El equilibrio está en (N*=%.1f, P*=%.1f). ", 
+            pp_pars["N_star"], pp_pars["P_star"]))
+cat("Las trayectorias forman ciclos alrededor de este punto:\n\n")
+cat("1. Cuando hay muchas presas y pocos depredadores, ambas poblaciones crecen\n")
+cat("2. El aumento de depredadores reduce las presas\n")  
+cat("3. La escasez de presas causa el declive de depredadores\n")
+cat("4. Con pocos depredadores, las presas se recuperan y el ciclo se repite\n")
+```
+
+### **Demostración con R usando datos de Est01**
+
+#### Series temporales
+
+```{r series-temp-pp, fig.width=10, fig.height=4}
+pp_dat <- pp$data_full
+
+par(mfrow=c(1,2), mar=c(4,4,2,1))
+plot(pp_dat$time, pp_dat$N, type="l", col="#2E8B57", lwd=2,
+     xlab="Tiempo", ylab="N (Presa)", main="Serie temporal: Presa")
+abline(h=pp_pars["N_star"], lty=2, col="red")
+legend("topright", legend=c("N(t)", "N*"), col=c("#2E8B57", "red"), 
+       lty=c(1,2), lwd=c(2,1), cex=0.8)
+
+plot(pp_dat$time, pp_dat$P, type="l", col="#4169E1", lwd=2,
+     xlab="Tiempo", ylab="P (Depredador)", main="Serie temporal: Depredador")
+abline(h=pp_pars["P_star"], lty=2, col="red")
+legend("topright", legend=c("P(t)", "P*"), col=c("#4169E1", "red"), 
+       lty=c(1,2), lwd=c(2,1), cex=0.8)
+par(mfrow=c(1,1))
+```
+
+#### Gráfico de serie temporal integrado
+
+Escalas verticales separadas para depredador y presa.
+
+```{r series-temp-pp-integrado, fig.width=10, fig.height=4}
+pp_dat <- pp$data_full
+
+# Rango de ejes para incluir también los puntos de equilibrio
+yN <- range(pp_dat$N,  pp_pars["N_star"], na.rm = TRUE)
+yP <- range(pp_dat$P,  pp_pars["P_star"], na.rm = TRUE)
+
+op <- par(mar = c(4, 4, 2, 4) + 0.1)
+
+# Eje izquierdo: Presa (N)
+plot(pp_dat$time, pp_dat$N, type = "l", lwd = 2, col = "#2E8B57",
+     xlab = "Tiempo", ylab = "N (Presa)", ylim = yN,
+     main = "Serie temporal combinada (N izquierda, P derecha)")
+abline(h = as.numeric(pp_pars["N_star"]), lty = 2, col = "red")
+
+# Superponer Depredador (P) en eje derecho
+par(new = TRUE)
+plot(pp_dat$time, pp_dat$P, type = "l", lwd = 2, col = "#4169E1",
+     axes = FALSE, xlab = "", ylab = "", ylim = yP)
+abline(h = as.numeric(pp_pars["P_star"]), lty = 2, col = "red")
+axis(4)
+mtext("P (Depredador)", side = 4, line = 3)
+
+legend("topright",
+       legend = c("N(t)", "N*", "P(t)", "P*"),
+       col    = c("#2E8B57", "red", "#4169E1", "red"),
+       lty    = c(1, 2, 1, 2),
+       lwd    = c(2, 1, 2, 1),
+       cex    = 0.85, bg = "white")
+
+par(op)
+```
+
+Misma escala vertical para depredador y presa.
+
+```{r series-temp-pp-integrado-misma-escala, fig.width=10, fig.height=4}
+pp_dat <- pp$data_full
+
+# Mismo eje Y para ambas series (incluyendo puntos de equilibrio)
+y_all <- range(pp_dat$N, pp_dat$P,
+               pp_pars["N_star"], pp_pars["P_star"],
+               na.rm = TRUE)
+
+op <- par(mar = c(4, 4, 2, 1) + 0.1)
+
+plot(pp_dat$time, pp_dat$N, type = "l", lwd = 2, col = "#2E8B57",
+     xlab = "Tiempo", ylab = "Abundancia (N y P)",
+     ylim = y_all,
+     main = "Serie temporal combinada (misma escala vertical)")
+lines(pp_dat$time, pp_dat$P, lwd = 2, col = "#4169E1")
+
+abline(h = as.numeric(pp_pars["N_star"]), lty = 2, col = "#2E8B57")
+abline(h = as.numeric(pp_pars["P_star"]), lty = 2, col = "#4169E1")
+
+legend("topright",
+       legend = c("N(t)", "P(t)", "N*", "P*"),
+       col    = c("#2E8B57", "#4169E1", "#2E8B57", "#4169E1"),
+       lty    = c(1, 1, 2, 2),
+       lwd    = c(2, 2, 1, 1),
+       cex    = 0.9, bg = "white")
+
+par(op)
+```
+
+
+#### Plano de fase completo
+
+```{r fase-completo-pp, fig.width=8, fig.height=6}
+# Límites
+N_max <- max(pp_dat$N, pp_pars["N_star"]) * 1.15
+P_max <- max(pp_dat$P, pp_pars["P_star"]) * 1.15
+
+# Sombreado de regiones
+grid_pp <- expand.grid(
+  N = seq(0, N_max, length.out = 120),
+  P = seq(0, P_max, length.out = 120)
+)
+
+grid_pp$dN <- with(grid_pp, pp_pars["r"]*N - pp_pars["a"]*N*P)
+grid_pp$dP <- with(grid_pp, pp_pars["b"]*pp_pars["a"]*N*P - pp_pars["m"]*P)
+
+grid_pp$region <- with(grid_pp,
+  ifelse(dN>0 & dP>0, "I: ++ (↗)",
+  ifelse(dN<0 & dP>0, "II: -+ (↖)",
+  ifelse(dN<0 & dP<0, "III: -- (↙)",
+                      "IV: +- (↘)"))))
+
+grid_pp$region <- factor(grid_pp$region,
+  levels = c("I: ++ (↗)", "II: -+ (↖)", "III: -- (↙)", "IV: +- (↘)"))
+
+# Campo de vectores
+gd_pp <- expand.grid(N = seq(5, N_max, length.out = 14),
+                     P = seq(2, P_max, length.out = 14))
+gd_pp$dN <- with(gd_pp, pp_pars["r"]*N - pp_pars["a"]*N*P)
+gd_pp$dP <- with(gd_pp, pp_pars["b"]*pp_pars["a"]*N*P - pp_pars["m"]*P)
+L_pp <- sqrt(gd_pp$dN^2 + gd_pp$dP^2); L_pp[L_pp==0] <- 1e-9
+arrow_len_pp <- 0.06 * max(N_max, P_max)
+gd_pp$Nend <- gd_pp$N + arrow_len_pp*(gd_pp$dN/L_pp)
+gd_pp$Pend <- gd_pp$P + arrow_len_pp*(gd_pp$dP/L_pp)
+
+ggplot() +
+  geom_raster(data = grid_pp, aes(N, P, fill = region), alpha = 0.3) +
+  scale_fill_manual(values = c(
+    "I: ++ (↗)" = "#90EE90",
+    "II: -+ (↖)" = "#FFB74D",
+    "III: -- (↙)" = "#BA68C8",
+    "IV: +- (↘)" = "#64B5F6"
+  ), name = "Regiones") +
+  geom_segment(data = gd_pp, aes(x=N, y=P, xend=Nend, yend=Pend),
+               arrow = arrow(length = unit(2.5,"pt")),
+               linewidth = 0.3, alpha = 0.7) +
+  geom_vline(xintercept = pp_pars["N_star"], linetype = "solid", 
+             color = "#E69138", linewidth = 1.2) +
+  geom_hline(yintercept = pp_pars["P_star"], linetype = "22", 
+             color = "#3C78D8", linewidth = 1.2) +
+  geom_path(data = pp_dat, aes(N, P), color = "#8B0000", linewidth = 1.1, alpha = 0.85) +
+  geom_point(data = pp$data_small, aes(N, P), color = "#8B0000", size = 2.5) +
+  geom_point(aes(x = pp_pars["N_star"], y = pp_pars["P_star"]), 
+             size = 4, shape = 21, fill = "black", color = "white", stroke = 1.5) +
+  coord_cartesian(xlim = c(0, N_max), ylim = c(0, P_max), expand = TRUE) +
+  labs(title = "Depredador-presa LV — plano de fase con nullclines,\nregiones, campo de vectores y trayectoria",
+       x = "N (Presa)", y = "P (Depredador)") +
+  theme_minimal() +
+  theme(legend.position = "right")
+```
+
+## Todos los gráficos (depredador-presa)
+
+```{r todos-graficos-pp, eval=generar_todos_los_graficos, fig.width=8, fig.height=6}
+invisible(sapply(pseudonimos_clase, function(x) {
+  SEED_i <- seed_from_name(x)
+  pp_i <- gen_predpresa_lv(SEED_i)
+  pp_pars_i <- pp_i$pars
+  pp_dat_i <- pp_i$data_full
+  
+  N_max_i <- max(pp_dat_i$N, pp_pars_i["N_star"]) * 1.15
+  P_max_i <- max(pp_dat_i$P, pp_pars_i["P_star"]) * 1.15
+  
+  grid_i <- expand.grid(N = seq(0, N_max_i, length.out = 120),
+                        P = seq(0, P_max_i, length.out = 120))
+  grid_i$dN <- with(grid_i, pp_pars_i["r"]*N - pp_pars_i["a"]*N*P)
+  grid_i$dP <- with(grid_i, pp_pars_i["b"]*pp_pars_i["a"]*N*P - pp_pars_i["m"]*P)
+  grid_i$region <- with(grid_i,
+    ifelse(dN>0 & dP>0, "I: ++ (↗)",
+    ifelse(dN<0 & dP>0, "II: -+ (↖)",
+    ifelse(dN<0 & dP<0, "III: -- (↙)", "IV: +- (↘)"))))
+  grid_i$region <- factor(grid_i$region,
+    levels = c("I: ++ (↗)", "II: -+ (↖)", "III: -- (↙)", "IV: +- (↘)"))
+  
+  gd_i <- expand.grid(N = seq(5, N_max_i, length.out = 14),
+                      P = seq(2, P_max_i, length.out = 14))
+  gd_i$dN <- with(gd_i, pp_pars_i["r"]*N - pp_pars_i["a"]*N*P)
+  gd_i$dP <- with(gd_i, pp_pars_i["b"]*pp_pars_i["a"]*N*P - pp_pars_i["m"]*P)
+  L_i <- sqrt(gd_i$dN^2 + gd_i$dP^2); L_i[L_i==0] <- 1e-9
+  arrow_len_i <- 0.06 * max(N_max_i, P_max_i)
+  gd_i$Nend <- gd_i$N + arrow_len_i*(gd_i$dN/L_i)
+  gd_i$Pend <- gd_i$P + arrow_len_i*(gd_i$dP/L_i)
+  
+  p <- ggplot() +
+    geom_raster(data = grid_i, aes(N, P, fill = region), alpha = 0.3) +
+    scale_fill_manual(values = c(
+      "I: ++ (↗)" = "#90EE90", "II: -+ (↖)" = "#FFB74D",
+      "III: -- (↙)" = "#BA68C8", "IV: +- (↘)" = "#64B5F6"
+    ), name = "Regiones") +
+    geom_segment(data = gd_i, aes(x=N, y=P, xend=Nend, yend=Pend),
+                 arrow = arrow(length = unit(2.5,"pt")),
+                 linewidth = 0.3, alpha = 0.7) +
+    geom_vline(xintercept = pp_pars_i["N_star"], linetype = "solid", 
+               color = "#E69138", linewidth = 1.2) +
+    geom_hline(yintercept = pp_pars_i["P_star"], linetype = "22", 
+               color = "#3C78D8", linewidth = 1.2) +
+    geom_path(data = pp_dat_i, aes(N, P), color = "#8B0000", 
+              linewidth = 1.1, alpha = 0.85) +
+    geom_point(data = pp_i$data_small, aes(N, P), color = "#8B0000", size = 2.5) +
+    geom_point(aes(x = pp_pars_i["N_star"], y = pp_pars_i["P_star"]), 
+               size = 4, shape = 21, fill = "black", color = "white", stroke = 1.5) +
+    coord_cartesian(xlim = c(0, N_max_i), ylim = c(0, P_max_i), expand = TRUE) +
+    labs(title = paste("Depredador-presa LV — plano de fase\n", x),
+         x = "N (Presa)", y = "P (Depredador)") +
+    theme_minimal() +
+    theme(legend.position = "right")
+  
+  print(p)
+}, USE.NAMES = TRUE, simplify = FALSE))
+```
 
 ---
 
-<!-- # Ejercicio 2. **Depredador–presa (LV)** — *con tus datos* -->
+# Ejericio 3. Práctica de aula. Dinámica depredador-presa y modelos poblacionales por escenarios
 
-<!-- ## Datos -->
+---
 
-<!-- ```{r} -->
-<!-- # Depredador–presa LV: presa (N) y depredador (P) -->
-<!-- gen_predpresa_lv <- function(seed, tmax=150, by=0.2){ -->
-<!--   set.seed(seed + 602) -->
-<!--   r <- runif(1, 0.3, 1.1) -->
-<!--   a <- runif(1, 0.006, 0.02) -->
-<!--   b <- runif(1, 0.06, 0.2) -->
-<!--   m <- runif(1, 0.25, 0.9) -->
-<!--   N0 <- sample(20:80, 1) -->
-<!--   P0 <- sample(6:20, 1) -->
-<!--   pars <- c(r=r, a=a, b=b, m=m) -->
-<!--   tt <- seq(0, tmax, by=by) -->
-<!--   lv <- function(t, y, p){ -->
-<!--     N <- y[1]; P <- y[2] -->
-<!--     with(as.list(p), { -->
-<!--       dN <- r*N - a*N*P -->
-<!--       dP <- b*a*N*P - m*P -->
-<!--       list(c(dN, dP)) -->
-<!--     }) -->
-<!--   } -->
-<!--   out <- as.data.frame(ode(y=c(N=N0, P=P0), times=tt, func=lv, parms=pars)) -->
-<!--   pars2 <- c(pars, N0=N0, P0=P0, N_star=m/(b*a), P_star=r/a) -->
-<!--   list(data=out, pars=pars2) -->
-<!-- } -->
+## **Objetivo**
 
-<!-- # Construye datos para MI_PSEUDONIMO -->
-<!-- pp   <- gen_predpresa_lv(SEED) -->
-<!-- ``` -->
+Aplicar el modelo Lotka-Volterra para analizar la dinámica de interacciones depredador-presa, predecir cambios poblacionales y evaluar la estabilidad de diferentes sistemas ecológicos mediante manipulación de datos.
 
-<!-- ## **A mano** (entregable) -->
-<!-- 1. Con tus parámetros $r,a,b,m$ calcula $N^*=\frac{m}{ba}$, $P^*=\frac{r}{a}$.   -->
-<!-- 2. Dibuja las **nullclines** (líneas de crecimiento cero) en el plano $N$–$P$.   -->
-<!-- 3. Señala la dirección cualitativa del campo de vectores en 4 regiones. -->
+---
 
-<!-- ## **En R**: series y plano de fase -->
-<!-- ```{r pp-R, fig.width=7, fig.height=5} -->
-<!-- pp_dat <- pp$data; pp_par <- pp$pars -->
-<!-- Nstar <- pp_par["N_star"]; Pstar <- pp_par["P_star"] -->
+## **Contexto del problema**
 
-<!-- par(mfrow=c(1,2)) -->
-<!-- plot(pp_dat$time, pp_dat$N, type="l", xlab="t", ylab="N (presa)", main="Serie temporal (presa)") -->
-<!-- plot(pp_dat$N, pp_dat$P, type="l", xlab="N", ylab="P", main="Plano de fase") -->
-<!-- abline(v = Nstar, h = Pstar, lty=2) -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- pp_par[c("r","a","b","m","N_star","P_star")] -->
-<!-- ``` -->
+Usted es un ecólogo(a) contratado(a) para estudiar la dinámica poblacional de diferentes sistemas depredador-presa en ecosistemas perturbados. Su tarea es analizar cómo varían las poblaciones a lo largo del tiempo y determinar la viabilidad de coexistencia a largo plazo.
 
-<!-- **Interpretación**: cómo cambian amplitudes/períodos cuando aumentan/disminuyen $a,b,m$; relación de fase (pico de $N$ precede a $P$). -->
+El modelo Lotka-Volterra está dado por:
+
+**Presas (N):**
+dN/dt = rN - αNP
+
+**Depredadores (P):**
+dP/dt = βαNP - mP
+
+Donde:
+- **N** = población de presas
+- **P** = población de depredadores
+- **r** = tasa intrínseca de crecimiento de presas
+- **α** = tasa de captura/ataque
+- **β** = eficiencia de conversión
+- **m** = tasa de mortalidad de depredadores
+
+---
+
+## **Asignación de escenarios**
+
+Cada estudiante recibirá UNO de los siguientes escenarios:
+
+### **Escenario A: Sistema estable (Bosque templado maduro)**
+- r = 0.5, α = 0.02, β = 0.3, m = 0.2
+- N₀ = 40, P₀ = 10
+- Especies: Liebres y linces
+
+### **Escenario B: Sistema con depredador eficiente (Sabana africana)**
+- r = 0.8, α = 0.04, β = 0.4, m = 0.25
+- N₀ = 35, P₀ = 12
+- Especies: Gacelas y guepardos
+
+### **Escenario C: Sistema con baja eficiencia del depredador (Ecosistema insular)**
+- r = 0.6, α = 0.015, β = 0.15, m = 0.3
+- N₀ = 50, P₀ = 8
+- Especies: Roedores y aves rapaces
+
+### **Escenario D: Sistema con alta tasa reproductiva de presas (Pradera)**
+- r = 1.2, α = 0.03, β = 0.35, m = 0.4
+- N₀ = 30, P₀ = 15
+- Especies: Conejos y zorros
+
+### **Escenario E: Sistema con depredador especialista (Arrecife coral)**
+- r = 0.4, α = 0.05, β = 0.5, m = 0.15
+- N₀ = 45, P₀ = 9
+- Especies: Peces herbívoros y peces depredadores
+
+### **Escenario F: Sistema perturbado (Fragmentación de hábitat)**
+- r = 0.7, α = 0.025, β = 0.2, m = 0.35
+- N₀ = 25, P₀ = 20
+- Especies: Ratones y comadrejas
+
+---
+
+## **Instrucciones de la práctica**
+
+### **Parte 1: cálculos manuales**
+
+**1.1 Calcular los puntos de equilibrio** 
+
+Calcule las poblaciones de equilibrio donde dN/dt = 0 y dP/dt = 0:
+
+- P* (depredadores en equilibrio) = r/α
+- N* (presas en equilibrio) = m/(βα)
+
+**1.2 Proyección manual de 5 generaciones** 
+
+Usando el método de Euler con Δt = 0.5:
+
+Para t = 0, 0.5, 1.0, 1.5, 2.0, 2.5:
+
+```
+N(t+Δt) = N(t) + [rN(t) - αN(t)P(t)] × Δt
+P(t+Δt) = P(t) + [βαN(t)P(t) - mP(t)] × Δt
+```
+
+Complete la siguiente tabla:
+
+| Tiempo (t) | Presas (N) | Depredadores (P) | dN/dt | dP/dt |
+|:----------:|:----------:|:----------------:|:-----:|:-----:|
+| 0.0        | N₀         | P₀               |       |       |
+| 0.5        |            |                  |       |       |
+| 1.0        |            |                  |       |       |
+| 1.5        |            |                  |       |       |
+| 2.0        |            |                  |       |       |
+| 2.5        |            |                  |       |       |
+
+### **Parte 2: simulación en R**
+
+```R
+# CÓDIGO BASE PARA TODOS LOS ESTUDIANTES
+# Modificar solo los parámetros según su escenario
+
+# Parámetros (MODIFICAR SEGÚN SU ESCENARIO)
+r <- 0.5      # tasa crecimiento presas
+alpha <- 0.02 # tasa ataque
+beta <- 0.3   # eficiencia conversión
+m <- 0.2      # mortalidad depredadores
+N0 <- 40      # población inicial presas
+P0 <- 10      # población inicial depredadores
+
+# Modelo Lotka-Volterra
+lotka_volterra <- function(t, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    dN <- r*N - alpha*N*P
+    dP <- beta*alpha*N*P - m*P
+    return(list(c(dN, dP)))
+  })
+}
+
+# Parámetros y condiciones iniciales
+parametros <- c(r = r, alpha = alpha, beta = beta, m = m)
+estado_inicial <- c(N = N0, P = P0)
+tiempos <- seq(0, 100, by = 0.1)
+
+# Resolver ecuaciones
+library(deSolve)
+resultado <- ode(y = estado_inicial, times = tiempos, 
+                 func = lotka_volterra, parms = parametros)
+
+# Convertir a dataframe
+df <- as.data.frame(resultado)
+
+# Gráfico temporal
+par(mfrow = c(1, 2))
+plot(df$time, df$N, type = "l", col = "blue", lwd = 2,
+     xlab = "Tiempo", ylab = "Población", 
+     main = "Dinámica Temporal", ylim = c(0, max(c(df$N, df$P))))
+lines(df$time, df$P, col = "red", lwd = 2)
+legend("topright", legend = c("Presas", "Depredadores"), 
+       col = c("blue", "red"), lty = 1, lwd = 2)
+
+# Diagrama de fase
+plot(df$N, df$P, type = "l", col = "purple", lwd = 2,
+     xlab = "Presas (N)", ylab = "Depredadores (P)",
+     main = "Diagrama de Fase")
+
+# Calcular equilibrios
+P_equilibrio <- r/alpha
+N_equilibrio <- m/(beta*alpha)
+points(N_equilibrio, P_equilibrio, col = "red", pch = 19, cex = 2)
+
+# Estadísticas
+cat("Punto de equilibrio teórico:\n")
+cat("N* =", N_equilibrio, "\n")
+cat("P* =", P_equilibrio, "\n")
+cat("\nEstadísticas de la simulación:\n")
+cat("Presas - Media:", mean(df$N), "| Rango:", 
+    min(df$N), "-", max(df$N), "\n")
+cat("Depredadores - Media:", mean(df$P), "| Rango:", 
+    min(df$P), "-", max(df$P), "\n")
+```
+
+### **Parte 3: análisis e interpretación**
+
+Responde en tu hoja:
+
+1. **¿Las poblaciones alcanzan un equilibrio estable o muestran oscilaciones?**
+
+2. **¿Qué sucede cuando las poblaciones están por encima o por debajo del equilibrio?**
+
+3. **Compare sus resultados manuales (5 generaciones) con la simulación en R. ¿Son consistentes?**
+
+4. **Desde la perspectiva de estrategias reproductivas:**
+   - ¿Su especie presa muestra características r o K? Justifique.
+   - ¿Cómo influye esto en la dinámica del sistema?
+
+5. **Implicaciones ecológicas:**
+   - Si este sistema experimentara fragmentación de hábitat (reducción del 50% en r), ¿qué predice que sucedería?
+   - ¿Sería posible la coexistencia a largo plazo?
+
+---
+
+## **Mensaje final de la profesora**
+
+Te recomiendo discutir con tus compañeros y compañeras estos conceptos clave tras terminar la práctica de aula:
+
+- **Oscilaciones poblacionales**: Diferencia entre ciclos estables y caóticos
+- **Exclusión competitiva**: Cuándo un depredador puede eliminar su presa
+- **Estrategias r vs K**: Cómo la tasa de reproducción afecta la dinámica
+- **Coevolución**: La "carrera armamentista" depredador-presa
+- **Efectos de cascada trófica**: Qué pasa si se elimina el depredador tope
+- **Fragmentación**: Cómo la pérdida de hábitat desestabiliza sistemas
+- **Resiliencia ecológica**: Qué sistemas son más robustos a perturbaciones
+
+---
 
 
 # Referencias
