@@ -899,7 +899,7 @@ Compara:
 
 Patrón (**FALSO**, **FALSO**) ⇒ **coexistencia estable**
 
-> Con las **condiciones iniciales** de Est01 $(N_{1,0}\approx327,\ N_{2,0}\approx366)$, los primeros puntos caen en `--` y luego en `-+` (flechas hacia **arriba–izquierda**), lo que **sugiere** que la trayectoria se dirige hacia el punto de intersección o de equilibrio interior $(N_1^*,N_2^*)$. En este arreglo, coherente existe “coexistencia estable”: la competencia se encuentra en equilibrio y ninguna especie excluye a la otra.
+> Con las **condiciones iniciales** de Est01 $(N_{1,0}\approx327,\ N_{2,0}\approx366)$, los primeros puntos caen en `--` y luego en `-+` (flechas hacia **arriba–izquierda**), lo que **sugiere** que la trayectoria se dirige hacia el punto de intersección o de equilibrio interior $(N_1^*,N_2^*)$. En este arreglo existe “coexistencia estable”: la competencia se encuentra en equilibrio y ninguna especie excluye a la otra.
 
 
 #### Intersección de la isoclinas
