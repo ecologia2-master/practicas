@@ -194,11 +194,11 @@ Tema general → Tema específico → Problema → Pregunta de investigación
 
 Una buena pregunta de investigación debe ser:
 
-✓ **Clara:** Fácil de entender
-✓ **Específica:** Delimita exactamente qué se estudiará
-✓ **Medible:** Las variables pueden ser cuantificadas u observadas
-✓ **Relevante:** Contribuye al conocimiento científico
-✓ **Viable:** Se puede responder con los recursos disponibles
+- **Clara:** Fácil de entender
+- **Específica:** Delimita exactamente qué se estudiará
+- **Medible:** Las variables pueden ser cuantificadas u observadas
+- **Relevante:** Contribuye al conocimiento científico
+- **Viable:** Se puede responder con los recursos disponibles
 
 **Ejemplos de preguntas mal/bien formuladas:**
 
