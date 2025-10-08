@@ -1,0 +1,3264 @@
+---
+title: "GUÍA PARA PROYECTO DE INVESTIGACIÓN"
+date: "`r Sys.Date()`"
+author: Arlen Marmolejo Hernández
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    theme: united
+    highlight: tango
+    number_sections: true
+  pdf_document:
+    toc: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval = FALSE)
+```
+# GUÍA PARA PROYECTO DE INVESTIGACIÓN
+
+**Para el desarrollo de proyectos de ciencia**
+
+## PRESENTACIÓN
+
+Manual acompañante de proyecto de investigación. La ciencia no solo se aprende en el aula teórica; se construye mediante la práctica rigurosa del método científico, la observación cuidadosa de los fenómenos naturales y el análisis crítico de datos.
+
+Este manual pretende ser una brújula durante el semestre. Guiará desde la concepción de una pregunta de investigación hasta la comunicación de hallazgos, para experimentar el verdadero quehacer científico.
+
+---
+
+# INTRODUCCIÓN AL PROYECTO DE INVESTIGACIÓN
+
+## Propósito del Manual
+
+Bienvenidos al manual de investigación científica para su proyecto semestral. Este documento será su guía durante todo el proceso de investigación, desde la concepción de la idea hasta la presentación final de resultados.
+
+### ¿Qué es la investigación científica?
+
+La investigación científica es un proceso sistemático y riguroso mediante el cual generamos conocimiento nuevo sobre el mundo natural. Esto implica:
+
+- **Observar** patrones en la naturaleza
+- **Formular preguntas** sobre procesos naturales
+- **Diseñar experimentos** o estudios observacionales
+- **Recolectar datos** de manera sistemática
+- **Analizar información** con herramientas apropiadas
+- **Comunicar resultados** a la comunidad científica
+
+## Objetivos del Proyecto
+
+### **Objetivo General**
+
+Practicar el quehacer científico para producir conocimiento original.
+
+### **Objetivos Específicos**
+
+- **Identificar y Diseñar**: Reconocer problemas científicos relevantes en su entorno y diseñar metodologías apropiadas para investigarlos.
+- **Aplicar y Analizar**: Poner en práctica conceptos teóricos, técnicas de campo y de laboratorio, así como herramientas estadísticas básicas para la recolección y análisis de datos.
+- **Interpretar y Contextualizar**: Analizar e interpretar los resultados a la luz de la literatura científica existente, desarrollando pensamiento crítico.
+- **Comunicar**: Comunicar los hallazgos de manera clara, efectiva y profesional, fortaleciendo las competencias de comunicación científica.
+
+---
+
+# FASE I: PLANIFICACIÓN Y DISEÑO
+
+## Selección del Tema
+
+### Paso 1: Observación e identificación del problema
+
+Comience con la observación directa de su entorno. Algunas preguntas orientadoras:
+
+- ¿Qué fenómenos naturales llaman mi atención?
+- ¿Qué problemas ambientales observo?
+- ¿Qué patrones biológicos o geográficos me generan curiosidad?
+
+**Ejercicio práctico:** Realice una salida exploratoria a un área cercana, que puede ser el campus de la UASD, pero pueden ser otras áreas. Registre al menos 5 observaciones que podrían convertirse en preguntas de investigación.
+
+### Paso 2: Revisión preliminar de literatura
+
+Antes de comprometerse con un tema, investigue:
+
+- ¿Qué se ha estudiado sobre este tema?
+- ¿Qué metodologías se han utilizado?
+- ¿Qué vacíos de conocimiento existen?
+
+**Fuentes / Bases de datos recomendadas:**
+
+- Google Scholar
+- Bases de datos científicas (SciELO, EBSCOhost, Scopus, Web of Science, PubMed, Biblioteca Virtual de Educación Ambiental)
+- Repositorios institucionales
+- Libros especializados en la biblioteca
+- SciHub
+
+**Formato de ficha bibliográfica:**
+
+```
+Autor(es). (Año). Título del artículo. Revista, volumen(número), páginas.
+Palabras clave:
+Resumen en mis propias palabras:
+Relevancia para mi proyecto:
+Metodología utilizada:
+```
+
+**Cree una entrada BibTeX para cada referencia bibliográfica.**
+
+Las entradas BibTeX tienen un formato parecido al mostrado a continuación (ejemplo para artículo):
+
+```
+@article{clave_de_referencia,
+  author    = {Autor o autores},
+  title     = {Título del artículo},
+  journal   = {Nombre de la revista},
+  year      = {Año de publicación},
+  volume    = {Volumen},
+  number    = {Número},
+  pages     = {Páginas},
+  doi       = {DOI si aplica},
+  url       = {URL si aplica},
+  abstract  = {Resumen opcional del trabajo},
+  keywords  = {Palabras clave separadas por comas},
+  note      = {Comentario o nota opcional}
+}
+```
+
+### Criterios para elegir un buen tema
+
+1. **Factibilidad:** ¿Puedes completarlo en un semestre?
+2. **Accesibilidad:** ¿Tienes acceso al área de estudio y recursos necesarios?
+3. **Relevancia:** ¿El tema aporta conocimiento valioso?
+4. **Interés personal:** ¿Te apasiona el tema?
+5. **Originalidad:** ¿Aporta algo nuevo o una perspectiva diferente?
+
+### Ejemplos de temas 
+
+**Biología y Ecología:**
+
+- Diversidad de especies en ecosistemas locales
+- Diversidad de polinizadores en parques urbanos
+- Estrategias de dispersión de semillas en bosques tropicales
+- Variación morfológica en poblaciones de plantas en gradientes altitudinales
+- Efecto de la fragmentación del hábitat en comunidades de aves
+- Sucesión ecológica en áreas perturbadas
+- Interacciones ecológicas (competencia, depredación, mutualismo)
+- Interacciones planta-herbívoro en ecosistemas costeros
+- Adaptaciones morfológicas o fisiológicas
+- Dinámica poblacional
+
+**Biogeografía:**
+
+- Patrones de distribución de especies
+- Patrones de distribución de especies endémicas en islas
+- Barreras biogeográficas y su efecto en la dispersión de anfibios
+- Zonas de endemismo en sistemas montañosos
+- Efectos de gradientes ambientales sobre comunidades
+- Endemismo y áreas de biodiversidad
+- Corredores biológicos y conectividad
+
+**Geomorfología:**
+
+- Procesos erosivos en zonas costeras
+- Caracterización de formas kársticas en áreas calcáreas
+- Influencia de la geomorfología en la distribución de la vegetación
+- Procesos erosivos y deposicionales
+- Características de cuencas hidrográficas
+- Uso del suelo y sus impactos
+- Análisis de paisajes y su transformación
+
+## Formulación del Problema de Investigación
+
+Una buena pregunta de investigación debe ser:
+
+- **Específica:** No demasiado amplia
+- **Medible:** Con variables que puedan cuantificarse u observarse
+- **Relevante:** Que aporte conocimiento útil
+- **Viable:** Realizable con los recursos y tiempo disponibles
+
+### De la idea general a la pregunta específica
+
+```
+EMBUDO DE INVESTIGACIÓN:
+
+Tema general → Tema específico → Problema → Pregunta de investigación
+```
+
+**Ejemplo:**
+
+- **Tema general:** Biodiversidad urbana
+- **Tema específico:** Aves en parques urbanos de Santo Domingo
+- **Problema:** Desconocimiento del efecto del tamaño del parque en la riqueza de especies
+- **Pregunta:** ¿Cómo influye el tamaño del parque en la riqueza de especies de aves en áreas urbanas de Santo Domingo?
+
+### Formulación de la pregunta de investigación 
+
+Una buena pregunta de investigación debe ser:
+
+✓ **Clara:** Fácil de entender
+✓ **Específica:** Delimita exactamente qué se estudiará
+✓ **Medible:** Las variables pueden ser cuantificadas u observadas
+✓ **Relevante:** Contribuye al conocimiento científico
+✓ **Viable:** Se puede responder con los recursos disponibles
+
+**Ejemplos de preguntas mal/bien formuladas:**
+
+❌ MAL: "¿Cómo son las plantas?"  
+✓ BIEN: "¿Cómo varía la densidad estomática de *Rhizophora mangle* en función de la salinidad del sustrato en manglares de la costa norte?"
+
+❌ MAL: "¿Qué pasa con los ríos?"  
+✓ BIEN: "¿Cuál es la relación entre el uso del suelo agrícola y los parámetros fisicoquímicos del agua en la cuenca media del Río Ozama?"
+
+❌ MAL: "¿Dónde viven las aves?"  
+✓ BIEN: "¿Difiere la riqueza de especies de aves entre fragmentos de bosque de diferente tamaño en el Parque Nacional del Este?"
+
+### Ejercicio: Formule su pregunta de investigación
+
+Complete la siguiente plantilla:
+
+```
+¿Cómo/Cuál/Qué [relación/efecto/patrón] existe entre 
+[variable independiente] y [variable dependiente] 
+en [población/sistema/área de estudio] 
+durante [periodo temporal]?
+```
+  
+## Marco Teórico y Revisión de Literatura
+
+### Propósito del marco teórico
+
+- Contextualizar su investigación en el conocimiento existente
+- Identificar vacíos de conocimiento
+- Fundamentar teóricamente sus hipótesis
+- Definir conceptos clave
+
+### Búsqueda de información científica
+
+**Fuentes / Bases de datos recomendadas:**
+
+- Google Scholar
+- Bases de datos científicas (SciELO, EBSCOhost, Scopus, Web of Science, PubMed, Biblioteca Virtual de Educación Ambiental)
+- Repositorios institucionales
+- Libros especializados en la biblioteca
+- SciHub
+
+**Estrategias de búsqueda:**
+
+1. Use palabras clave en español e inglés
+2. Combine términos con operadores booleanos (AND, OR, NOT)
+3. Use comillas para frases exactas: "diversidad de aves"
+4. Priorice artículos de los últimos 10 años
+5. Revise las referencias de artículos relevantes
+
+### Organización de la literatura
+
+Cree una tabla de revisión bibliográfica:
+
+```{r tabla-literatura, echo=TRUE, eval=FALSE}
+# Ejemplo de tabla para organizar referencias
+biblioteca <- data.frame(
+  Autor = c("García et al.", "Rodríguez & López"),
+  Año = c(2020, 2019),
+  Titulo = c("Diversidad aviar urbana", "Fragmentación de hábitat"),
+  Hallazgo_Principal = c("Mayor riqueza en parques grandes", 
+                         "Efecto negativo en especies especialistas"),
+  Relevancia = c("Alta - tema central", "Media - contexto teórico")
+)
+```
+
+## Objetivos de la Investigación
+
+### Objetivo General
+
+Debe responder directamente a su pregunta de investigación. Use verbos en infinitivo.
+
+**Verbos sugeridos:** Determinar, Evaluar, Analizar, Caracterizar, Comparar, Describir, Identificar, Cuantificar
+
+**Ejemplos:**
+
+> A."Evaluar la influencia del tamaño de parques urbanos en la riqueza de especies de aves en Santo Domingo, República Dominicana."
+
+> B."Evaluar el efecto de la pendiente del terreno sobre la composición florística en un gradiente altitudinal de 500-1200 msnm en la Cordillera Central."
+
+### Objetivos Específicos
+
+Desglosan el objetivo general en pasos concretos, son los pasos necesarios para alcanzar el objetivo general (2-5 objetivos).
+
+**Ejemplos:**
+
+A.1. Caracterizar la composición de especies de aves en parques urbanos de diferentes tamaños
+A.2. Cuantificar la riqueza de especies en relación al área del parque
+A.3. Identificar las especies indicadoras de calidad de hábitat urbano
+A.4. Analizar la relación entre variables del hábitat y la diversidad de aves
+
+B.1. Caracterizar la composición florística en tres rangos altitudinales (500-700, 700-900, 900-1200 msnm)
+B.2. Medir las variables topográficas (pendiente, exposición, altitud) en cada sitio de muestreo
+B.3. Determinar la relación estadística entre la pendiente y la diversidad de especies vegetales
+B.4. Comparar la similitud florística entre los diferentes rangos altitudinales
+
+## Hipótesis (si aplica)
+
+Las hipótesis son predicciones específicas y contrastables sobre lo que esperamos encontrar.
+
+**Estructura básica:**
+"Si [variable independiente] aumenta/disminuye, entonces [variable dependiente] aumentará/disminuirá, debido a [mecanismo explicativo]."
+
+### Tipos de hipótesis
+
+**Hipótesis nula (H₀):** No existe relación o efecto
+**Hipótesis alternativa (H₁):** Existe relación o efecto
+
+### Formulación de hipótesis
+
+**Ejemplos:**
+
+- **H₀:** El tamaño del parque no influye en la riqueza de especies de aves
+- **H₁:** Los parques de mayor tamaño presentan mayor riqueza de especies de aves
+
+- **H₀:** La altitud no afecta significativamente la diversidad de especies de plantas.
+- **H₁:** La diversidad de especies de plantas disminuirá con el aumento de la altitud debido a las condiciones ambientales más restrictivas en zonas altas.
+
+* Formule sus hipótesis basándose en el marco teórico.
+
+**Nota:** Los estudios descriptivos y exploratorios no siempre requieren hipótesis formales.
+
+---
+
+# FASE II: DISEÑO METODOLÓGICO (Trabajo de campo y Laboratorio)
+
+Esta es la sección más importante de su propuesta. Debe ser tan detallada que otro investigador pueda replicar su estudio.
+
+## Área de Estudio
+
+### Descripción del área de estudio
+
+Describa con precisión:
+
+- **Ubicación geográfica:** Coordenadas, provincia, región
+- **Características físicas:** Clima, geología, relieve, hidrología
+- **Características biológicas:** Tipo de vegetación, ecosistemas
+- **Aspectos antrópicos:** Uso del suelo, poblaciones humanas, amenazas
+- **Justificación:** Justificación de la selección del sitio
+- **Mapa del área de estudio:** (puede ser simple pero debe incluir escala y norte)
+
+### Mapa del área de estudio
+
+```{r mapa-ejemplo, eval=FALSE}
+# Ejemplo de código para crear mapa (requiere paquetes)
+library(ggplot2)
+library(sf)
+
+# Cargar datos espaciales
+area_estudio <- st_read("ruta/a/geopackage.gpkg")
+
+# Crear mapa
+ggplot(data = area_estudio) +
+  geom_sf(fill = "lightgreen", color = "darkgreen") +
+  theme_minimal() +
+  labs(title = "Área de Estudio",
+       subtitle = "Parques Urbanos de Santo Domingo",
+       x = "Longitud", y = "Latitud")
+```
+
+## Diseño de Muestreo
+
+**Determine:**
+
+1. **Unidad de muestreo:** ¿Qué voy a observar? (parcelas, transectos, individuos, puntos de agua, etc.)
+
+2. **Tamaño de muestra:** ¿Cuántas unidades necesito?
+   - Regla general mínima: 30 unidades por tratamiento/grupo
+   - Consulte literatura similar para orientarse
+   - Considere limitaciones de tiempo y recursos
+
+3. **Tipo de muestreo:**
+   - **Aleatorio simple:** Todos los puntos tienen igual probabilidad
+   - **Sistemático:** Siguiendo un patrón regular (cada 10m, cada 100m, etc.)
+   - **Estratificado:** Dividiendo el área en zonas homogéneas
+   - **Por conveniencia:** Cuando los anteriores no son viables (menos ideal, pero a veces necesario)
+
+**Ejemplo de diseño:**
+
+"Se establecerán 12 parcelas de 10×10 m distribuidas aleatoriamente en cada uno de los tres tipos de bosque (n=36 parcelas totales). En cada parcela se identificarán y medirán todos los individuos arbóreos con DAP ≥ 5 cm."
+
+### Tipos de muestreo
+
+**Aleatorio simple:** Cada unidad tiene igual probabilidad de ser seleccionada
+**Estratificado:** División en grupos homogéneos (estratos)
+**Sistemático:** Selección a intervalos regulares
+**Por conglomerados:** Grupos naturales como unidades de muestreo
+
+### Determinación del tamaño de muestra
+
+Considere:
+
+- Variabilidad del fenómeno estudiado
+- Recursos disponibles (tiempo, dinero, personal)
+- Nivel de confianza deseado (generalmente 95%)
+- Error permitido
+
+**Fórmula básica para muestreo aleatorio simple:**
+
+$$n = \frac{Z^2 \cdot p \cdot q}{e^2}$$
+
+Donde:
+
+- n = tamaño de muestra
+- Z = valor de Z para nivel de confianza (1.96 para 95%)
+- p = proporción esperada
+- q = 1 - p
+- e = error máximo permitido
+
+### Diseño de su muestreo
+
+**Complete:**
+
+1. Unidad de muestreo: _______________________
+2. Tipo de muestreo: _______________________
+3. Tamaño de muestra: _______________________
+4. Criterios de inclusión/exclusión: _______________________
+5. Frecuencia y época de muestreo: _______________________
+
+## Variables de Estudio
+
+### Clasificación de variables
+
+| Tipo de variable | Definición | Ejemplo |
+|-----------------|------------|---------|
+| **Independiente** | Las que manipula o selecciona el investigador | Tipo de hábitat, altitud, tratamiento |
+| **Dependiente** | La que medimos como respuesta (y esperamos que cambie) | Riqueza de especies, pH del suelo, tasa de erosión |
+| **Variables de confusión** | Pueden afectar los resultados, Factores externos que pueden distorsionar la relación entre las variables independiente y dependiente | Temperatura ambiental (al estudiar si el "tipo de hábitat" afecta la "riqueza de especies", la temperatura -que varía con el hábitat y afecta la biodiversidad- podría confundir los resultados) |
+| **Control** | Factores que mantenemos constantes | Época del año, hora del día, técnica de muestreo |
+
+**Especifique claramente:**
+
+- ¿Qué voy a medir?
+- ¿Cómo lo voy a medir?
+- ¿Con qué instrumentos o técnicas?
+- ¿En qué unidades?
+
+### Operacionalización de variables
+
+Cree una tabla de operacionalización:
+
+| Variable | Tipo | Definición | Escala | Método de medición |
+|----------|------|------------|--------|-------------------|
+| Tamaño de parque | Independiente | Área del parque en hectáreas | Continua (hectáreas) | GIS/GNSS/GPS |
+| Riqueza de especies | Dependiente | Número de especies registradas | Discreta (conteo) | Observación directa |
+| Cobertura arbórea | Confusión | Porcentaje de área con árboles | Continua (%) | Medición en campo |
+
+## Métodos de Recolección de Datos
+
+Sea extremadamente específico sobre:
+
+### Técnicas según disciplina
+
+**Biología y Ecología:**
+
+- Observación directa
+- Técnicas de captura o observación
+- Captura-marca-recaptura
+- Claves de identificación que utilizará
+- Transectos y cuadrantes
+- Trampas (Pitfall, Sherman, Malaise)
+- Grabaciones acústicas
+- Fototrampeo
+- Protocolos de preservación de muestras
+- Equipos necesarios (GNSS, GPS, cámaras, lupas, redes, etc.)
+
+**Para estudios de suelos/agua/aire:**
+
+- Profundidad de muestreo
+- Volumen/masa de muestra
+- Métodos de preservación
+- Análisis que realizará (pH, textura, nutrientes, etc.)
+- Temperatura, humedad, presión barométrica, luminosidad
+
+**Biogeografía:**
+
+- Sistemas de Información Geográfica (SIG)
+- GNSS o GPS para georeferenciación
+- Mapeo de distribuciones
+- Análisis de coberturas
+
+**Geomorfología:**
+
+- Perfiles topográficos
+- Medición de pendientes
+- Caracterización de suelos
+- Análisis granulométrico
+- Fotografía aérea e imágenes satelitales
+- Técnicas de medición (brújula, clinómetro, GNSS, GPS, fotografías)
+- Escalas de trabajo
+- Software SIG si aplica
+
+### Protocolo de campo
+
+Desarrolle un protocolo detallado que incluya:
+
+#### **Materiales y equipo necesario**
+
+#### Lista de verificación antes de salir
+
+##### **Equipos científicos:**
+□ GNSS 
+□ GPS / aplicación de coordenadas  
+□ Brújula y/o clinómetro  
+□ Cinta métrica / flexómetro  
+□ Libretas de campo impermeables  
+□ Lápices/bolígrafos  
+□ Cámara fotográfica  
+□ Bolsas de colecta etiquetadas  
+□ Guías de identificación  
+□ Equipos específicos según su estudio  
+
+##### **Seguridad personal:**
+□ Botiquín de primeros auxilios
+□ Gafas de protección con impactos
+□ Agua potable suficiente
+□ Protector solar
+□ Repelente de insectos
+□ Sombrero/gorra
+□ Calzado apropiado
+□ Ropa de manga larga
+□ Teléfono móvil cargado
+□ Silbato
+
+##### **Documentos:**
+
+□ Permisos de acceso al área (si requeridos)
+□ Formularios de consentimiento (si trabaja con comunidades)
+□ Copia de la propuesta de investigación
+□ Fichas de datos impresas
+
+#### **Procedimiento paso a paso**
+
+#### **Formato de registro de datos**
+
+#### Principios del buen registro de campo
+
+- **Registre TODO inmediatamente:** No confíe en su memoria
+- **Sea específico:** Evite términos vagos como "muchos", "cerca", "grande"
+- **Use unidades estándar:** Metros, kilogramos, grados Celsius, etc.
+- **Incluya metadatos:** Fecha, hora, condiciones climáticas, observador
+- **Fotografíe:** Cada sitio, cada muestra, escalas de referencia
+- **Dibuje cuando sea necesario:** Croquis de sitios, distribuciones espaciales
+
+#### Fotografía científica
+
+- Use escalas de referencia (regla, moneda, persona)
+- Tome fotos desde múltiples ángulos
+- Fotografíe etiquetas de muestras
+- Documente el contexto general del sitio
+- Nombre archivos sistemáticamente: FECHA_SITIO_NUMERO.jpg
+
+#### **Medidas de seguridad**
+
+#### **Consideraciones éticas** (permisos, bienestar animal, etc.)
+
+### Ejemplo de formato de campo
+
+```
+HOJA DE CAMPO - CENSO DE AVES
+Proyecto: ___________________ Fecha: ___________
+Localidad: __________________ Hora inicio: ______
+Observador: _________________ Hora fin: ________
+Condiciones climáticas: ______________________
+
+Registros:
+# | Hora | Especie | Cantidad | Comportamiento | Notas
+--|------|---------|----------|----------------|-------
+1 |      |         |          |                |
+2 |      |         |          |                |
+```
+
+**Formato de tabla para datos:**
+
+| ID Muestra | Hora | Coordenadas | Variable 1 | Variable 2 | Variable 3 | Observaciones |
+|:------------|:------|:-------------|:------------|:------------|:------------|:---------------|
+| Test ID | Test | Test | Test | Test | Test | Test |
+
+## Trabajo de laboratorio 
+
+### Procesamiento de muestras biológicas
+
+**Plantas:**
+
+1. Prensado inmediato (en campo si es posible)
+2. Cambio de papel periódico cada 24 ? horas
+3. Secado durante 5-7 ? días
+4. Identificación con claves taxonómicas
+5. Montaje en cartulinas herbario (si aplica)
+6. Etiquetado completo
+
+**Insectos/invertebrados:**
+
+1. Sacrificio ético (congelación o alcohol 70%)
+2. Montaje en alfileres o preservación en alcohol
+3. Etiquetado (lugar, fecha, colector)
+4. Identificación con claves
+
+### Análisis de muestras de suelo/agua/aire
+
+**Procedimientos estándar:**
+
+- pH: Uso de pHmetro o tiras reactivas
+- Textura del suelo: Método del tacto o sedimentación
+- Materia orgánica: Método de ignición o Walkley-Black
+- Nutrientes: Kits colorimétricos
+- Turbidez del agua: Disco Secchi o turbidímetro
+- Otros equipos
+
+**Registro de resultados:**
+
+- Consulte si existen formularios creados por grupos de especialistas. En caso de existir, usar / modificar a partir de ellos
+- Cree formulario digital de colecta de datos (e.g. ODK, GoogleForms)
+- Pruebe el formulario digital antes de entrar en fase de producción
+
+
+## Gestión de datos
+
+### Formulario digital
+
+Si usa **ODK** o cualquier otra modalidad de formularios digitales, sólo necesitará subir los formularios rellenos desde los dispositivos con los que se colectó en campo (tabletas, móviles). No olvide realizar un control de calidad y validación final, y creé una copia de seguridad de la base de datos.
+
+
+### Base de datos digital
+
+En caso de no usar formularios digitales de colecta en campo, transfiera sus datos de campo a formato digital lo antes posible:
+
+**Excel/Google Sheets:**
+
+- Una fila = una observación
+- Una columna = una variable
+- Primera fila = nombres de variables
+- Sin celdas fusionadas
+- Sin colores o formatos complejos
+- Guarde copias de respaldo
+
+**Estructura recomendada:**
+
+| FechaID | Sitio | Latitud | Longitud | Especie | Abundancia | Var_Ambiental1 | Var_Ambiental2 |
+|:--------|:------|:--------|:---------|:--------|:-----------|:---------------|:---------------|
+| Test | Test | Test | Test | Test | Test | Test | Test |
+
+## Control de Calidad. Medidas para asegurar datos confiables
+
+- Estandarización de métodos entre observadores
+- Calibración de equipos
+- Verificación cruzada de identificaciones
+- Registro fotográfico o de especímenes voucher
+- Duplicación de mediciones críticas
+- Revisión diaria de datos en campo
+
+Antes de analizar, verifique:
+
+- No hay celdas vacías (use "NA" para datos faltantes)
+- Unidades son consistentes
+- No hay errores de tipeo evidentes
+- Los rangos de valores son lógicos
+- Todas las observaciones están completas
+
+
+## Recolección ética y legal
+
+**IMPORTANTE:** Antes de recolectar cualquier material biológico:
+
+1. Verifique si necesita permisos del Ministerio de Medio Ambiente
+2. Asegúrese de que las especies no están protegidas o en peligro
+3. Recolecte SOLO lo necesario (mínimo impacto)
+4. No recolecte en áreas protegidas sin autorización
+5. Respete propiedades privadas y comunidades locales
+
+---
+
+# FASE III: ANÁLISIS DE DATOS
+
+Aunque realizará los análisis después, debe planificarlos ahora.
+
+## Organización de Datos
+
+### Estructura de base de datos
+
+Principios básicos:
+
+- Una fila = una observación
+- Una columna = una variable
+- Nombres de columnas sin espacios ni caracteres especiales
+- Formato consistente (fechas, unidades, decimales)
+- Códigos claros para datos categóricos
+
+### Ejemplo de estructura
+
+```{r estructura-datos, eval=FALSE}
+# Ejemplo de estructura de datos limpia
+datos <- data.frame(
+  sitio_id = c("P01", "P01", "P02", "P02"),
+  fecha = as.Date(c("2025-03-15", "2025-03-15", "2025-03-16", "2025-03-16")),
+  especie = c("Melanerpes_striatus", "Turdus_plumbeus", 
+              "Melanerpes_striatus", "Coereba_flaveola"),
+  abundancia = c(2, 1, 3, 4),
+  area_ha = c(5.2, 5.2, 12.8, 12.8)
+)
+```
+
+## Estadística Descriptiva
+
+
+### Medidas de tendencia central (media, mediana)
+
+**Para cada variable cuantitativa, calcule:**
+
+1. **Medidas de tendencia central:**
+   - Media (promedio)
+   - Mediana (valor central)
+   - Moda (valor más frecuente)
+
+2. **Medidas de dispersión:**
+   - Rango (valor máximo - valor mínimo)
+   - Desviación estándar
+   - Coeficiente de variación
+
+3. **Distribución:**
+   - Histograma de frecuencias
+   - Gráfico de caja (boxplot)
+
+**Para variables cualitativas:**
+
+- Tablas de frecuencia
+- Gráficos de barras o circulares
+
+```{r estadistica-descriptiva, eval=FALSE}
+# Resumen estadístico básico
+library(dplyr)
+
+resumen <- datos %>%
+  group_by(sitio_id) %>%
+  summarise(
+    riqueza = n_distinct(especie),
+    abundancia_total = sum(abundancia),
+    abundancia_media = mean(abundancia),
+    desv_estandar = sd(abundancia)
+  )
+
+print(resumen)
+```
+
+### Visualización exploratoria
+
+#### Visualización de datos
+
+**Principios de buenos gráficos:**
+
+- Ejes claramente etiquetados con unidades
+- Leyendas descriptivas
+- Títulos informativos
+- Colores contrastantes pero no estridentes
+- Tamaño de fuente legible
+
+**Tipos de gráficos según el tipo de datos:**
+
+| Tipo de datos | Gráfico recomendado |
+|---------------|---------------------|
+| Una variable continua | Histograma, boxplot |
+| Una variable categórica | Gráfico de barras |
+| Dos variables continuas | Gráfico de dispersión |
+| Variable continua + categórica | Boxplot múltiple, gráfico de barras con error |
+| Datos espaciales | Mapas, mapas de calor |
+| Series temporales | Gráfico de líneas |
+
+```{r graficos-exploratorios, eval=FALSE}
+library(ggplot2)
+
+# Gráfico de barras - Riqueza por sitio
+ggplot(resumen, aes(x = sitio_id, y = riqueza)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Riqueza de Especies por Sitio",
+       x = "Sitio", y = "Número de Especies")
+
+# Gráfico de dispersión
+ggplot(datos, aes(x = area_ha, y = abundancia)) +
+  geom_point(size = 3, alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE) +
+  theme_minimal() +
+  labs(title = "Relación Área-Abundancia",
+       x = "Área del parque (ha)", y = "Abundancia")
+```
+
+### Medidas de dispersión (desviación estándar, rango)
+
+### Gráficos que elaborará (histogramas, boxplots, gráficos de dispersión)
+
+## Análisis Estadístico Inferencial (si aplica):
+
+### Pruebas de normalidad
+
+Antes de usar estadística paramétrica, verifique si sus datos siguen una distribución normal:
+
+- **Prueba de Shapiro-Wilk** (para n < 50)
+- **Prueba de Kolmogorov-Smirnov** (para n ≥ 50)
+- **Inspección visual:** Gráfico Q-Q
+
+**Si los datos NO son normales:**
+
+- Use pruebas no paramétricas, o
+- Transforme los datos (log, raíz cuadrada, arcoseno)
+   
+### Pruebas de hipótesis (t-test, ANOVA, chi-cuadrado, correlaciones)
+ 
+### Nivel de significancia (usualmente α = 0.05)
+   
+### Comparación de grupos
+
+**Dos grupos:**
+
+- Datos normales: Prueba t de Student
+- Datos no normales: Prueba U de Mann-Whitney
+
+**Tres o más grupos:**
+
+- Datos normales: ANOVA de una vía
+- Datos no normales: Prueba de Kruskal-Wallis
+
+**Pruebas post-hoc** (cuando ANOVA es significativo):
+
+- Prueba de Tukey
+- Prueba de Bonferroni
+   
+### Selección de prueba estadística
+
+```
+ÁRBOL DE DECISIÓN:
+
+¿Qué tipo de datos tengo?
+├─ Categóricos
+│  ├─ 2 grupos → Chi-cuadrado, Prueba exacta de Fisher
+│  └─ >2 grupos → Chi-cuadrado
+└─ Numéricos
+   ├─ ¿Distribución normal?
+   │  ├─ SÍ → Pruebas paramétricas
+   │  │  ├─ 2 grupos → t de Student
+   │  │  └─ >2 grupos → ANOVA
+   │  └─ NO → Pruebas no paramétricas
+   │     ├─ 2 grupos → Mann-Whitney U
+   │     └─ >2 grupos → Kruskal-Wallis
+   └─ ¿Relación entre variables?
+      └─ Correlación, Regresión
+```
+
+### Pruebas de supuestos
+
+```{r supuestos, eval=FALSE}
+# Prueba de normalidad
+shapiro.test(datos$abundancia)
+
+# Prueba de homocedasticidad
+library(car)
+leveneTest(abundancia ~ sitio_id, data = datos)
+
+# Gráficos de diagnóstico
+par(mfrow = c(2, 2))
+plot(lm(abundancia ~ area_ha, data = datos))
+```
+
+### Ejemplos de análisis comunes
+
+**Comparación de medias (t-test):**
+
+```{r t-test, eval=FALSE}
+# Comparar abundancia entre dos tipos de hábitat
+t.test(abundancia ~ tipo_habitat, data = datos)
+```
+
+**ANOVA:**
+
+```{r anova, eval=FALSE}
+# Comparar riqueza entre múltiples sitios
+modelo_anova <- aov(riqueza ~ sitio_id, data = datos)
+summary(modelo_anova)
+
+# Comparaciones post-hoc
+TukeyHSD(modelo_anova)
+```
+
+### Relaciones entre variables
+
+**Correlación:**
+
+- Datos normales: Correlación de Pearson (r)
+- Datos no normales: Correlación de Spearman (ρ)
+
+**Interpretación del coeficiente de correlación:**
+
+- 0.0 - 0.3: Correlación débil
+- 0.3 - 0.7: Correlación moderada
+- 0.7 - 1.0: Correlación fuerte
+
+```{r correlacion, eval=FALSE}
+# Correlación entre área y riqueza
+cor.test(datos$area_ha, datos$riqueza, method = "pearson")
+```
+
+**Regresión lineal:**
+
+- Cuando una variable predice a otra
+- Ecuación: y = a + bx
+- Reporte R² (porcentaje de varianza explicada)
+
+```{r regresion, eval=FALSE}
+# Modelo de regresión
+modelo <- lm(riqueza ~ area_ha + cobertura_arborea, data = datos)
+summary(modelo)
+
+# Diagnóstico del modelo
+par(mfrow = c(2, 2))
+plot(modelo)
+```
+
+## Análisis Específicos por Disciplina
+
+### Ecología - Índices de diversidad
+
+#### Análisis de diversidad biológica
+
+**Índices comunes:**
+
+1. **Riqueza (S):** Número total de especies
+
+2. **Índice de Shannon (H'):**
+   - Rango: 0 (baja diversidad) a ~5 (alta diversidad)
+   - Considera riqueza y equitatividad
+
+3. **Índice de Simpson (D):**
+   - Rango: 0 (máxima diversidad) a 1 (mínima diversidad)
+   - Probabilidad de que dos individuos tomados al azar sean de la misma especie
+
+4. **Equitatividad de Pielou (J):**
+   - Rango: 0 a 1
+   - Cómo de uniforme es la distribución de abundancias
+
+5. **Comparación de comunidades:**
+    - Índice de similitud de Jaccard (presencia/ausencia)
+    - Índice de similitud de Bray-Curtis (abundancias)
+    - Análisis de agrupamiento (cluster)
+
+```{r indices-diversidad, eval=FALSE}
+library(vegan)
+
+# Crear matriz de comunidades (sitios x especies)
+comunidad <- datos %>%
+  select(sitio_id, especie, abundancia) %>%
+  pivot_wider(names_from = especie, 
+              values_from = abundancia, 
+              values_fill = 0)
+
+# Índice de Shannon
+shannon <- diversity(comunidad[,-1], index = "shannon")
+
+# Índice de Simpson
+simpson <- diversity(comunidad[,-1], index = "simpson")
+
+# Curva de rarefacción
+rarecurve(comunidad[,-1], step = 1, sample = min(rowSums(comunidad[,-1])))
+```
+
+### Biogeografía - Análisis espacial
+
+```{r analisis-espacial, eval=FALSE}
+library(sf)
+library(raster)
+
+# Calcular áreas de distribución
+distribuciones <- st_read("distribuciones_especies.shp")
+areas <- st_area(distribuciones)
+
+# Análisis de clustering espacial
+coords <- st_coordinates(sitios)
+distancias <- dist(coords)
+cluster <- hclust(distancias, method = "ward.D2")
+plot(cluster)
+```
+
+### Geomorfología - Análisis morfométrico
+
+```{r morfometria, eval=FALSE}
+library(raster)
+
+# Cargar modelo digital de elevación
+dem <- raster("dem.tif")
+
+# Calcular pendientes
+pendiente <- terrain(dem, opt = "slope")
+
+# Calcular aspecto
+aspecto <- terrain(dem, opt = "aspect")
+
+# Visualizar
+plot(pendiente, main = "Pendiente (%)")
+```
+
+## Software que utilizará
+
+   - Excel (para cálculos básicos)
+   - R, PAST, SPSS (para análisis estadísticos)
+   - QGIS (para análisis espaciales)
+   
+---
+
+# FASE IV: INTERPRETACIÓN Y DISCUSIÓN
+
+## Interpretación de resultados 
+
+### Significancia estadística vs. significancia biológica
+
+**p-valor < 0.05** significa:
+
+- Hay menos del 5% de probabilidad de que el resultado sea por azar
+- El resultado es "estadísticamente significativo"
+
+**PERO también pregúntese:**
+
+- ¿El efecto es lo suficientemente grande para ser importante?
+- ¿Tiene sentido biológico o ecológico?
+- ¿Es consistente con la teoría existente?
+
+### Errores comunes a evitar
+
+❌ "Se demostró que..." → ✓ "Los resultados sugieren que..."  
+❌ "No hubo diferencias" → ✓ "No se detectaron diferencias significativas (p = 0.23)"  
+❌ "La correlación prueba causalidad" → ✓ "Existe una asociación entre..."  
+
+## Pasos para interpretar
+
+1. **Describa los resultados objetivamente**
+   - ¿Qué encontró?
+   - ¿Los resultados apoyan o rechazan su hipótesis?
+
+2. **Compare con la literatura**
+   - ¿Sus resultados concuerdan con estudios previos?
+   - ¿Hay diferencias? ¿Por qué?
+
+3. **Explique los mecanismos**
+   - ¿Qué procesos biológicos, ecológicos o geomorfológicos explican sus resultados?
+   - Proponga explicaciones basadas en teoría
+
+4. **Reconozca limitaciones**
+   - ¿Qué factores pudieron afectar sus resultados?
+   - ¿Qué no pudo controlar?
+
+5. **Implicaciones**
+   - ¿Qué significan sus resultados para la ciencia y la conservación?
+   - ¿Qué aplicaciones prácticas tienen?
+
+## Estructura de la Discusión
+
+### Párrafo 1: Hallazgo principal
+> "Este estudio encontró que [resultado principal]. Este hallazgo [apoya/contradice] la hipótesis de que [hipótesis]..."
+
+### Párrafo 2-3: Comparación con literatura
+> "Resultados similares han sido reportados por [Autor, año], quien encontró... Sin embargo, nuestros resultados difieren de [Autor, año] en..."
+
+### Párrafo 4: Mecanismos explicativos
+> "Una posible explicación para [resultado] es que [mecanismo biológico/ecológico]. Esto se debe a..."
+
+### Párrafo 5: Limitaciones
+> "Este estudio presenta limitaciones relacionadas con... Futuras investigaciones deberían..."
+
+### Párrafo 6: Implicaciones
+> "Los resultados de esta investigación tienen implicaciones para [conservación/manejo/teoría]..."
+
+---
+
+# FASE V: COMUNICACIÓN CIENTÍFICA
+
+## Estructura del Informe Final
+
+Su informe debe seguir el formato estándar de artículos científicos. En esta fase deberá redactar las secciones y subsecciones obligatorias, y también deberá crear las figuras y tablas que apoyen sus redacción. Le incluimos a continuación pautas y recomendaciones a seguir.
+
+### Secciones y subsecciones obligatorias
+
+#### **Portada**
+
+- Título del proyecto (claro y descriptivo, máximo 20 palabras)
+- Nombre(s) del/los autor(es)
+- Afiliación institucional
+- Asignatura y código
+- Docente
+- Fecha de entrega
+
+#### **Resumen**
+
+Escrito en un solo párrafo. Debe poder entenderse independientemente del resto del documento. (200-250 palabras)
+
+- Introducción breve (1-2 oraciones)
+- Objetivo (1 oración)
+- Métodología (2-3 oraciones)
+- Resultados principales (3-4 oraciones)
+- Conclusión (1-2 oraciones)
+- Palabras clave (4-7), términos separados por comas
+
+**Ejemplo de resumen bien escrito:**
+
+"Los manglares costeros proveen servicios ecosistémicos vitales, pero enfrentan presiones antrópicas crecientes. Este estudio evaluó la estructura y diversidad del manglar de Boca Chica, República Dominicana, y su relación con variables ambientales. Se establecieron 15 parcelas de 10×10 m distribuidas sistemáticamente a lo largo del manglar. En cada parcela se identificaron especies, se midió el diámetro a la altura del pecho (DAP) y la altura de todos los árboles ≥5 cm de DAP, y se registraron variables edáficas (salinidad, pH, materia orgánica). Se identificaron tres especies de mangle: *Rhizophora mangle* (74%), *Laguncularia racemosa* (18%) y *Avicennia germinans* (8%). El índice de diversidad de Shannon fue de 0.68, indicando baja diversidad específica pero dominancia de *R. mangle*. La densidad arbórea correlacionó negativamente con la salinidad del suelo (r = -0.67, p < 0.01). Los resultados sugieren que el manglar mantiene una estructura relativamente saludable, pero la alta salinidad en zonas específicas podría limitar el establecimiento de plántulas. Se recomienda monitorear la dinámica poblacional y los cambios en salinidad asociados al desarrollo costero cercano.
+
+Palabras clave: manglar, estructura forestal, salinidad, *Rhizophora mangle*, ecosistemas costeros, República Dominicana"
+
+#### **Introducción** (1-3 páginas)
+
+**Estructura tipo embudo (de lo general a lo específico):**
+
+- Contexto general. ¿Por qué este tema es importante en biología/ecología/geografía?. Conceptos teóricos fundamentales (1-2 párrafos)
+- Marco teórico
+- Vacío de conocimiento
+   
+##### **Características de una buena introducción**
+  
+  - Cita al menos 10-15 referencias relevantes y recientes
+  - Fluye lógicamente de un párrafo al otro
+  - No incluye resultados ni métodos
+  - Termina claramente estableciendo qué hará el estudio
+   
+##### **Antecedentes** (1-3 páginas)
+
+**Estructura tipo embudo (de lo general a lo específico):**
+
+- ¿Qué se sabe sobre este tema?
+- Revisión de estudios previos relevantes
+- ¿Qué vacíos de conocimiento existen?
+   
+##### **Justificación** (1-2 páginas)
+
+**Estructura tipo embudo (de lo general a lo específico):**
+
+- ¿Por qué es importante estudiar esto aquí?
+- Relevancia para el contexto dominicano/caribeño
+   
+##### **Pregunta(s) de investigación, objetivos, Hipótesis** (1-2 páginas)
+
+- Pregunta de investigación clara
+- Objetivo general y específicos
+- Hipótesis (si aplica)
+
+#### **Materiales y Métodos** (2-4 páginas).
+
+Debe estar escrita en pasado y con suficiente detalle para que sea replicable.
+
+##### **Área de estudio**
+
+- Ubicación precisa (coordenadas, elevación)
+- Características biofísicas relevantes
+- Mapa del área claramente etiquetado
+- Justificación de la selección
+
+##### **Diseño de muestreo**
+
+- Tipo de diseño (experimental, observacional, descriptivo)
+- Unidades de muestreo
+- Tamaño de muestra y justificación
+- Método de selección de sitios
+- Recolección de datos
+
+##### **Variables medidas**
+
+- Definición operacional de cada variable
+- Método de medición
+- Equipos utilizados
+- Unidades de medida
+
+##### **Procedimientos de campo/laboratorio**
+
+- Descripción paso a paso
+- Protocolos específicos
+- Timing y frecuencia de muestreo
+- Control de calidad
+- Análisis estadístico
+   
+##### **Análisis de datos**
+
+- Software utilizado
+- Pruebas estadísticas específicas
+- Nivel de significancia
+- Tratamiento de datos faltantes o atípicos
+
+**Redacción en metodología:**
+
+- "Se establecieron 20 parcelas de 5×5 m..."  
+- "Las muestras de agua se recolectaron utilizando botellas de plástico estériles..."  
+- "Los datos se analizaron mediante ANOVA de una vía..."  
+
+#### **Resultados** (3-5 páginas)
+
+**Principios de esta sección:**
+
+- Presente solo hechos objetivos, sin interpretación
+- Organice de acuerdo a sus objetivos específicos
+- Use subtítulos para claridad
+- Integre tablas y figuras en el texto
+- No repita en texto lo que ya está en tablas/figuras
+- Presentación objetiva de hallazgos
+- Figuras y tablas
+- Sin interpretación
+   
+A continuación se desglosa una estructura sugerida de la sección "Resultados".
+
+##### **Estadística descriptiva general**
+
+- Resumen de datos recolectados
+- Descripción de patrones generales observados
+
+##### **Resultados por objetivo específico**
+
+- Un subtítulo por cada objetivo
+- Presente los datos, luego los resultados estadísticos
+
+##### **Resultados estadísticos**
+
+- Reporte valores de pruebas con formato estándar
+- Ejemplo: "La riqueza de especies difirió significativamente entre hábitats (F₂,₃₃ = 8.45, p = 0.001)"
+
+##### **Integración de figuras**
+
+"La diversidad de especies fue significativamente mayor en el bosque nuboso (H' = 2.8 ± 0.3) comparado con el bosque seco (H' = 1.9 ± 0.2) y el matorral (H' = 1.5 ± 0.3) (Figura 1)."
+
+##### **Tablas y figuras**
+
+- Cada una debe tener un número y un título descriptivo
+- Tablas: título arriba
+- Figuras: título abajo
+- Referéncielas todas en el texto
+- Deben ser autoexplicativas
+
+Ver [esta sección](#sec-caracteristicas-buenas-figuras) para más detalles sobre características de las figuras y tablas.
+
+#### **Discusión** (3-4 páginas)
+
+- Interpretación de resultados
+- Comparación con literatura
+- Limitaciones
+- Implicaciones
+
+**Esta es la sección más compleja. Estructura sugerida:**
+
+##### **Resumen e interpretación de hallazgos principales** (1 párrafo)
+
+- Reafirme brevemente los resultados más importantes
+- Responda directamente a su pregunta de investigación
+
+##### **Interpretación en contexto de la literatura** (2-3 párrafos por resultado principal)
+
+- Compare sus resultados con estudios previos
+- ¿Coinciden o difieren? ¿Por qué?
+- Explique mecanismos ecológicos/biológicos/geográficos
+- Conecte con teorías relevantes
+
+##### **Implicaciones** (1-2 párrafos)
+
+- ¿Qué significan sus resultados para la comprensión del sistema?
+- Relevancia para conservación/manejo (si aplica)
+- Contribución al conocimiento local/regional
+
+##### **Limitaciones del estudio** (1 párrafo)
+
+- Sea honesto sobre las debilidades metodológicas
+- Factores que pudieron afectar los resultados
+- No use esto como excusa, sino como reflexión crítica
+
+##### **Recomendaciones para investigaciones futuras** (1 párrafo)
+
+- Preguntas que surgieron de su estudio
+- Aspectos que requieren mayor investigación
+- Mejoras metodológicas sugeridas
+
+##### **Errores comunes a evitar en la Discusión**
+
+❌ Repetir resultados sin interpretarlos  
+❌ Especular sin respaldo de datos o literatura  
+❌ Introducir información nueva que debió estar en introducción  
+❌ Sobreinterpretar resultados no significativos  
+
+##### **Estilo de redacción en discusión**
+
+- Use lenguaje cauto: "sugiere", "indica", "es consistente con"
+- Integre múltiples resultados
+- Mantenga el flujo lógico entre párrafos
+- Cite literatura relevante
+
+#### **Conclusiones** (1 página)
+
+- Respuesta a objetivos
+- Contribución al conocimiento
+- Recomendaciones
+   
+**Breve y concisa:**
+
+- 3-5 puntos principales en viñetas o párrafos cortos
+- Responda directamente a cada objetivo
+- Base cada conclusión en sus datos
+- Evite repetir la discusión
+- No incluya nueva información
+
+**Formato sugerido:**
+
+1. Conclusión relacionada con objetivo 1
+2. Conclusión relacionada con objetivo 2
+3. Conclusión relacionada con objetivo 3
+4. Conclusión general integradora
+
+#### **Referencias**
+
+- Formato consistente (APA, Vancouver, etc.)
+   
+**Sistema APA 7ma edición (ejemplos):**
+
+**Artículo de revista:**
+
+Hernández, M. A., García, R. L., & Pérez, S. J. (2023). Diversidad de orquídeas en bosques montanos de la Hispaniola. *Caribbean Journal of Science*, 52(3), 245-262. https://doi.org/10.18475/cjos.v52i3.a1
+
+**Libro:**
+
+Smith, T. M., & Smith, R. L. (2020). *Elements of ecology* (10th ed.). Pearson Education.
+
+**Capítulo de libro:**
+
+Rodríguez, C. (2022). Geomorfología fluvial del Caribe. En J. López & M. Torres (Eds.), *Geografía física de las Antillas* (pp. 134-167). Editorial Universitaria.
+
+**Recurso web:**
+
+Ministerio de Medio Ambiente y Recursos Naturales. (2021). *Áreas protegidas de República Dominicana*. https://ambiente.gob.do/areas-protegidas/
+
+
+**Sistema Vancouver (ejemplos)**
+
+**Artículo de revista:**
+
+1. Hernández MA, García RL, Pérez SJ. Diversidad de orquídeas en bosques montanos de la Hispaniola. Caribb J Sci. 2023;52(3):245-62. doi: 10.18475/cjos.v52i3.a1.
+
+**Libro:**
+
+2. Smith TM, Smith RL. Elements of Ecology. 10th ed. Pearson Education; 2020.
+
+**Capítulo de libro:**
+
+3. Rodríguez C. Geomorfología fluvial del Caribe. En: López J, Torres M, editores. Geografía física de las Antillas. Editorial Universitaria; 2022. p. 134-67.
+
+**Recurso web:**
+
+4. Ministerio de Medio Ambiente y Recursos Naturales. Áreas protegidas de República Dominicana [Internet]. 2021 [citado 2024 Oct 22]. Disponible en: https://ambiente.gob.do/areas-protegidas/
+
+**Mínimo 20 referencias para el informe final**
+
+- Al menos 15 deben ser artículos científicos revisados por pares
+- Priorice literatura de los últimos 10 años
+- Incluya estudios locales/regionales cuando existan
+
+#### **Apéndices/Anexos** (opcional). Incluya material suplementario:
+ - Datos crudos
+ - Análisis adicionales
+ - Protocolos detallados
+ - Tablas de datos completas (si son extensas)
+ - Fichas de campo utilizadas
+ - Fotografías adicionales
+ - Claves de identificación usadas
+ - Mapas detallados
+ - Resultados estadísticos completos
+
+## Figuras y Tablas
+
+### Características de buenas figuras {#sec-caracteristicas-buenas-figuras}
+
+- **Claras:** Fáciles de interpretar
+- **Auto-explicativas:** Incluyen toda la información necesaria
+- **Profesionales:** Buena resolución, tipografía legible
+- **Relevantes:** Aportan información importante
+
+### Elementos de una figura
+
+- Título numerado (Figura 1, 2, 3...)
+- Leyenda descriptiva completa
+- Ejes etiquetados con unidades
+- Símbolos definidos en leyenda
+- Escala apropiada
+
+### Ejemplo de código para figura publicable
+
+```{r figura-publicable, eval=FALSE}
+library(ggplot2)
+library(ggpubr)
+
+# Crear gráfico profesional
+p <- ggplot(datos, aes(x = area_ha, y = riqueza)) +
+  geom_point(size = 3, alpha = 0.7, color = "darkblue") +
+  geom_smooth(method = "lm", se = TRUE, 
+              color = "red", fill = "pink", alpha = 0.2) +
+  theme_classic() +
+  theme(
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10)
+  ) +
+  labs(
+    x = "Área del parque (hectáreas)",
+    y = "Riqueza de especies de aves",
+    title = ""
+  ) +
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+           label.x = 3, label.y = 25)
+
+# Guardar en alta resolución
+ggsave("figura1_area_riqueza.png", p, 
+       width = 6, height = 4, dpi = 300)
+```
+
+### Tablas efectivas
+
+**Buenas prácticas:**
+
+- Título numerado y descriptivo
+- Encabezados claros
+- Unidades especificadas
+- Notas al pie para aclaraciones
+- Formato simple (evitar líneas verticales excesivas)
+
+```{r tabla-ejemplo, eval=FALSE}
+library(knitr)
+library(kableExtra)
+
+# Crear tabla profesional
+tabla_resultados <- data.frame(
+  Sitio = c("Parque Mirador Sur", "Parque Nacional", "Jardín Botánico"),
+  Area_ha = c(105, 42, 180),
+  Riqueza = c(45, 32, 58),
+  Shannon = c(2.8, 2.3, 3.1)
+)
+
+kable(tabla_resultados, 
+      col.names = c("Sitio", "Área (ha)", "Riqueza", "H'"),
+      caption = "Tabla 1. Características de los sitios de estudio y diversidad de aves registrada") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+## Redacción Científica
+
+### Principios de buena escritura
+
+1. **Claridad:** Ideas expresadas sin ambigüedad
+2. **Precisión:** Términos técnicos usados correctamente
+3. **Brevedad:** Sin palabras innecesarias
+4. **Objetividad:** Evitar opiniones personales
+5. **Coherencia:** Ideas conectadas lógicamente
+
+### Tiempos verbales
+
+- **Introducción:** Presente (conceptos establecidos), Pasado (estudios previos)
+- **Métodos:** Pasado
+- **Resultados:** Pasado
+- **Discusión:** Presente y Pasado
+- **Conclusiones:** Presente
+
+### Errores comunes a evitar
+
+❌ Primera persona narrativa: "Yo observé que..."
+✓ Voz pasiva o impersonal: "Se observó que..."
+
+❌ Lenguaje coloquial: "Las aves estaban súper activas"
+✓ Lenguaje técnico: "Se registró alta actividad de forrajeo"
+
+❌ Interpretación en resultados: "La riqueza fue alta porque..."
+✓ Descripción objetiva: "La riqueza fue de 45 especies"
+
+❌ Datos sin contexto: "El valor fue 3.2"
+✓ Datos con unidades: "El índice de Shannon fue H' = 3.2"
+
+## Referencias Bibliográficas
+
+### Sistema APA (7ª edición)
+
+**Artículo de revista:**
+
+> Autor, A. A., & Autor, B. B. (Año). Título del artículo. *Nombre de la Revista*, *volumen*(número), páginas. https://doi.org/xxxxx
+
+**Libro:**
+
+> Autor, A. A. (Año). *Título del libro*. Editorial.
+
+**Capítulo de libro:**
+
+> Autor, A. A. (Año). Título del capítulo. En B. B. Editor (Ed.), *Título del libro* (pp. xxx-xxx). Editorial.
+
+### Sistema Vancouver (ejemplos)
+
+**Artículo de revista:**
+
+1. Hernández MA, García RL, Pérez SJ. Diversidad de orquídeas en bosques montanos de la Hispaniola. Caribb J Sci. 2023;52(3):245-62. doi: 10.18475/cjos.v52i3.a1.
+
+**Libro:**
+
+2. Smith TM, Smith RL. Elements of Ecology. 10th ed. Pearson Education; 2020.
+
+**Capítulo de libro:**
+
+3. Rodríguez C. Geomorfología fluvial del Caribe. En: López J, Torres M, editores. Geografía física de las Antillas. Editorial Universitaria; 2022. p. 134-67.
+
+**Recurso web:**
+
+4. Ministerio de Medio Ambiente y Recursos Naturales. Áreas protegidas de República Dominicana [Internet]. 2021 [citado 2024 Oct 22]. Disponible en: https://ambiente.gob.do/areas-protegidas/
+
+### Gestores de referencias
+
+Recomendados:
+
+- **Zotero** (gratuito, código abierto)
+- **Mendeley** (gratuito)
+- **EndNote** (pago)
+
+### Póster científico (digital)
+
+Además del informe, presentará su trabajo en formato de póster.
+
+**Dimensiones:** 90 cm ancho × 120 cm alto (formato vertical)
+
+**Estructura del póster:**
+
+```
+┌─────────────────────────────────────┐
+│        TÍTULO (grande y claro)       │
+│     Autores, Institución, Fecha      │
+├──────────────┬──────────────────────┤
+│              │                       │
+│ INTRODUCCIÓN │    RESULTADOS         │
+│              │   (gráficos grandes)  │
+│              │                       │
+├──────────────┤                       │
+│              │                       │
+│ METODOLOGÍA  │                       │
+│  (breve)     │                       │
+│              ├──────────────────────┤
+│              │                       │
+│              │    CONCLUSIONES       │
+│              │                       │
+└──────────────┴──────────────────────┘
+```
+
+**Principios de diseño:**
+
+- Fuente mínima: 24 pts para texto, 36-48 pts para títulos
+- Use viñetas, no párrafos largos
+- Máximo 300-400 palabras en total
+- Gráficos grandes y coloridos
+- Fondo claro, texto oscuro
+- Deje espacios en blanco (no abigarrado)
+- Fotografías del sitio de estudio
+
+**Herramientas recomendadas:**
+
+- R
+- PowerPoint
+- Canva 
+- Adobe Illustrator 
+
+## Presentación Oral
+
+### Estructura de presentación (15 minutos)
+
+**Duración:** 10 minutos + 5 minutos de preguntas
+
+1. **Título y autores** (1 diap.) (30 seg)
+2. **Introducción** (1-3 diap.) (2 min)
+   - Contexto
+   - Pregunta de investigación
+   - Objetivos e hipótesis
+3. **Métodos** (2-3 diap.) (2 min)
+   - Área de estudio (mapa)
+   - Diseño de muestreo
+   - Análisis
+4. **Resultados** (4-5 diap.) (2 min)
+   - Figuras principales
+   - Hallazgos clave
+5. **Discusión** (2-3 diap.) (2.5 min)
+   - Interpretación
+   - Comparación con literatura
+6. **Conclusiones** (1 diap.) (30 seg)
+   - Mensajes principales
+   - Implicaciones
+7. **Agradecimientos** (1 diap.) (30 seg)
+
+### Consejos para presentaciones efectivas
+
+**Diseño de diapositivas:**
+
+- Máximo 6 líneas de texto por diapositiva
+- Tamaño de fuente ≥ 24 puntos
+- Contraste alto (texto oscuro sobre fondo claro)
+- Imágenes de alta calidad
+- Evitar animaciones distractoras
+
+**Consejos / Práctica de presentación:**
+
+- Ensaye múltiples veces
+- No lea las diapositivas
+- Tiempo: 1-2 minutos por diapositiva
+- Prepare respuestas a preguntas potenciales y difíciles
+- Mantenga contacto visual
+- Contacto visual con la audiencia
+- Use lenguaje accesible (pero preciso)
+- Hable claro y pausado
+
+---
+
+# CRONOGRAMA Y ENTREGABLES
+
+## Cronograma Semestral
+
+```{r cronograma, echo=FALSE, eval=FALSE}
+library(timevis)
+
+cronograma <- data.frame(
+  id = 1:12,
+  content = c("Selección de tema", "Revisión bibliográfica", 
+              "Protocolo de investigación", "Trabajo de campo 1",
+              "Trabajo de campo 2", "Trabajo de campo 3",
+              "Análisis preliminar", "Análisis estadístico",
+              "Redacción de informe", "Revisión y correcciones",
+              "Preparación de presentación", "Presentación final"),
+  start = seq(as.Date("2025-01-15"), by = "2 weeks", length.out = 12),
+  end = seq(as.Date("2025-01-29"), by = "2 weeks", length.out = 12)
+)
+
+timevis(cronograma)
+```
+
+Cree una tabla especificando:
+
+| Actividad | Entregable | Semana a | Semana b | Semana c | Semana d |
+|-----------|----------|----------|----------|----------|
+| Selección y delimitación del tema | Propuesta de tema (1 página) | X | | | |
+| Revisión de literatura y marco teórico | Bibliografía anotada (10-15 fuentes) | X | | | |
+| Diseño metodológico | Protocolo completo (2-5 páginas) | X | | | |
+| Reconocimiento del área | X | X | | |
+| Trabajo de campo/recolección de datos | Datos crudos organizados | X | X | | |
+| Procesamiento de muestras | X | X | | |
+| Análisis de datos | Gráficos y tablas preliminares | | | X | |
+| Redacción de informe | Borrador del informe | | | X | |
+| Revisiones finales | Informe final | | | X| |
+| Preparación de presentación | Diapositivas | | | | X |
+| Presentaciones orales | Presentación (15 min) | | | | X |
+
+<!-- ## 7.2 Entregables Evaluables -->
+
+<!-- ### 7.2.1 Propuesta de investigación (10%) -->
+<!-- **Fecha de entrega:** Semana X -->
+<!-- **Contenido:** -->
+<!-- - Título tentativo -->
+<!-- - Introducción breve -->
+<!-- - Pregunta de investigación -->
+<!-- - Objetivos -->
+<!-- - Metodología propuesta -->
+<!-- - Extensión: 5-8 páginas -->
+
+<!-- ### 7.2.2 Protocolo de investigación (20%) -->
+<!-- **Fecha de entrega:** Semana X -->
+<!-- **Contenido completo:** -->
+<!-- - Introducción y marco teórico -->
+<!-- - Pregunta e hipótesis -->
+<!-- - Objetivos -->
+<!-- - Metodología detallada -->
+<!-- - Cronograma específico -->
+<!-- - Referencias -->
+<!-- - Extensión: 8-10 páginas -->
+
+<!-- ### 7.2.3 Presentación de avances (10%) -->
+<!-- **Fecha:** Semana X -->
+<!-- **Formato:** 10 minutos + 5 preguntas -->
+<!-- **Contenido:** -->
+<!-- - Introducción -->
+<!-- - Métodos empleados -->
+<!-- - Resultados preliminares -->
+<!-- - Desafíos enfrentados -->
+<!-- - Próximos pasos -->
+
+<!-- ### 7.2.4 Informe final (40%) -->
+<!-- **Fecha de entrega:** Semana 14 -->
+<!-- **Formato:** Documento RMarkdown (.Rmd) y PDF/HTML compilado -->
+<!-- **Extensión:** 15-20 páginas (sin contar referencias y apéndices) -->
+<!-- **Evaluación según rúbrica detallada en sección 7.3** -->
+
+<!-- ### 7.2.5 Presentación final (20%) -->
+<!-- **Fecha:** Semana 16 -->
+<!-- **Formato:** 15 minutos + 5 preguntas -->
+<!-- **Evaluación:** Claridad, contenido científico, respuestas a preguntas -->
+
+<!-- ## 7.3 Rúbricas de Evaluación -->
+
+<!-- ### 7.3.1 Rúbrica del informe final -->
+
+<!-- | Criterio | Excelente (5) | Bueno (4) | Satisfactorio (3) | Insuficiente (1-2) | Peso | -->
+<!-- |----------|---------------|-----------|-------------------|-------------------|------| -->
+<!-- | **Introducción y marco teórico** | Revisión exhaustiva, pregunta claramente definida, hipótesis fundamentada | Revisión adecuada, pregunta clara, hipótesis presente | Revisión básica, pregunta poco clara | Revisión insuficiente, pregunta vaga | 15% | -->
+<!-- | **Metodología** | Diseño robusto, métodos bien descritos, replicable | Diseño adecuado, métodos claros | Diseño básico, métodos incompletos | Diseño inadecuado, métodos confusos | 20% | -->
+<!-- | **Resultados** | Análisis apropiado, figuras excelentes, resultados claros | Análisis correcto, figuras buenas | Análisis básico, figuras adecuadas | Análisis inadecuado, figuras deficientes | 25% | -->
+<!-- | **Discusión** | Interpretación profunda, comparación crítica con literatura | Interpretación correcta, comparación presente | Interpretación superficial | Interpretación deficiente o ausente | 20% | -->
+<!-- | **Redacción y formato** | Escritura clara, sin errores, formato profesional | Escritura clara, pocos errores | Escritura aceptable, varios errores | Escritura deficiente, muchos errores | 10% | -->
+<!-- | **Referencias** | Citación correcta, fuentes relevantes y actuales | Citación correcta, fuentes adecuadas | Citación con errores menores | Citación incorrecta o insuficiente | 5% | -->
+<!-- | **Originalidad** | Contribución significativa, enfoque creativo | Contribución presente, enfoque adecuado | Contribución mínima | Sin contribución original | 5% | -->
+
+<!-- ### 7.3.2.a Rúbrica de presentación oral -->
+
+<!-- | Criterio | Excelente (5) | Bueno (4) | Satisfactorio (3) | Insuficiente (1-2) | Peso | -->
+<!-- |----------|---------------|-----------|-------------------|-------------------|------| -->
+<!-- | **Contenido científico** | Información precisa, completa y relevante | Información correcta y adecuada | Información básica presente | Información incorrecta o incompleta | 35% | -->
+<!-- | **Organización** | Secuencia lógica, transiciones fluidas | Bien organizado, transiciones presentes | Organización básica | Desorganizado | 20% | -->
+<!-- | **Diapositivas** | Diseño profesional, gráficos excelentes | Diseño claro, gráficos buenos | Diseño simple, gráficos básicos | Diseño deficiente | 20% | -->
+<!-- | **Comunicación oral** | Claro, seguro, buen ritmo | Claro, adecuado | Comprensible | Confuso o monótono | 15% | -->
+<!-- | **Manejo del tiempo** | Exacto (±30 seg) | Aceptable (±1 min) | Se excede o queda corto | Muy corto o muy largo | 10% | -->
+
+<!-- ## 7.3.2.b CRITERIOS DE EVALUACIÓN -->
+
+<!-- ### 7.1 Rúbrica de evaluación del proyecto completo -->
+
+<!-- **Propuesta de investigación (20% de la calificación final)** -->
+
+<!-- | Criterio | Excelente (4-5) | Bueno (3) | Aceptable (2) | Insuficiente (0-1) | -->
+<!-- |----------|----------------|-----------|---------------|-------------------| -->
+<!-- | Pregunta de investigación | Clara, específica, relevante y viable | Clara y específica | Vaga o demasiado amplia | Ausente o inadecuada | -->
+<!-- | Justificación | Bien fundamentada con literatura | Fundamentada básicamente | Débil o genérica | Ausente | -->
+<!-- | Objetivos | Específicos, medibles y alineados | Claros pero generales | Vagos o desalineados | Confusos | -->
+<!-- | Metodología | Detallada, replicable, apropiada | Adecuada pero incompleta | Básica o imprecisa | Inadecuada | -->
+<!-- | Referencias | >10 fuentes relevantes, bien citadas | 7-10 fuentes adecuadas | <7 fuentes o mal citadas | Insuficientes | -->
+
+<!-- **Trabajo de campo/laboratorio (25%)** -->
+
+<!-- | Criterio | Excelente (4-5) | Bueno (3) | Aceptable (2) | Insuficiente (0-1) | -->
+<!-- |----------|----------------|-----------|---------------|-------------------| -->
+<!-- | Recolección de datos | Sistemática, completa, bien documentada | Adecuada y organizada | Básica, algunos vacíos | Desorganizada o incompleta | -->
+<!-- | Libreta de campo | Detallada, clara, con metadatos completos | Organizada con información básica | Incompleta o poco clara | Inadecuada | -->
+<!-- | Calidad de muestras | Bien preservadas, correctamente etiquetadas | Adecuadas | Algunas deficiencias | Mal preservadas | -->
+<!-- | Ética y seguridad | Totalmente responsable | Generalmente responsable | Algunas deficiencias | Comportamiento riesgoso | -->
+
+<!-- **Análisis de datos (20%)** -->
+
+<!-- | Criterio | Excelente (4-5) | Bueno (3) | Aceptable (2) | Insuficiente (0-1) | -->
+<!-- |----------|----------------|-----------|---------------|-------------------| -->
+<!-- | Estadística descriptiva | Completa y apropiada | Adecuada | Básica | Inadecuada o incorrecta | -->
+<!-- | Análisis inferencial | Pruebas correctas, bien interpretadas | Pruebas adecuadas | Pruebas básicas o mal elegidas | Incorrectas o ausentes | -->
+<!-- | Visualización | Gráficos claros, profesionales, informativos | Gráficos adecuados | Gráficos básicos | Confusos o ausentes | -->
+<!-- | Interpretación | Crítica, contextualizada, matizada | Adecuada | Superficial | Incorrecta | -->
+
+<!-- **Informe final (25%)** -->
+
+<!-- | Criterio | Excelente (4-5) | Bueno (3) | Aceptable (2) | Insuficiente (0-1) | -->
+<!-- |----------|----------------|-----------|---------------|-------------------| -->
+<!-- | Estructura y formato | Perfecto formato APA, bien organizado | Formato correcto, organizado | Algunos errores de formato | Mal organizado | -->
+<!-- | Introducción | Bien contextualizada, fluida, >15 refs | Adecuada, 10-15 refs | Básica, <10 refs | Débil o incompleta | -->
+<!-- | Metodología | Detallada, replicable | Adecuada | Básica | Confusa | -->
+<!-- | Resultados | Claros, bien presentados, sin interpretación | Claros y adecuados | Confusos o con interpretación | Inadecuados | -->
+<!-- | Discusión | Profunda, bien integrada con literatura | Adecuada | Superficial | Débil o ausente | -->
+<!-- | Conclusiones | Claras, basadas en datos, coherentes | Adecuadas | Básicas | Vagas o no respaldadas | -->
+<!-- | Redacción | Excelente gramática, fluida, científica | Buena, algunos errores menores | Errores notables | Pobre | -->
+
+<!-- **Póster y presentación (10%)** -->
+
+<!-- | Criterio | Excelente (4-5) | Bueno (3) | Aceptable (2) | Insuficiente (0-1) | -->
+<!-- |----------|----------------|-----------|---------------|-------------------| -->
+<!-- | Póster: diseño | Visual atractivo, claro, profesional | Claro y organizado | Básico | Confuso o pobre | -->
+<!-- | Póster: contenido | Completo, conciso, informativo | Adecuado | Incompleto | Inadecuado | -->
+<!-- | Presentación oral | Clara, bien practicada, en tiempo | Clara y organizada | Algunos problemas | Confusa o mal preparada | -->
+<!-- | Responde preguntas | Con seguridad y profundidad | Adecuadamente | Con dificultad | Inadecuadamente | -->
+
+---
+
+# CONSIDERACIONES ÉTICAS Y LEGALES
+
+## Ética en la Investigación
+
+### Principios fundamentales
+
+1. **Integridad científica**
+   - No falsificar ni fabricar datos o NUNCA invente, falsifique o manipule datos
+   - No omita datos que contradigan su hipótesis
+   - No plagio (cite todas las fuentes)
+   - Reportar resultados con honestidad
+   - Sea transparente sobre limitaciones
+   
+2. **Plagio:**
+El plagio académico es inaceptable e incluye:
+- Copiar texto sin citar la fuente
+- Parafrasear sin dar crédito
+- Usar ideas de otros sin reconocimiento
+- Autoplagio (reusar su propio trabajo previo sin declararlo)
+
+**Todas las ideas que no sean originalmente suyas deben citarse.**
+
+3. **Uso de IA:**
+Si utiliza herramientas de inteligencia artificial (ChatGPT, etc.):
+- Úselas solo como apoyo, nunca como autoras
+- Verifique toda información generada
+- Indique en métodos si usó alguna herramienta de IA y para qué
+- La redacción final debe ser suya
+
+4. **Respeto a los sujetos de estudio**
+   - Minimizar impacto en organismos vivos
+   - Bienestar animal prioritario
+   - Respeto a comunidades humanas (si aplica)
+
+5. **Responsabilidad ambiental**
+   - Mínimo impacto en ecosistemas
+   - No recolectar en exceso
+   - Seguir principios de investigación no invasiva
+
+### Ética y buenas prácticas en el trabajo con seres vivos
+
+**Plantas:**
+
+- Recolecte solo lo necesario
+- No dañe poblaciones pequeñas o raras
+- Prefiera fotografías cuando sea posible
+- Use técnicas no destructivas cuando existan
+- Documentación de especímenes
+- Depósito en colecciones científicas cuando sea relevante
+
+**Animales:**. Si su proyecto involucra animales, debe:
+
+- Minimizar el sufrimiento
+- Usar métodos de captura humanitarios
+- Manipular con cuidado y rapidez
+- Liberar en el mismo sitio de captura
+- No trabajar con especies protegidas sin permisos
+- Documentación de especímenes
+- Depósito en colecciones científicas cuando sea relevante
+
+**Vertebrados:**
+
+- Requieren permisos especiales
+- Métodos no letales cuando sea posible
+- Manipulación mínima
+- Personal capacitado
+
+**Invertebrados:**
+
+- Recolección sostenible
+- Documentación de especímenes
+- Depósito en colecciones científicas cuando sea relevante
+
+**Regla de las 3R:**
+
+- **Reemplazar:** Use métodos alternativos si es posible
+- **Reducir:** Use el mínimo número de individuos necesario
+- **Refinar:** Use técnicas que minimicen impacto
+
+### Seguridad en campo
+
+**Antes de salir:**
+
+- Informe a alguien dónde va y cuándo regresa
+- Verifique el clima
+- Lleve un compañero siempre que sea posible
+- Conozca la ruta y tenga plan B
+
+**Riesgos naturales:**
+
+- **Calor:** Hidrátese constantemente, use protector solar
+- **Insectos:** Repelente, revise garrapatas al regresar
+- **Plantas irritantes:** Aprenda a identificar especies urticantes
+- **Terreno difícil:** Camine con cuidado, use calzado apropiado
+- **Agua:** No beba agua sin tratar
+
+**En caso de emergencia:**
+
+1. Mantenga la calma
+2. Evalúe la situación
+3. Administre primeros auxilios si es necesario
+4. Contacte ayuda (911)
+5. Documente el incidente
+
+## Permisos y Autorizaciones
+
+1. **Verifique si necesita:**
+   - Permiso de propietarios de tierras privadas
+   - Consentimiento de comunidades locales
+
+1. **Áreas protegidas / Ministerio de Medio Ambiente y Recursos Naturales**
+   - Permiso de investigación científica 
+   - Permiso de acceso a áreas protegidas
+   - Permiso de recolecta (si aplica)
+   - Coordinación con personal del parque
+   - Solicitar con 4-6 semanas de anticipación
+
+3. **Investigación con especies amenazadas**
+   - Permisos especiales
+   - Justificación robusta
+   - Supervisión requerida
+
+### Documentación requerida
+
+Su protocolo de investigación debe incluir:
+
+- Justificación de la necesidad de permisos
+- Copia de solicitudes enviadas
+- Confirmación de aprobaciones recibidas
+
+**IMPORTANTE:** No iniciar trabajo de campo sin permisos apropiados.
+
+## Manejo y Preservación de Especímenes
+
+### Vouchers y especímenes de referencia
+
+**Cuándo colectar:**
+
+- Identificación requiere examen detallado
+- Registros de nuevas distribuciones
+- Especímenes para depositar en colecciones científicas
+
+**Cómo preservar:**
+
+- **Plantas:** Prensado en herbario
+- **Insectos:** En alcohol 70-96% o alfiler entomológico
+- **Tejidos:** Alcohol 96% o congelación (-20°C)
+
+**Etiquetado:** Cada espécimen debe tener:
+
+- Número de colecta
+- Fecha (día/mes/año)
+- Localidad exacta (coordenadas GPS)
+- Colector
+- Hábitat
+- Notas relevantes
+
+### Código de ejemplo para base de datos de especímenes
+
+```{r base-especimenes, eval=FALSE}
+# Estructura para registro de especímenes
+especimenes <- data.frame(
+  codigo = c("ASR001", "ASR002", "ASR003"),
+  fecha = as.Date(c("2025-03-15", "2025-03-15", "2025-03-16")),
+  taxon = c("Melanerpes striatus", "Turdus plumbeus", "Dives atroviolaceus"),
+  localidad = c("Parque Mirador Sur", "Parque Mirador Sur", "Jardín Botánico"),
+  lat = c(18.4522, 18.4525, 18.4683),
+  lon = c(-69.9544, -69.9548, -69.9572),
+  colector = "Estudiante A",
+  metodo_preservacion = c("Fotografía", "Fotografía", "Fotografía"),
+  deposito = c("Colección digital", "Colección digital", "Colección digital")
+)
+```
+
+---
+
+# RECURSOS Y HERRAMIENTAS
+
+## Software Recomendado
+
+### Análisis estadístico y visualización
+
+**R y RStudio** (gratuito, código abierto)
+- Análisis estadístico
+- Visualización de datos
+- Generación de reportes con RMarkdown
+
+**Paquetes esenciales de R:**
+
+```{r paquetes-recomendados, eval=FALSE}
+# Instalación de paquetes útiles
+paquetes <- c(
+  # Manejo de datos
+  "tidyverse", "dplyr", "tidyr", "readr",
+  
+  # Visualización
+  "ggplot2", "ggpubr", "plotly", "patchwork",
+  
+  # Análisis ecológicos
+  "vegan", "BiodiversityR", "iNEXT",
+  
+  # Análisis espacial
+  "sf", "raster", "terra", "tmap", "leaflet",
+  
+  # Estadística
+  "lme4", "nlme", "MASS", "car",
+  
+  # Reportes
+  "knitr", "rmarkdown", "kableExtra"
+)
+
+install.packages(paquetes)
+```
+
+### Sistemas de Información Geográfica
+
+**QGIS** (gratuito, código abierto)
+- Análisis espacial
+- Creación de mapas
+- Procesamiento de datos geográficos
+
+**Google Earth Pro** (gratuito)
+- Visualización de sitios
+- Obtención de coordenadas
+- Imágenes históricas
+
+### Gestión de referencias
+
+**Zotero** (gratuito)
+- Organización de bibliografía
+- Generación automática de citas
+- Sincronización en la nube
+
+## Bases de Datos y Repositorios
+
+### Datos de biodiversidad
+
+- **GBIF** (gbif.org): Global Biodiversity Information Facility
+- **iNaturalist** (inaturalist.org): Ciencia ciudadana, observaciones
+- **eBird** (ebird.org): Registros de aves
+- **IUCN Red List** (iucnredlist.org): Estado de conservación
+
+### Datos espaciales
+
+- **EarthExplorer** (earthexplorer.usgs.gov): Imágenes satelitales
+- **SRTM** (srtm.csi.cgiar.org): Modelos de elevación
+- **WorldClim** (worldclim.org): Datos climáticos globales
+- **Natural Earth** (naturalearthdata.com): Capas base
+
+### Literatura científica
+
+- **Google Scholar** (scholar.google.com)
+- **PubMed** (pubmed.ncbi.nlm.nih.gov)
+- **SciELO** (scielo.org): Literatura latinoamericana
+- **ResearchGate** (researchgate.net): Red de investigadores
+- **Sci-Hub**: (uso ético y legal cuestionable)
+
+## Guías de Campo y Recursos de Identificación
+
+### República Dominicana y Caribe
+
+**Aves:**
+
+- "Birds of the Dominican Republic and Haiti" (Latta et al.)
+- "Birds of the West Indies" (Raffaele et al.)
+- App: Merlin Bird ID (Cornell Lab)
+
+**Plantas:**
+
+- "Flora de La Española" (Liogier)
+- "Árboles comunes de República Dominicana" (diversos autores)
+
+**Reptiles y anfibios:**
+
+- "Amphibians and Reptiles of Hispaniola" (Henderson & Powell)
+
+### Recursos en línea
+
+- **iNaturalist**: Identificación colaborativa con IA
+- **BugGuide**: Identificación de insectos
+- **PlantNet**: Identificación de plantas con fotos
+- **Xeno-Canto**: Cantos de aves del mundo
+
+---
+
+# SOLUCIÓN DE PROBLEMAS COMUNES
+
+## Problemas en Campo
+
+### Clima adverso
+
+**Problema:** Lluvia durante días de muestreo programado
+
+**Solución:**
+
+- Tener días de muestreo de respaldo en el cronograma
+- Considerar el efecto del clima en los resultados
+- Documentar condiciones climáticas
+- Evaluar si el clima afecta lo que se estudia (puede ser una variable adicional)
+
+### Acceso a sitios
+
+**Problema:** No se puede acceder al sitio planificado
+
+**Solución:**
+
+- Tener sitios alternativos identificados previamente
+- Verificar accesibilidad antes de iniciar el proyecto
+- Mantener comunicación con administradores de áreas
+- Documentar por qué se cambió de sitio
+
+### Baja detección de organismos
+
+**Problema:** Pocas observaciones/capturas
+
+**Solución:**
+
+- Aumentar esfuerzo de muestreo
+- Cambiar horario de muestreo
+- Verificar método apropiado para la especie
+- Considerar variación estacional
+- Análisis de poder estadístico para muestra pequeña
+
+## Problemas Analíticos
+
+### Datos no normales
+
+**Problema:** Prueba de Shapiro-Wilk rechaza normalidad
+
+**Solución:**
+
+```{r normalidad-solucion, eval=FALSE}
+# Opción 1: Transformación de datos
+datos$log_abundancia <- log(datos$abundancia + 1)
+datos$sqrt_abundancia <- sqrt(datos$abundancia)
+
+# Verificar normalidad después de transformación
+shapiro.test(datos$log_abundancia)
+
+# Opción 2: Usar pruebas no paramétricas
+wilcox.test(abundancia ~ grupo, data = datos)
+kruskal.test(abundancia ~ sitio, data = datos)
+
+# Opción 3: Modelos lineales generalizados
+library(MASS)
+modelo_glm <- glm.nb(abundancia ~ area_ha, data = datos)
+```
+
+### Tamaño de muestra insuficiente
+
+**Problema:** Muy pocas observaciones para análisis robusto
+
+**Solución:**
+
+- Análisis de poder estadístico
+- Estadística descriptiva en lugar de inferencial
+- Discutir como estudio piloto
+- Proponer tamaños de muestra para futuros estudios
+- Considerar análisis de bootstrapping
+
+```{r bootstrap-ejemplo, eval=FALSE}
+library(boot)
+
+# Función para calcular estadístico
+media_boot <- function(data, indices) {
+  mean(data[indices])
+}
+
+# Bootstrap
+resultados <- boot(datos$riqueza, media_boot, R = 1000)
+
+# Intervalo de confianza
+boot.ci(resultados, type = "bca")
+```
+
+### Valores atípicos (outliers)
+
+**Problema:** Valores extremos en los datos
+
+**Solución:**
+
+```{r outliers-solucion, eval=FALSE}
+# Identificar outliers
+boxplot(datos$abundancia)
+
+# Método IQR
+Q1 <- quantile(datos$abundancia, 0.25)
+Q3 <- quantile(datos$abundancia, 0.75)
+IQR <- Q3 - Q1
+outliers <- datos$abundancia < (Q1 - 1.5*IQR) | 
+            datos$abundancia > (Q3 + 1.5*IQR)
+
+# Revisar outliers - ¿son errores o valores reales?
+datos[outliers, ]
+
+# Si son errores: corregir o eliminar
+# Si son reales: mantener pero considerar transformación o métodos robustos
+```
+
+## Problemas de Redacción
+
+### Bloqueo de escritor
+
+**Soluciones:**
+
+1. Escriba en desorden (comience por Métodos, no por Introducción)
+2. Haga un esquema detallado primero
+3. Escriba "mal" primero, edite después
+4. Establezca metas pequeñas (200 palabras por sesión)
+5. Cambie de ambiente de trabajo
+
+### Dificultad con inglés científico
+
+
+**Recursos:**
+
+- Google Scholar: busque frases comunes en su disciplina
+- DeepL o Google Translate para frases completas
+- Grammarly para corrección
+- Consulte artículos similares como modelo
+- Pida a compañeros revisar
+
+**Frases útiles en inglés:**
+
+```
+Introduction:
+- "Despite extensive research on..., little is known about..."
+- "To address this gap, we..."
+- "The aim of this study was to..."
+
+Methods:
+- "We conducted fieldwork from... to..."
+- "We sampled X sites located in..."
+- "Data were analyzed using..."
+
+Results:
+- "We recorded a total of..."
+- "There was a significant relationship between..."
+- "Our results showed that..."
+
+Discussion:
+- "Our findings suggest that..."
+- "This pattern is consistent with..."
+- "However, our results differ from..."
+```
+
+---
+
+# TRABAJO EN EQUIPO
+
+## Formación de Equipos
+
+### Tamaño recomendado
+
+- **Individual:** Mayor control, toda la experiencia
+- **Parejas (2 personas):** Balance ideal, recomendado
+- **Tríos (3 personas):** Viable con buena organización
+- **Más de 3:** No recomendado, dificulta coordinación
+
+### Distribución de roles
+
+Si trabajan en equipo, definan roles claramente:
+
+| Rol | Responsabilidades |
+|-----|-------------------|
+| **Coordinador/a** | Organiza reuniones, supervisa cronograma |
+| **Responsable de campo** | Coordina logística de muestreo |
+| **Responsable de análisis** | Lidera procesamiento de datos |
+| **Responsable de redacción** | Coordina escritura del informe |
+
+**IMPORTANTE:** Todos participan en todas las actividades, pero alguien lidera cada área.
+
+### Contrato de equipo
+
+Complete y firme al inicio del proyecto:
+
+```
+CONTRATO DE EQUIPO - PROYECTO DE INVESTIGACIÓN
+
+Integrantes:
+1. _________________________
+2. _________________________
+3. _________________________
+
+Nos comprometemos a:
+
+□ Asistir a todas las sesiones de campo programadas
+□ Completar tareas asignadas antes de las fechas límite
+□ Comunicar con 24h de anticipación si no podemos cumplir
+□ Contribuir equitativamente al proyecto
+□ Resolver conflictos mediante diálogo respetuoso
+□ Dar crédito apropiado a cada contribución
+
+División de trabajo (% estimado):
+Integrante 1: Campo _%, Análisis _%, Redacción _%
+Integrante 2: Campo _%, Análisis _%, Redacción _%
+Integrante 3: Campo _%, Análisis _%, Redacción _%
+
+Firmas y fecha: ___________________
+```
+
+## Comunicación Efectiva
+
+### Herramientas
+
+- **WhatsApp/Telegram:** Comunicación rápida
+- **Google Drive/Dropbox:** Compartir archivos
+- **GitHub:** Para código y control de versiones (avanzado)
+- **Zoom/Meet:** Reuniones virtuales
+
+### Reuniones efectivas
+
+**Agenda de reunión semanal:**
+
+1. Revisión de progreso (10 min)
+2. Discusión de desafíos (15 min)
+3. Planificación de próxima semana (10 min)
+4. Asignación de tareas (5 min)
+
+**Minuta de reunión:**
+
+```
+MINUTA - Reunión Equipo [Nombre Proyecto]
+Fecha: _________
+Presentes: _________
+
+Temas discutidos:
+1.
+2.
+3.
+
+Decisiones tomadas:
+1.
+2.
+
+Tareas asignadas:
+- [Nombre]: [Tarea] - Fecha límite: _____
+- [Nombre]: [Tarea] - Fecha límite: _____
+
+Próxima reunión: _________
+```
+
+## Resolución de Conflictos
+
+### Problemas comunes
+
+**Desbalance en contribuciones:**
+
+- Documentar todo el trabajo realizado
+- Reunión para redistribuir tareas
+- Si persiste, comunicar a la profesora
+
+**Desacuerdos metodológicos:**
+
+- Buscar evidencia en literatura
+- Consultar con la profesora
+- Prueba piloto de ambas opciones si es posible
+
+**Problemas de comunicación:**
+
+- Establecer expectativas claras desde el inicio
+- Feedback constructivo y respetuoso
+- Mediación de tercero si es necesario
+
+---
+
+# CONSEJOS FINALES 
+
+## Filosofía de la Investigación
+
+> "La investigación científica es un proceso iterativo, no lineal. Esperen contratiempos, pero véanlos como oportunidades de aprendizaje. Lo importante no es que todo salga perfecto, sino que aprendan el proceso científico."
+
+## Errores Comunes a Evitar
+
+1. **Procrastinación:** Comenzar tarde es la causa #1 de proyectos incompletos
+2. **Sobre-ambición:** Mejor un proyecto simple bien hecho que uno complejo a medias
+3. **Ignorar la literatura:** Reinventar la rueda en lugar de construir sobre conocimiento existente
+4. **Datos desorganizados:** La limpieza de datos toma más tiempo del esperado
+5. **No pedir ayuda:** Consultar temprano evita problemas mayores después
+
+## Claves del Éxito
+
+✓ **Planificación realista:** Sea honesto sobre tiempo y recursos
+✓ **Documentación constante:** Registre todo inmediatamente
+✓ **Comunicación frecuente:** Con su equipo y conmigo
+✓ **Flexibilidad:** Esté dispuesto a ajustar el plan
+✓ **Curiosidad científica:** Disfrute el proceso de descubrimiento
+
+<!-- ## 12.4 Recursos de Apoyo -->
+
+<!-- # ! NOTA : Pendiente revisar -->
+<!-- Puse esta nota, porque creo importante elaborar estos talleres para este semestre o futuros, por el momento me gustaría que quede oculta esta sección 12.4 -->
+
+<!-- ### 12.4.1 Horas de consulta  -->
+<!-- - **Horario:** Horario de clases -->
+
+<!-- ### 12.4.2 Talleres programados -->
+
+<!-- | Semana | Tema del Taller | -->
+<!-- |--------|----------------| -->
+<!-- | x | Búsqueda bibliográfica efectiva | -->
+<!-- | x | Introducción a R y RStudio | -->
+<!-- | x | Técnicas de identificación de especies | -->
+<!-- | x | Análisis estadístico en R | -->
+<!-- | x | Redacción científica | -->
+
+<!-- ### 12.4.3 Evaluaciones formativas -->
+
+<!-- No solo la entrega final cuenta. Tendré: -->
+<!-- - Check-ins individuales/grupales durante el semestre -->
+<!-- - Retroalimentación en borradores -->
+<!-- - Oportunidades de mejorar entregables previos -->
+
+---
+
+# GLOSARIO DE TÉRMINOS
+
+**Abundancia:** Número de individuos de una especie en un área determinada
+
+**Alfa diversidad:** Diversidad dentro de un hábitat o comunidad
+
+**ANOVA:** Análisis de varianza, prueba para comparar medias de tres o más grupos
+
+**Beta diversidad:** Cambio en diversidad entre diferentes hábitats
+
+**Biodiversidad:** Variedad de formas de vida en un área
+
+**Biogeografía:** Estudio de la distribución de organismos en el espacio
+
+**Cuadrante:** Área delimitada para muestreo, usualmente cuadrada
+
+**Distribución:** Área geográfica donde se encuentra una especie
+
+**Ecología:** Estudio de las interacciones entre organismos y su ambiente
+
+**Endemismo:** Especies únicas de un área geográfica específica
+
+**Especie indicadora:** Especie cuya presencia indica condiciones ambientales específicas
+
+**Geomorfología:** Estudio de las formas del relieve terrestre
+
+**Hábitat:** Lugar donde vive una especie con características ambientales específicas
+
+**Hipótesis nula:** Hipótesis que propone que no hay efecto o relación
+
+**Índice de Shannon (H'):** Medida de diversidad que considera riqueza y equitabilidad
+
+**Índice de Simpson:** Medida de dominancia y diversidad
+
+**Nicho ecológico:** Rol funcional de una especie en su ecosistema
+
+**Rarefacción:** Técnica para comparar riqueza estandarizada por tamaño de muestra
+
+**Riqueza de especies:** Número total de especies en un área
+
+**Significancia estadística:** Probabilidad de que un resultado se deba al azar (generalmente p < 0.05)
+
+**Transecto:** Línea o banda de muestreo
+
+**Variable confusora:** Variable no controlada que puede afectar los resultados
+
+**Variable dependiente:** Variable que se mide como respuesta
+
+**Variable independiente:** Variable que se manipula o selecciona
+
+---
+
+# REFERENCIAS Y LECTURAS RECOMENDADAS
+
+## Metodología de Investigación
+
+- Hernández Sampieri, R., Fernández Collado, C., & Baptista Lucio, P. (2014). *Metodología de la investigación* (6ta ed.). McGraw-Hill.
+
+- Krebs, C. J. (2014). *Ecological methodology* (3rd ed.). Addison-Wesley.
+
+- Booth, W. C., Colomb, G. G., & Williams, J. M. (2008). *The craft of research* (3rd ed.). University of Chicago Press.
+
+## Ecología y Métodos de Campo
+
+- Sutherland, W. J. (Ed.). (2006). *Ecological census techniques: A handbook* (2nd ed.). Cambridge University Press.
+
+- Krebs, C. J. (2014). *Ecological methodology* (3rd ed.). Benjamin Cummings.
+
+- Magurran, A. E. (2004). *Measuring biological diversity*. Blackwell Publishing.
+
+- Begon, M., Townsend, C. R., & Harper, J. L. (2006). *Ecology: From individuals to ecosystems* (4th ed.). Blackwell Publishing.
+
+- Molles, M. C. (2015). *Ecology: Concepts and applications* (7th ed.). McGraw-Hill.
+
+## Análisis Estadístico
+
+- Zar, J. H. (2010). *Biostatistical analysis* (5th ed.). Pearson.
+
+- Quinn, G. P., & Keough, M. J. (2002). *Experimental design and data analysis for biologists*. Cambridge University Press.
+
+- Hammer, Ø., & Harper, D. A. T. (2006). *Paleontological data analysis*. Blackwell Publishing. (Incluye guía de PAST)
+
+- Zar, J. H. (2010). *Biostatistical analysis* (5th ed.). Prentice Hall.
+
+## R y Análisis de Datos
+
+- Wickham, H., & Grolemund, G. (2017). *R for Data Science*. O'Reilly. Disponible en: https://r4ds.had.co.nz/
+
+- Crawley, M. J. (2013). *The R Book* (2nd ed.). Wiley.
+
+## Biogeografía
+
+- Cox, C. B., Moore, P. D., & Ladle, R. (2016). *Biogeography: An ecological and evolutionary approach* (9th ed.). Wiley-Blackwell.
+
+- Lomolino, M. V., Riddle, B. R., & Whittaker, R. J. (2017). *Biogeography* (5th ed.). Oxford University Press.
+
+## Geomorfología
+
+- Huggett, R. J. (2017). *Fundamentals of geomorphology* (4th ed.). Routledge.
+
+- Summerfield, M. A. (1991). *Global geomorphology*. Longman.
+
+## Redacción Científica
+
+- Day, R. A., & Gastel, B. (2012). *How to write and publish a scientific paper* (7th ed.). Cambridge University Press.
+
+- Heard, S. B. (2016). *The scientist's guide to writing: How to write more easily and effectively throughout your scientific career*. Princeton University Press.
+
+## Recursos en Línea
+
+- **The R Graph Gallery:** https://r-graph-gallery.com/
+- **QGIS Tutorials:** https://www.qgistutorials.com/
+- **Stack Overflow:** https://stackoverflow.com/ (para preguntas de código)
+- **Cross Validated:** https://stats.stackexchange.com/ (para preguntas estadísticas)
+- **Ecological Statistics:** http://www.umass.edu/landeco/teaching/ecodata/labs/labs.html
+
+**Bases de datos científicas:**
+
+- Google Scholar: https://scholar.google.com
+- ResearchGate: https://www.researchgate.net
+- SciELO (América Latina): https://www.scielo.org
+
+**Identificación de especies:**
+
+- iNaturalist: https://www.inaturalist.org
+- Flora de Hispaniola: http://www.tropicos.org
+- Aves del Caribe: https://www.ebird.org/region/caribbean
+
+**Software gratuito:**
+
+- R (estadística): https://www.r-project.org
+- PAST (estadística): https://www.nhm.uio.no/english/research/resources/past/
+- QGIS (SIG): https://qgis.org
+- ImageJ (análisis de imágenes): https://imagej.net
+
+**Mapas y datos geográficos:**
+
+- Google Earth: https://earth.google.com
+- OpenStreetMap: https://www.openstreetmap.org
+- USGS Earth Explorer: https://earthexplorer.usgs.gov
+
+---
+
+# APÉNDICES
+
+## APÉNDICE A: Plantilla de Propuesta de Investigación
+
+```markdown
+PROPUESTA DE INVESTIGACIÓN
+
+Título tentativo:
+_________________________________________________________________
+
+Autores:
+_________________________________________________________________
+
+Fecha:
+_________________________________________________________________
+
+1. INTRODUCCIÓN (1 párrafo)
+Contexto general del tema y su importancia
+
+2. PROBLEMA DE INVESTIGACIÓN
+Descripción del problema específico que se abordará
+
+3. PREGUNTA DE INVESTIGACIÓN
+¿Pregunta clara y específica?
+
+4. OBJETIVOS
+Objetivo general:
+
+Objetivos específicos:
+1.
+2.
+3.
+
+5. HIPÓTESIS
+H₀:
+H₁:
+
+6. METODOLOGÍA PROPUESTA
+Área de estudio:
+Diseño de muestreo:
+Variables a medir:
+Análisis propuesto:
+
+7. CRONOGRAMA PRELIMINAR
+[Tabla con actividades y semanas]
+
+8. RECURSOS NECESARIOS
+- Equipo:
+- Materiales:
+- Transporte:
+- Permisos:
+
+9. REFERENCIAS INICIALES
+[Mínimo 5 referencias en formato APA]
+```
+### Plantillas descargables
+
+**Ficha de datos de campo - Vegetación:**
+```
+PROYECTO: ___________________ FECHA: ___/___/___
+SITIO: ____________________ PARCELA #: _____
+COORDENADAS: Lat:_________ Long:_________
+ELEVACIÓN: _______ m    PENDIENTE: _______ °
+OBSERVADOR: _________________
+
+| # | Especie | DAP (cm) | Altura (m) | Observaciones |
+|---|---------|----------|------------|---------------|
+| 1 |         |          |            |               |
+| 2 |         |          |            |               |
+...
+
+CONDICIONES AMBIENTALES:
+Temperatura: _____°C    Nubosidad: _____
+Humedad: _____%         Viento: _________
+
+FOTOGRAFÍAS: _________________________________
+```
+
+**Ficha de datos - Fauna:**
+```
+PROYECTO: ___________________ FECHA: ___/___/___
+SITIO: ____________________ TRANSECTO #: _____
+HORA INICIO: ___:___  HORA FIN: ___:___
+OBSERVADOR: _________________
+
+| Hora | Especie | # Indiv | Comportamiento | Coordenadas | Foto # |
+|------|---------|---------|----------------|-------------|--------|
+|      |         |         |                |             |        |
+
+MÉTODO: □ Avistamiento  □ Captura  □ Rastros  □ Vocalizaciones
+CONDICIONES CLIMÁTICAS: _________________________
+```
+
+**Ficha de datos - Agua/Suelo:**
+```
+PROYECTO: ___________________ FECHA: ___/___/___
+PUNTO DE MUESTREO: ________ MUESTRA #: _____
+COORDENADAS: Lat:_________ Long:_________
+TIPO DE CUERPO DE AGUA: ___________________
+
+PARÁMETROS IN SITU:
+Temperatura: _____°C        pH: _____
+Conductividad: _____ µS/cm  OD: _____ mg/L
+Turbidez: _____ NTU         Otros: __________
+
+MUESTRA PARA LABORATORIO:
+Volumen: _____ ml           Preservación: __________
+Análisis a realizar: _________________________
+```
+
+
+## APÉNDICE B: Lista de Verificación de Campo
+
+```
+LISTA DE VERIFICACIÓN PRE-CAMPO
+
+□ DOCUMENTACIÓN
+  □ Protocolo de campo impreso
+  □ Hojas de campo (copias extra)
+  □ Permisos de investigación
+  □ Identificación personal
+  □ Mapas del área
+
+□ EQUIPO DE NAVEGACIÓN
+  □ GPS (baterías cargadas)
+  □ Brújula
+  □ Mapas topográficos
+  □ Teléfono celular (con ubicación compartida)
+
+□ EQUIPO DE MUESTREO
+  □ [Específico según su proyecto]
+  □ Bolsas de recolección
+  □ Etiquetas y marcadores permanentes
+  □ Cinta métrica
+  □ Cámara fotográfica
+
+□ EQUIPO DE REGISTRO
+  □ Libreta de campo
+  □ Lápices (no bolígrafos - resistentes al agua)
+  □ Tablilla con clip
+  □ Tablet/laptop (si aplica)
+
+□ SEGURIDAD PERSONAL
+  □ Botiquín de primeros auxilios
+  □ Agua (mínimo 2 litros por persona)
+  □ Snacks/comida
+  □ Protector solar
+  □ Repelente de insectos
+  □ Gorra/sombrero
+  □ Silbato
+  □ Teléfono de emergencias programado
+
+□ ROPA APROPIADA
+  □ Calzado cerrado y cómodo
+  □ Ropa de manga larga
+  □ Ropa de lluvia/impermeable
+  □ Cambio de ropa (en el vehículo)
+
+□ OTROS
+  □ Cooler (si se recolectan muestras)
+  □ Alcohol/etanol (preservación)
+  □ Guías de campo
+  □ Contacto de emergencia informado
+
+VERIFICADO POR: _________________  FECHA: __________
+```
+## Checklist final antes de entregar
+
+**Informe final:**
+□ Todas las secciones están completas  
+□ Formato APA o Vancouver correcto en referencias  
+□ Todas las tablas y figuras están numeradas y referenciadas  
+□ Los títulos de tablas/figuras son descriptivos  
+□ No hay errores ortográficos o gramaticales evidentes  
+□ Los datos en tablas coinciden con los del texto  
+□ Las conclusiones responden a los objetivos  
+□ Mínimo 20 referencias (15 artículos científicos)  
+□ Anexos incluidos (fotos, tablas de datos, etc.)  
+□ Revisión de plagio realizada  
+□ Guardado en formato PDF  
+
+**Póster:**
+□ Título visible desde 2 metros  
+□ Información del autor e institución clara  
+□ Texto mínimo, gráficos máximos  
+□ Resultados destacan visualmente  
+□ Conclusiones claras y concisas  
+□ Sin errores ortográficos  
+□ Diseño atractivo y profesional  
+□ Impreso en tamaño correcto  
+
+## APÉNDICE C: Plantilla de Hoja de Campo
+
+```
+═══════════════════════════════════════════════════════════
+            HOJA DE CAMPO - [NOMBRE DEL PROYECTO]
+═══════════════════════════════════════════════════════════
+
+INFORMACIÓN GENERAL
+─────────────────────────────────────────────────────────
+Fecha: ___/___/_____ (DD/MM/AAAA)    Sitio ID: __________
+Localidad: _____________________________________________
+Coordenadas: ___°___'___" N  ___°___'___" W
+Altitud: _______ m s.n.m.
+Observador(es): _________________________________________
+
+CONDICIONES AMBIENTALES
+─────────────────────────────────────────────────────────
+Hora inicio: _____  Hora fin: _____
+Temperatura: _____°C
+Nubosidad: □ Despejado □ Parcial □ Nublado □ Lluvia
+Viento: □ Nulo □ Leve □ Moderado □ Fuerte
+Otras observaciones: ___________________________________
+________________________________________________________
+
+DATOS DE MUESTREO
+─────────────────────────────────────────────────────────
+[Personalizar según el tipo de estudio]
+
+#  | [Variable 1] | [Variable 2] | [Variable 3] | Notas
+---|-------------|-------------|--------------|--------
+1  |             |             |              |
+2  |             |             |              |
+3  |             |             |              |
+4  |             |             |              |
+5  |             |             |              |
+6  |             |             |              |
+7  |             |             |              |
+8  |             |             |              |
+9  |             |             |              |
+10 |             |             |              |
+
+OBSERVACIONES ADICIONALES
+─────────────────────────────────────────────────────────
+________________________________________________________
+________________________________________________________
+________________________________________________________
+________________________________________________________
+
+FOTOGRAFÍAS TOMADAS
+─────────────────────────────────────────────────────────
+□ Sí  □ No    Códigos: _______________________________
+
+PROBLEMAS O INCIDENTES
+─────────────────────────────────────────────────────────
+________________________________________________________
+________________________________________________________
+
+Firma del observador: ________________  Fecha: _________
+═══════════════════════════════════════════════════════════
+```
+
+## APÉNDICE D: Código Base de R para Comenzar
+
+```{r codigo-base-completo, eval=FALSE}
+# ═══════════════════════════════════════════════════════════════
+#  SCRIPT BASE PARA ANÁLISIS DE DATOS - PROYECTO DE INVESTIGACIÓN
+# ═══════════════════════════════════════════════════════════════
+
+# Autor: [Su nombre]
+# Proyecto: [Nombre del proyecto]
+# Fecha: [Fecha]
+# Descripción: Script para análisis de datos del proyecto semestral
+
+# ───────────────────────────────────────────────────────────────
+# CONFIGURACIÓN INICIAL
+# ───────────────────────────────────────────────────────────────
+
+# Limpiar ambiente
+rm(list = ls())
+
+# Establecer directorio de trabajo
+# setwd("C:/ruta/a/su/proyecto")  # Cambiar según su computadora
+
+# Cargar paquetes necesarios
+library(tidyverse)    # Manejo y visualización de datos
+library(readr)        # Lectura de datos
+library(ggplot2)      # Gráficos
+library(dplyr)        # Manipulación de datos
+library(vegan)        # Análisis ecológicos (si aplica)
+library(knitr)        # Tablas
+library(kableExtra)   # Tablas mejoradas
+
+# Configuración de gráficos
+theme_set(theme_minimal())
+
+# ───────────────────────────────────────────────────────────────
+# IMPORTAR DATOS
+# ───────────────────────────────────────────────────────────────
+
+# Leer datos desde CSV
+datos <- read_csv("datos_campo.csv")
+
+# Verificar estructura
+str(datos)
+head(datos)
+summary(datos)
+
+# Verificar datos faltantes
+sum(is.na(datos))
+colSums(is.na(datos))
+
+# ───────────────────────────────────────────────────────────────
+# LIMPIEZA Y PREPARACIÓN DE DATOS
+# ───────────────────────────────────────────────────────────────
+
+# Renombrar columnas si es necesario
+datos <- datos %>%
+  rename(
+    sitio = Sitio,
+    fecha = Fecha
+    # Agregar más según necesite
+  )
+
+# Convertir tipos de datos
+datos <- datos %>%
+  mutate(
+    fecha = as.Date(fecha, format = "%d/%m/%Y"),
+    sitio = as.factor(sitio)
+  )
+
+# Eliminar duplicados
+datos <- datos %>%
+  distinct()
+
+# Filtrar datos (ejemplo)
+datos_limpios <- datos %>%
+  filter(!is.na(variable_importante))
+
+# ───────────────────────────────────────────────────────────────
+# ESTADÍSTICA DESCRIPTIVA
+# ───────────────────────────────────────────────────────────────
+
+# Resumen por grupos
+resumen_por_sitio <- datos_limpios %>%
+  group_by(sitio) %>%
+  summarise(
+    n = n(),
+    media = mean(variable_numerica, na.rm = TRUE),
+    desviacion = sd(variable_numerica, na.rm = TRUE),
+    minimo = min(variable_numerica, na.rm = TRUE),
+    maximo = max(variable_numerica, na.rm = TRUE)
+  )
+
+print(resumen_por_sitio)
+
+# ───────────────────────────────────────────────────────────────
+# VISUALIZACIÓN EXPLORATORIA
+# ───────────────────────────────────────────────────────────────
+
+# Histograma
+ggplot(datos_limpios, aes(x = variable_numerica)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "black") +
+  labs(title = "Distribución de [Variable]",
+       x = "[Variable]",
+       y = "Frecuencia")
+
+# Boxplot por grupos
+ggplot(datos_limpios, aes(x = sitio, y = variable_numerica)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Comparación entre sitios",
+       x = "Sitio",
+       y = "[Variable]")
+
+# Gráfico de dispersión
+ggplot(datos_limpios, aes(x = variable_x, y = variable_y)) +
+  geom_point(alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(title = "Relación entre variables",
+       x = "[Variable X]",
+       y = "[Variable Y]")
+
+# ───────────────────────────────────────────────────────────────
+# ANÁLISIS ESTADÍSTICO
+# ───────────────────────────────────────────────────────────────
+
+# Prueba de normalidad
+shapiro.test(datos_limpios$variable_numerica)
+
+# Gráfico Q-Q
+qqnorm(datos_limpios$variable_numerica)
+qqline(datos_limpios$variable_numerica, col = "red")
+
+# Prueba t (comparación de dos grupos)
+if("grupo" %in% names(datos_limpios)) {
+  resultado_t <- t.test(variable_numerica ~ grupo, data = datos_limpios)
+  print(resultado_t)
+}
+
+# ANOVA (comparación de múltiples grupos)
+if("sitio" %in% names(datos_limpios)) {
+  modelo_anova <- aov(variable_numerica ~ sitio, data = datos_limpios)
+  print(summary(modelo_anova))
+  
+  # Post-hoc
+  TukeyHSD(modelo_anova)
+}
+
+# Correlación
+if(all(c("variable_x", "variable_y") %in% names(datos_limpios))) {
+  correlacion <- cor.test(datos_limpios$variable_x, 
+                          datos_limpios$variable_y)
+  print(correlacion)
+}
+
+# Regresión lineal
+if(all(c("variable_x", "variable_y") %in% names(datos_limpios))) {
+  modelo_regresion <- lm(variable_y ~ variable_x, data = datos_limpios)
+  print(summary(modelo_regresion))
+  
+  # Diagnóstico del modelo
+  par(mfrow = c(2, 2))
+  plot(modelo_regresion)
+  par(mfrow = c(1, 1))
+}
+
+# ───────────────────────────────────────────────────────────────
+# ANÁLISIS ESPECÍFICOS DE BIODIVERSIDAD (SI APLICA)
+# ───────────────────────────────────────────────────────────────
+
+# Calcular índices de diversidad
+if(require(vegan)) {
+  # Crear matriz de comunidades (sitios x especies)
+  # Asume formato: columnas = especies, filas = sitios
+  
+  # Ejemplo: transformar datos largos a formato ancho
+  # matriz_comunidad <- datos_limpios %>%
+  #   select(sitio, especie, abundancia) %>%
+  #   pivot_wider(names_from = especie, 
+  #               values_from = abundancia, 
+  #               values_fill = 0) %>%
+  #   column_to_rownames("sitio")
+  
+  # Índice de Shannon
+  # shannon <- diversity(matriz_comunidad, index = "shannon")
+  
+  # Índice de Simpson
+  # simpson <- diversity(matriz_comunidad, index = "simpson")
+  
+  # Riqueza de especies
+  # riqueza <- specnumber(matriz_comunidad)
+  
+  # Curva de acumulación de especies
+  # sp_accumulation <- specaccum(matriz_comunidad)
+  # plot(sp_accumulation)
+}
+
+# ───────────────────────────────────────────────────────────────
+# CREAR TABLAS PARA EL INFORME
+# ───────────────────────────────────────────────────────────────
+
+# Tabla descriptiva
+tabla_descriptiva <- resumen_por_sitio %>%
+  kable(caption = "Tabla 1. Estadísticas descriptivas por sitio",
+        col.names = c("Sitio", "N", "Media", "DE", "Mín", "Máx"),
+        digits = 2) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+print(tabla_descriptiva)
+
+# ───────────────────────────────────────────────────────────────
+# GUARDAR RESULTADOS
+# ───────────────────────────────────────────────────────────────
+
+# Guardar gráficos
+ggsave("figura1_distribucion.png", width = 6, height = 4, dpi = 300)
+
+# Guardar datos procesados
+write_csv(datos_limpios, "datos_procesados.csv")
+write_csv(resumen_por_sitio, "resumen_estadistico.csv")
+
+# Guardar espacio de trabajo
+save.image("analisis_completo.RData")
+
+# ───────────────────────────────────────────────────────────────
+# INFORMACIÓN DE SESIÓN (para reproducibilidad)
+# ───────────────────────────────────────────────────────────────
+
+sessionInfo()
+
+# ═══════════════════════════════════════════════════════════════
+# FIN DEL SCRIPT
+# ═══════════════════════════════════════════════════════════════
+```
+
+## APÉNDICE E: Formato de Informe Final en RMarkdown
+
+```{r plantilla-informe-rmd, eval=FALSE}
+# Copie este contenido en un nuevo archivo .Rmd
+
+---
+title: "Título de su Investigación"
+subtitle: "Proyecto de Investigación - [Curso]"
+author: 
+  - "Nombre Estudiante 1"
+  - "Nombre Estudiante 2"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    code_folding: hide
+  pdf_document:
+    toc: true
+bibliography: referencias.bib
+---
+
+# Resumen
+
+[150-250 palabras que incluyan: antecedentes, objetivo, métodos, 
+resultados principales y conclusión]
+
+**Palabras clave:** biodiversidad, ecología, [agregar más]
+
+---
+
+# Introducción
+
+## Contexto general
+
+[Introducir el tema de forma amplia]
+
+## Marco teórico
+
+[Revisar literatura relevante]
+
+## Justificación
+
+[Por qué es importante este estudio]
+
+## Objetivos
+
+**Objetivo general:**
+
+[Un objetivo que responda a la pregunta de investigación]
+
+**Objetivos específicos:**
+
+1. [Objetivo específico 1]
+2. [Objetivo específico 2]
+3. [Objetivo específico 3]
+
+## Hipótesis
+
+- **H₀:** [Hipótesis nula]
+- **H₁:** [Hipótesis alternativa]
+
+---
+
+# Materiales y Métodos
+
+## Área de estudio
+
+[Descripción detallada del área con mapa]
+
+```{r mapa-area-estudio, echo=FALSE, message=FALSE, warning=FALSE}
+# Código para generar mapa
+# library(leaflet)
+# mapa <- leaflet() %>%
+#   addTiles() %>%
+#   addMarkers(lng = -69.9, lat = 18.5, popup = "Área de estudio")
+# mapa
+```
+
+## Diseño de muestreo
+
+[Descripción del diseño, unidades de muestreo, frecuencia]
+
+## Recolección de datos
+
+[Métodos específicos usados]
+
+## Análisis de datos
+
+[Describir análisis estadísticos realizados]
+
+```{r, include=FALSE}
+# Configuración inicial
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+```
+
+```{r cargar-datos, include=FALSE}
+# Cargar datos
+datos <- read_csv("datos_campo.csv")
+```
+
+---
+
+# Resultados
+
+## [Subtítulo de resultados]
+
+[Descripción objetiva de los hallazgos]
+
+```{r figura-principal}
+# Código para figura principal
+ggplot(datos, aes(x = variable_x, y = variable_y)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Figura 1. Título descriptivo",
+       x = "Variable X",
+       y = "Variable Y")
+```
+
+**Figura 1.** Leyenda descriptiva completa de la figura.
+
+## [Más resultados]
+
+```{r tabla-resultados}
+# Tabla de resultados
+resumen <- datos %>%
+  group_by(grupo) %>%
+  summarise(
+    Media = mean(variable),
+    DE = sd(variable)
+  )
+
+kable(resumen, caption = "Tabla 1. Descripción de la tabla")
+```
+
+---
+
+# Discusión
+
+## Interpretación de resultados principales
+
+[Interpretar hallazgos en contexto científico]
+
+## Comparación con literatura
+
+[Comparar con estudios previos]
+
+## Implicaciones
+
+[Significado científico y práctico]
+
+## Limitaciones
+
+[Reconocer limitaciones del estudio]
+
+---
+
+# Conclusiones
+
+[Responder a objetivos, sintetizar hallazgos principales, sugerir 
+investigaciones futuras]
+
+---
+
+# Agradecimientos
+
+[Agradecer a personas e instituciones que apoyaron el proyecto]
+
+---
+
+# Referencias
+
+[Referencias en formato APA o el solicitado]
+
+---
+
+# Apéndices
+
+## Apéndice A: Datos crudos
+
+```{r datos-crudos}
+# Mostrar muestra de datos crudos
+head(datos, 10) %>%
+  kable()
+```
+
+## Apéndice B: Código completo
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+# Este chunk mostrará todo el código usado en el documento
+```
+
+---
+
+# MENSAJE FINAL / PALABRAS FINALES
+
+Estimados estudiantes:
+
+Este manual es su compañero durante todo el semestre. No necesitan leerlo de inicio a fin inmediatamente - úsenlo como referencia según avanzan en su proyecto. Es una herramienta, pero la verdadera ciencia se hace en el campo, en el laboratorio, en las horas de análisis de datos, y sobre todo, en su capacidad de observar el mundo natural con curiosidad y rigor.
+
+La investigación científica es un proceso que requiere:
+
+- **Paciencia:** Los buenos datos toman tiempo
+- **Atención al detalle:** Un solo error puede invalidar semanas de trabajo
+- **Honestidad:** Con los datos, con las limitaciones, con ustedes mismos
+- **Creatividad:** Para resolver problemas y encontrar soluciones
+- **Perseverancia:** Pocas investigaciones salen perfectas al primer intento
+
+**Recuerden:**
+
+🔬 **La ciencia es un proceso**, no solo un producto. Disfruten el camino del descubrimiento.
+
+📚 **Aprender de los errores** es parte fundamental de ser científico. Cada problema es una oportunidad.
+
+🤝 **La colaboración** fortalece la ciencia. Compartan ideas, pidan ayuda, trabajen en equipo.
+
+🌱 **La curiosidad** es el motor de la investigación. Mantengan viva su pasión por entender el mundo natural.
+
+🌍 **Su trabajo importa**. Cada proyecto, por pequeño que parezca, contribuye al conocimiento sobre nuestra biodiversidad y nuestros ecosistemas.
+
+No teman cometer errores; son parte esencial del aprendizaje. Lo importante es que sean honestos al reportarlos, que aprendan de ellos, y que busquen ayuda cuando la necesiten.
+
+Si tienen dudas, pregunten. La ciencia se construye en comunidad, no en aislamiento.
+
+Recuerden: No están solo escribiendo un informe para obtener una calificación. Están contribuyendo, aunque sea modestamente, al conocimiento científico sobre nuestro país, nuestra región, nuestros ecosistemas. Ese conocimiento es valioso y perdurará más allá de este semestre.
+
+Estamos aquí para apoyarlos en cada etapa. No duden en consultar cuando tengan dudas o necesiten orientación.
+
+Les deseamos un proyecto lleno de descubrimientos, aprendizaje y satisfacción por el trabajo bien hecho.
+
+¡A trabajar, científicos!
+
+¡Éxitos en su investigación!
+
+---
+
+## Información del Documento
+
+- **Versión:** 0.98  
+- **Última actualización:** `r Sys.Date()`  
+- **Licencia:** Este material es de uso exclusivo para estudiantes del curso  
+- **Se utilizó la IA para la construcción de este manual
+
+---
+
+## Registro de Cambios
+
+| Fecha | Versión | Cambios |
+|:-------|:---------|:---------|
+| `r Sys.Date()` | 0.98 | Creación inicial del manual |
+
