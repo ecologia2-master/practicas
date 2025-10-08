@@ -7,3 +7,5 @@
 - [Solución Propuesta 6](practicas-fundamentos-de-ecologia-de-poblaciones/solucion-propuesta-6.md)
 
 - [Práctica 2. Interacciones biológicas con datos de poblaciones https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional/practicas-interacciones-biologicas-dinamica-poblacional.html](https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional/practicas-interacciones-biologicas-dinamica-poblacional.html)
+
+- [Guía para Proyecto de Investigación. https://ecologia2-master.github.io/practicas/guia-para-proyecto-de-investigacion/guia-para-proyecto-de-investigacion.html](https://ecologia2-master.github.io/practicas/practicas-interacciones-biologicas-dinamica-poblacional/practicas-interacciones-biologicas-dinamica-poblacional.html)
