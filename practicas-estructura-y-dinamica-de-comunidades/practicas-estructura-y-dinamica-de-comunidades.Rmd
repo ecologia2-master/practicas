@@ -1,0 +1,919 @@
+---
+title: "Práctica : Análisis de Dinámica Comunitaria en Ecosistemas Fragmentados"
+subtitle: "Estructura y Dinámica de Comunidades"
+date: "`r Sys.Date()`"
+output:
+  # pdf_document:
+  #   toc: true
+  #   toc_depth: 3
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: cosmo
+    highlight: tango
+    code_folding: show
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  warning = FALSE, 
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 6,
+  fig.align = 'center'
+)
+
+# Cargar librerías necesarias
+library(tidyverse)
+library(vegan)
+library(knitr)
+library(kableExtra)
+library(scales)
+library(RColorBrewer)
+```
+
+---
+
+# 1. Introducción
+
+## 1.1 Contexto de la Práctica
+
+- Diversidad de especies (riqueza y equidad)
+- Roles ecológicos de especies
+- Efectos de la fragmentación del hábitat
+- Redes tróficas y cascadas
+- Especies invasoras
+- Sucesión ecológica
+- Resiliencia y estabilidad comunitaria
+- Biogeografía de islas
+
+## 1.2 Objetivos de Aprendizaje
+
+1. Calcular y comparar índices de diversidad
+2. Identificar roles ecológicos y su vulnerabilidad
+3. Analizar efectos de perturbaciones en comunidades
+4. Interpretar redes tróficas y cascadas
+5. Aplicar conceptos de biogeografía y sucesión
+
+---
+
+# 2. Datos del Estudio
+
+## 2.1 Descripción del Escenario
+
+Se estudió un ecosistema de bosque tropical que experimentó fragmentación hace 5 años. Se muestrearon tres sitios:
+
+- **Bosque Continuo (BC)**: Hábitat sin fragmentar (control)
+- **Fragmento Grande (FG)**: Fragmento de 1000 ha
+- **Fragmento Pequeño (FP)**: Fragmento de 100 ha
+
+## 2.2 Carga de Datos
+
+```{r datos-especies}
+# Crear data frame con abundancia de especies
+especies <- data.frame(
+  Especie = c("Jaguar", "Puma", "Pecarí", "Venado", "Tapir",
+              "Mono aullador", "Tucán", "Ardilla", "Agutí",
+              "Serpiente", "Rapaz", "Coatí", "Zarigüeya",
+              "Rata invasora", "Insectos defoliadores"),
+  
+  Gremio = c("Carnívoro tope", "Carnívoro tope", "Herbívoro", 
+             "Herbívoro", "Herbívoro", "Frugívoro", "Frugívoro",
+             "Granívoro", "Granívoro", "Carnívoro", "Carnívoro",
+             "Omnívoro", "Omnívoro", "Omnívoro", "Herbívoro"),
+  
+  Rol = c("Especie clave", "Dominante", "Ingeniero", "Nativo",
+          "Dispersor/Fundador", "Dispersor", "Dispersor", "Nativo",
+          "Dispersor", "Nativo", "Indicador", "Nativo",
+          "Generalista", "INVASORA", "Nativo"),
+  
+  Bosque_Continuo = c(8, 12, 45, 35, 18, 62, 48, 95, 52,
+                      28, 15, 38, 55, 0, 180),
+  
+  Fragmento_Grande = c(3, 6, 38, 28, 10, 55, 42, 105, 48,
+                       25, 12, 42, 68, 15, 210),
+  
+  Fragmento_Pequeno = c(0, 1, 15, 12, 2, 40, 35, 110, 30,
+                        22, 8, 45, 85, 45, 260)
+)
+
+# Mostrar tabla
+kable(especies, 
+      caption = "Tabla 1: Abundancia de especies en tres sitios de muestreo") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  row_spec(14, bold = TRUE, color = "white", background = "#C00000")
+```
+
+```{r datos-vegetacion}
+# Datos de cobertura vegetal
+vegetacion <- data.frame(
+  Estrato = c("Árboles emergentes", "Dosel cerrado", "Sotobosque",
+              "Plantas pioneras", "Especies de borde"),
+  Bosque_Continuo = c(85, 95, 75, 10, 5),
+  Fragmento_Grande = c(70, 80, 70, 25, 35),
+  Fragmento_Pequeno = c(45, 55, 60, 50, 65)
+)
+
+kable(vegetacion,
+      caption = "Tabla 2: Cobertura vegetal (%) en los tres sitios") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE)
+```
+
+---
+
+# 3. Actividad 1: Cálculo de Índices de Diversidad 
+
+## 3.1 Riqueza de Especies (S)
+
+### 3.1.1 Calcula la Riqueza de Especies (S) para cada sitio
+
+**Respuesta:**
+
+```{r riqueza}
+# Calcular riqueza (número de especies presentes)
+riqueza <- especies %>%
+  select(Bosque_Continuo, Fragmento_Grande, Fragmento_Pequeno) %>%
+  summarise(across(everything(), ~ sum(. > 0)))
+
+kable(riqueza, 
+      caption = "Riqueza de especies (S) por sitio",
+      col.names = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+
+## 3.2 Índice de Shannon-Wiener (H')
+
+### Calcula el Índice de Shannon-Wiener (H') para cada sitio
+
+El índice de Shannon mide la diversidad considerando tanto la riqueza como la equitabilidad:
+
+$$H' = -\sum_{i=1}^{S} p_i \ln(p_i)$$
+
+donde $p_i$ es la proporción de la especie $i$.
+
+Es decir, donde pi = abundancia de la especie i / abundancia total
+
+**Respuesta:**
+
+```{r shannon}
+# Función para calcular Shannon
+calcular_shannon <- function(abundancias) {
+  total <- sum(abundancias)
+  proporciones <- abundancias / total
+  proporciones <- proporciones[proporciones > 0]  # Eliminar ceros
+  shannon <- -sum(proporciones * log(proporciones))
+  return(shannon)
+}
+
+# Calcular para cada sitio
+shannon_bc <- calcular_shannon(especies$Bosque_Continuo)
+shannon_fg <- calcular_shannon(especies$Fragmento_Grande)
+shannon_fp <- calcular_shannon(especies$Fragmento_Pequeno)
+
+shannon_df <- data.frame(
+  Sitio = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño"),
+  Shannon = round(c(shannon_bc, shannon_fg, shannon_fp), 3)
+)
+
+kable(shannon_df,
+      caption = "Índice de Shannon (H') por sitio") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+## 3.3 Índice de Simpson (D')
+
+### Calcula el Índice Simpson (D') para cada sitio
+
+El índice de Simpson da más peso a las especies dominantes:
+
+$$D = 1 - \sum_{i=1}^{S} p_i^2$$
+
+ **Respuesta:**
+
+```{r simpson, echo=FALSE}
+# Función para calcular Simpson
+calcular_simpson <- function(abundancias) {
+  total <- sum(abundancias)
+  proporciones <- abundancias / total
+  simpson <- 1 - sum(proporciones^2)
+  return(simpson)
+}
+
+# Calcular para cada sitio
+simpson_bc <- calcular_simpson(especies$Bosque_Continuo)
+simpson_fg <- calcular_simpson(especies$Fragmento_Grande)
+simpson_fp <- calcular_simpson(especies$Fragmento_Pequeno)
+
+simpson_df <- data.frame(
+  Sitio = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño"),
+  Simpson = round(c(simpson_bc, simpson_fg, simpson_fp), 3)
+)
+
+kable(simpson_df,
+      caption = "Índice de Simpson (D) por sitio") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+## 3.4 Equitabilidad de Pielou
+
+### Calcula la Equidad de Pielou para cada sitio
+
+Mide qué tan equitativa es la distribución de abundancias:
+
+$$J' = \frac{H'}{\ln(S)}$$
+**Respuesta:**
+
+```{r equitabilidad, echo=FALSE}
+# Calcular equitabilidad
+pielou_bc <- shannon_bc / log(riqueza$Bosque_Continuo)
+pielou_fg <- shannon_fg / log(riqueza$Fragmento_Grande)
+pielou_fp <- shannon_fp / log(riqueza$Fragmento_Pequeno)
+
+equitabilidad_df <- data.frame(
+  Sitio = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño"),
+  Equitabilidad = round(c(pielou_bc, pielou_fg, pielou_fp), 3)
+)
+
+kable(equitabilidad_df,
+      caption = "Equitabilidad de Pielou (J') por sitio") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+## 3.5 Resumen de Índices de Diversidad
+
+### Completa la tabla con tus datos:
+
+**Respuesta:**
+
+```{r resumen-diversidad, echo=FALSE}
+# Tabla resumen
+diversidad_resumen <- data.frame(
+  Indice = c("Riqueza (S)", "Shannon (H')", "Simpson (D)", "Equitabilidad (J')"),
+  Bosque_Continuo = c(
+    riqueza$Bosque_Continuo,
+    round(shannon_bc, 3),
+    round(simpson_bc, 3),
+    round(pielou_bc, 3)
+  ),
+  Fragmento_Grande = c(
+    riqueza$Fragmento_Grande,
+    round(shannon_fg, 3),
+    round(simpson_fg, 3),
+    round(pielou_fg, 3)
+  ),
+  Fragmento_Pequeno = c(
+    riqueza$Fragmento_Pequeno,
+    round(shannon_fp, 3),
+    round(simpson_fp, 3),
+    round(pielou_fp, 3)
+  )
+)
+
+kable(diversidad_resumen,
+      caption = "Resumen de índices de diversidad",
+      col.names = c("Índice", "Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE) %>%
+  row_spec(0, bold = TRUE, background = "#4472C4", color = "white")
+```
+
+## 3.6 Visualización de Diversidad
+
+<!-- 
+### Comprara la diversidad entre el bosque control y los fragmentos 
+
+**Respuesta:**
+
+```{r grafico-diversidad, fig.cap="Comparación de índices de diversidad entre sitios"}
+# Preparar datos para gráfico
+div_long <- diversidad_resumen %>%
+  pivot_longer(cols = -Indice, names_to = "Sitio", values_to = "Valor") %>%
+  filter(Indice != "Riqueza (S)")  # Excluir riqueza por escala diferente
+
+div_long$Sitio <- factor(div_long$Sitio, 
+                         levels = c("Bosque_Continuo", "Fragmento_Grande", "Fragmento_Pequeno"),
+                         labels = c("Bosque\nContinuo", "Fragmento\nGrande", "Fragmento\nPequeño"))
+
+# Crear gráfico
+ggplot(div_long, aes(x = Sitio, y = Valor, fill = Sitio)) +
+  geom_col(width = 0.7) +
+  facet_wrap(~ Indice, scales = "free_y", ncol = 3) +
+  scale_fill_manual(values = c("#2E7D32", "#F57C00", "#C62828")) +
+  labs(title = "Índices de Diversidad por Sitio",
+       subtitle = "Comparación entre bosque continuo y fragmentos",
+       x = NULL, y = "Valor del índice") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none",
+        strip.background = element_rect(fill = "#E0E0E0"),
+        strip.text = element_text(face = "bold", size = 11),
+        plot.title = element_text(face = "bold", size = 14))
+```
+-->
+
+### Interpretación. Responde en base a tus datos:
+
+#### ¿Qué sitio presenta mayor diversidad?
+
+<!-- **Respuesta:**
+
+- El **Bosque Continuo** presenta los valores más altos en todos los índices, tiene mejor distribución y especies clave.
+- Por riqueza sola: Fragmento Grande (15 especies)
+- Por Equitabilidad: Bosque continuo (menos dominancia de especies invasoras)
+-->
+
+#### ¿Qué componente se afecta más: riqueza o equidad?
+
+<!-- **Respuesta:**
+
+- La **fragmentación reduce tanto la riqueza como la equitabilidad**
+- El **Fragmento Pequeño** muestra la mayor disminución en diversidad
+-->
+
+---
+
+# 4. Actividad 2: Análisis de Roles Ecológicos 
+
+## 4.1 Cambio en Abundancias
+
+### Identifica qué especies desaparecen o disminuyen drásticamente con la fragmentación
+
+<!-- **Respuesta:**
+
+- El **Fragmento Pequeño** muestra la mayor disminución en diversidad.
+- Desaparece el Jaguar
+
+- Disminuyen drásticamente: 
+Puma (12→6→1), Tapir (18→10→2), Rapaz (15→12→8)
+-->
+
+### Clasifica las especies según tu respuesta:
+
+- Especies sensibles (disminuyen >50%)
+
+- Especies tolerantes (cambio <20%)
+
+- Especies beneficiadas (aumentan >20%)
+
+**Respuesta:**
+
+```{r cambio-abundancias, echo=FALSE}
+# Calcular cambios porcentuales
+especies_cambio <- especies %>%
+  mutate(
+    Cambio_BC_FG = round(100 * (Fragmento_Grande - Bosque_Continuo) / Bosque_Continuo, 1),
+    Cambio_BC_FP = round(100 * (Fragmento_Pequeno - Bosque_Continuo) / Bosque_Continuo, 1),
+    Categoria = case_when(
+      Cambio_BC_FP <= -50 ~ "Sensible",
+      Cambio_BC_FP >= 20 ~ "Beneficiada",
+      TRUE ~ "Tolerante"
+    )
+  ) %>%
+  select(Especie, Rol, Bosque_Continuo, Fragmento_Pequeno, Cambio_BC_FP, Categoria) %>%
+  arrange(Cambio_BC_FP)
+
+kable(especies_cambio,
+      caption = "Cambio en abundancias: Bosque Continuo → Fragmento Pequeño",
+      col.names = c("Especie", "Rol", "BC", "FP", "% Cambio", "Categoría")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE) %>%
+  row_spec(which(especies_cambio$Categoria == "Sensible"), 
+           background = "#FFCDD2") %>%
+  row_spec(which(especies_cambio$Categoria == "Beneficiada"), 
+           background = "#C8E6C9")
+```
+
+## 4.2 Visualización de Especies Más Afectadas
+
+### Elabora una gráfica las espcies más afectadas por la fragmentación en función de cambio en la abundancia.
+
+**Respuesta:**
+
+```{r grafico-cambios, fig.cap="Especies más afectadas por la fragmentación", echo=FALSE}
+# Gráfico de barras de cambios
+especies_cambio %>%
+  filter(abs(Cambio_BC_FP) > 30) %>%  # Solo cambios significativos
+  mutate(Especie = reorder(Especie, Cambio_BC_FP)) %>%
+  ggplot(aes(x = Especie, y = Cambio_BC_FP, fill = Categoria)) +
+  geom_col() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  coord_flip() +
+  scale_fill_manual(values = c("Beneficiada" = "#66BB6A", 
+                                "Sensible" = "#EF5350",
+                                "Tolerante" = "#FFA726")) +
+  labs(title = "Especies Más Afectadas por la Fragmentación",
+       subtitle = "Cambio porcentual de Bosque Continuo a Fragmento Pequeño",
+       x = NULL, y = "Cambio en abundancia (%)",
+       fill = "Categoría") +
+  theme_minimal(base_size = 12) +
+  theme(plot.title = element_text(face = "bold"),
+        legend.position = "bottom")
+```
+
+<!-- ## 4.3 Análisis por Rol Ecológico (opcional)
+
+### Opcional: Elabora una tabla comparativa de los roles ecológicos, cantidad de especies, porcentaje de cambio promedio y cantidad des epcies sensibles.
+
+**Respuesta:**
+
+```{r roles-vulnerabilidad, echo=FALSE}
+# Resumen por rol ecológico
+roles_resumen <- especies_cambio %>%
+  group_by(Rol) %>%
+  summarise(
+    n_especies = n(),
+    Cambio_promedio = round(mean(Cambio_BC_FP), 1),
+    n_sensibles = sum(Categoria == "Sensible")
+  ) %>%
+  arrange(Cambio_promedio)
+
+kable(roles_resumen,
+      caption = "Vulnerabilidad por rol ecológico",
+      col.names = c("Rol Ecológico", "N° especies", "Cambio promedio (%)", "N° sensibles")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+-->
+
+### Resalta los hallazgos clave:
+
+<!-- **Respuesta:**
+
+- **Especies clave y dispersoras** son las más vulnerables
+- **Especies generalistas** se benefician de la fragmentación
+- **Especies invasoras** aprovechan la perturbación
+-->
+
+## Interpretación. Responde en base a tus datos:
+
+### ¿Qué rol ecológico es más vulnerable a la fragmentación?
+
+<!-- **Respuesta:**
+
+- Carnívoro tope (Jaguar, Puma) - son los primeros en desaparecer
+-->
+
+### ¿Qué consecuencias tiene la pérdida de la especie clave?
+
+<!-- **Respuesta:**
+
+- Descontrol de poblaciones de herbívoros (venados, pecaries)
+- Pérdida del "control top-down" de la cadena trófica
+- Cambio en la estructura del bosque por sobrepastoreo
+- Facilita la invasión de especies al no haber depredador regulador
+-->
+
+### ¿Cómo afecta la desaparición del dispersor de semillas, polinizadores...?
+
+<!-- **Respuesta:**
+
+- Pérdida de dispersión de semillas grandes que solo el tapir puede comer
+- Alteración en la regeneración forestal de árboles de frutos grandes
+- Reducción de la diversidad genética de plantas
+- Cambio en la composición vegetal del bosque a largo plazo
+---
+-->
+
+# 5. Actividad 3: Red Trófica y Cascadas
+
+## 5.1 Estructura Trófica
+
+### Elabora una tabla de las abundancia de los distintos grupos tróficos por comunidad.
+
+**Respuesta:**
+
+```{r niveles-troficos, echo=FALSE}
+# Clasificar especies por nivel trófico
+especies_trofica <- especies %>%
+  mutate(
+    Nivel_trofico = case_when(
+      Gremio == "Carnívoro tope" ~ 4,
+      Gremio == "Carnívoro" ~ 3,
+      Gremio %in% c("Herbívoro", "Frugívoro", "Granívoro") ~ 2,
+      Gremio == "Omnívoro" ~ 2.5,
+      TRUE ~ 1
+    ),
+    Nivel_nombre = case_when(
+      Nivel_trofico == 4 ~ "Carnívoros tope",
+      Nivel_trofico == 3 ~ "Carnívoros medianos",
+      Nivel_trofico == 2.5 ~ "Omnívoros",
+      Nivel_trofico == 2 ~ "Herbívoros/Frugívoros",
+      TRUE ~ "Productores"
+    )
+  )
+
+# Abundancia total por nivel trófico
+abundancia_trofica <- especies_trofica %>%
+  group_by(Nivel_nombre) %>%
+  summarise(
+    BC = sum(Bosque_Continuo),
+    FG = sum(Fragmento_Grande),
+    FP = sum(Fragmento_Pequeno)
+  ) %>%
+  pivot_longer(cols = c(BC, FG, FP), names_to = "Sitio", values_to = "Abundancia")
+
+abundancia_trofica$Sitio <- factor(abundancia_trofica$Sitio,
+                                   levels = c("BC", "FG", "FP"),
+                                   labels = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño"))
+
+kable(abundancia_trofica %>% pivot_wider(names_from = Sitio, values_from = Abundancia),
+      caption = "Abundancia total por nivel trófico y sitio") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+## 5.2 Visualización de la Estructura Trófica
+
+### Construye una gráfica que visaulice las proporciones de abuncancia y distintos niveles de la red trófica entre las comunidades
+
+**Respuesta:**
+
+```{r grafico-troficos, fig.cap="Cambios en la estructura trófica por fragmentación", echo=FALSE}
+ggplot(abundancia_trofica, aes(x = Sitio, y = Abundancia, fill = Nivel_nombre)) +
+  geom_col(position = "fill", width = 0.7) +
+  scale_y_continuous(labels = percent_format()) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Estructura Trófica Relativa por Sitio",
+       subtitle = "Proporción de abundancia por nivel trófico",
+       x = NULL, y = "Proporción de abundancia",
+       fill = "Nivel trófico") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold"),
+        axis.text.x = element_text(angle = 0))
+```
+
+
+### ¿Qué niveles tróficos se ven más afectados?
+
+<!-- **Respuesta:**
+
+Los más afectados son:
+- Carnívoros tope (Jaguar, Puma) - casi desaparecen
+- Grandes herbívoros (Tapir, Venado, Pecarí) - reducciones >65%
+- Insectos especializados (defoliadores) - desaparecen completamente
+-->
+
+## 5.3 Evidencia de Cascada Trófica
+
+### ¿Hay evidencia de cascada trófica?
+
+<!-- **Respuesta:**
+
+- SÍ hay evidencia de cascada trófica:
+- Efecto "top-down" (de arriba hacia abajo):
+- Se pierden depredadores tope (Jaguar, Puma)
+  - Aumentan herbívoros medianos (Coatí, Zarigüeya, Ardilla)
+  - Disminuyen insectos (por competencia o depredación)
+  - Cambia toda la estructura del ecosistema
+
+- Los **carnívoros tope** disminuyen drásticamente con la fragmentación
+- Los **herbívoros también disminuyen**, lo que sugiere factores múltiples:
+  - Pérdida de hábitat directo
+  - Reducción de recursos alimenticios
+  - Aumento de especies invasoras competidoras
+
+```{r cascada-trofica, fig.cap="Evidencia de cascada trófica"}
+# Analizar relación entre carnívoros tope y herbívoros
+cascada_data <- especies_trofica %>%
+  filter(Gremio %in% c("Carnívoro tope", "Herbívoro")) %>%
+  group_by(Gremio) %>%
+  summarise(
+    BC = sum(Bosque_Continuo),
+    FG = sum(Fragmento_Grande),
+    FP = sum(Fragmento_Pequeno)
+  ) %>%
+  pivot_longer(cols = c(BC, FG, FP), names_to = "Sitio", values_to = "Abundancia")
+
+cascada_data$Sitio <- factor(cascada_data$Sitio,
+                             levels = c("BC", "FG", "FP"),
+                             labels = c("Bosque\nContinuo", "Fragmento\nGrande", "Fragmento\nPequeño"))
+
+ggplot(cascada_data, aes(x = Sitio, y = Abundancia, color = Gremio, group = Gremio)) +
+  geom_line(size = 1.5) +
+  geom_point(size = 4) +
+  scale_color_manual(values = c("Carnívoro tope" = "#D32F2F", 
+                                 "Herbívoro" = "#388E3C")) +
+  labs(title = "Cascada Trófica: Carnívoros vs Herbívoros",
+       subtitle = "La pérdida de carnívoros tope NO aumenta herbívoros (efecto indirecto complejo)",
+       x = NULL, y = "Abundancia total",
+       color = "Gremio") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold"))
+```
+-->
+
+---
+
+# 6. Actividad 4: Especies Invasoras y Efecto de Borde
+
+## 6.1 Análisis de la especie invasora
+
+### Elabora una tabla comparativa de la abundancia de las especies invasora entre las comunidades, señalando las especies de los bordes y las plantas pioneras
+
+**Respuesta:**
+
+```{r rata-invasora, echo=FALSE}
+# Datos de rata invasora y especies de borde
+invasion_data <- data.frame(
+  Sitio = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño"),
+  Rata_invasora = c(0, 15, 45),
+  Especies_borde = c(5, 35, 65),
+  Plantas_pioneras = c(10, 25, 50)
+)
+
+kable(invasion_data,
+      caption = "Relación entre fragmentación, especies invasoras y efecto de borde",
+      col.names = c("Sitio", "Rata invasora", "Especies borde (%)", "Plantas pioneras (%)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+## 6.2 Visualización del Efecto de Borde
+
+### Analiza la relacion entre el tamaño del fragmento, proporcion de especies de borde, y abundncia de especies invasora. Elabora una gráfica que permita visualidad el el tamaño del Efecto de Borde, las Especies Invasoras y las Plantas pioneras.
+
+**Respuesta:**
+
+```{r grafico-invasion, fig.cap="Efecto de borde y especies invasoras", echo=FALSE}
+# Gráfico de dispersión
+invasion_long <- invasion_data %>%
+  pivot_longer(cols = -Sitio, names_to = "Variable", values_to = "Valor")
+
+invasion_long$Sitio <- factor(invasion_long$Sitio,
+                              levels = c("Bosque Continuo", "Fragmento Grande", "Fragmento Pequeño"))
+
+ggplot(invasion_long, aes(x = Sitio, y = Valor, fill = Variable)) +
+  geom_col(position = "dodge", width = 0.7) +
+  scale_fill_manual(values = c("Rata_invasora" = "#C62828",
+                                "Especies_borde" = "#F57C00",
+                                "Plantas_pioneras" = "#FFA000"),
+                    labels = c("Plantas pioneras (%)", 
+                               "Rata invasora (N)", 
+                               "Especies de borde (%)")) +
+  labs(title = "Efecto de Borde y Especies Invasoras",
+       subtitle = "La fragmentación favorece especies de borde e invasoras",
+       x = NULL, y = "Valor",
+       fill = "Variable") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold"),
+        axis.text.x = element_text(angle = 15, hjust = 1))
+```
+
+## 6.3 Impacto de la Invasión
+
+### Elabora una tabla comparativa con las especies que podría potencialmente competir con las especies invasoras.
+
+**Respuesta:**
+
+```{r competencia-rata, echo=FALSE}
+# Especies que podrían competir con la rata
+competidores <- especies %>%
+  filter(Gremio == "Omnívoro" | Gremio == "Granívoro") %>%
+  select(Especie, Gremio, Bosque_Continuo, Fragmento_Pequeno) %>%
+  mutate(Cambio = Fragmento_Pequeno - Bosque_Continuo)
+
+kable(competidores,
+      caption = "Especies que potencialmente compiten con la rata invasora",
+      col.names = c("Especie", "Gremio", "Bosque Contínuo", "Fragmento Pequeño", "Cambio")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE) %>%
+  row_spec(which(competidores$Especie == "Rata invasora"), 
+           bold = TRUE, background = "#FFCDD2")
+```
+
+### Responde las siguientes preguntas
+
+#### ¿Qué evidencia hay de "Efecto de Borde"?
+
+<!-- **Respuesta:**
+
+- Aumento de generalistas: Zarigüeya (+55%), Ardilla (+16%), Coatí (+18%)
+- Pérdida de especialistas: Jaguar, Puma, Tapir, Insectos defoliadores
+- Invasión biológica: Rata invasora aparece solo en fragmentos
+- Simplificación trófica: Menos niveles, más especies generalistas
+-->
+
+#### ¿Cómo puede la especie invasora alterar la comunidad?
+
+<!-- **Respuesta:**
+
+- Competencia por recursos: Compite con Agutí, Ardilla por comida
+- Depredación de huevos: Afecta aves como Tucán, Rapaz
+- Alteración del suelo: Cambia regeneración de plantas
+- Enfermedades: Introduce patógenos a especies nativas
+- Exclusión competitiva: Puede eliminar especies nativas más sensibles
+-->
+
+#### ¿Qué especies nativas compiten con la invasora?
+
+<!-- **Respuesta:**
+
+Competidores directos:
+
+- Agutí (mismo gremio: omnívoro terrestre)
+- Ardilla (granívoro/omnívoro arbóreo-terrestre)
+- Coatí (omnívoro terrestre-arbóreo)
+- Zarigüeya (omnívoro generalista)
+- Evidencia: Agutí disminuye 42% mientras rata aumenta dramáticamente.
+
+**Observaciones:**
+
+- La **rata invasora** coloniza solo los fragmentos (ausente en bosque continuo)
+- Su abundancia es **mayor en fragmentos pequeños** (más efecto de borde)
+- Compite con **especies nativas omnívoras y granívoras**
+- Las **plantas pioneras** aumentan, indicando **sucesión secundaria**
+-->
+
+---
+
+# 7. Discusión y Síntesis
+
+## Reflexiona sobre la práctica y resume tus observaciones.
+
+<!-- **Respuesta:**
+
+## 7.1 Conceptos Clave Reforzados
+
+### ✓ Diversidad (riqueza y equidad)
+- La fragmentación reduce ambos componentes
+- La **equitabilidad** se afecta más que la riqueza
+
+### ✓ Roles ecológicos
+- **Especies clave** (jaguar) son extremadamente vulnerables
+- **Dispersores** (tapir, agutí) disminuyen, afectando regeneración
+- **Ingenieros** (pecarí) se reducen, alterando el ecosistema
+
+### ✓ Fragmentación del hábitat
+- **Efecto área**: fragmentos pequeños = menor diversidad
+- **Efecto de borde**: aumento de especies generalistas y pioneras
+
+### ✓ Especies invasoras
+- Aprovechan la **perturbación** y el **efecto de borde**
+- Compiten con especies nativas
+
+### ✓ Sucesión ecológica
+- Aumento de **plantas pioneras** indica sucesión secundaria
+- Pérdida de estructura forestal madura
+
+### ✓ Resiliencia y estabilidad
+- Fragmentos pequeños muestran **menor resiliencia**
+- Pérdida de redundancia funcional
+
+### ✓ Biogeografía de islas
+- Se cumple la relación **área-especies**
+- Fragmentos actúan como "islas" de hábitat
+-->
+
+## 7.2 Preguntas para Discusión
+
+### ¿La fragmentación afecta más la riqueza o la equitabilidad?**
+
+**Respuesta:**
+
+La **equitabilidad** se afecta más, indicando que algunas especies se vuelven dominantes mientras otras desaparecen.
+
+```{r analisis-final, echo=FALSE}
+# Calcular porcentaje de cambio
+cambio_indices <- data.frame(
+  Indice = c("Riqueza", "Shannon", "Simpson", "Equitabilidad"),
+  Cambio_BC_FP = c(
+    100 * (riqueza$Fragmento_Pequeno - riqueza$Bosque_Continuo) / riqueza$Bosque_Continuo,
+    100 * (shannon_fp - shannon_bc) / shannon_bc,
+    100 * (simpson_fp - simpson_bc) / simpson_bc,
+    100 * (pielou_fp - pielou_bc) / pielou_bc
+  )
+)
+
+kable(cambio_indices,
+      caption = "Cambio porcentual en índices de diversidad (BC → FP)",
+      col.names = c("Índice", "% Cambio"),
+      digits = 1) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+### ¿Qué fragmento muestra menor resiliencia?**
+
+<!-- **Respuesta:**
+
+**Fragmento Pequeño** por:
+- Mayor pérdida de diversidad
+- Pérdida total de especies clave
+- Mayor invasión de especies exóticas
+- Mayor efecto de borde
+-->
+
+### ¿Se aplica la teoría de biogeografía de islas?**
+
+<!-- **Respuesta:**
+
+**Sí**, se observa:
+- Relación positiva entre área y riqueza
+- Fragmentos pequeños = menos especies
+- Efecto de aislamiento (pérdida de conectividad)
+-->
+
+---
+
+# 8. Estrategias de Conservación
+
+## En base a tus resultados, Elabora una lsita de recomendaciones estratégicas.
+
+<!-- **Respuesta:**
+
+Basándonos en los resultados, se recomiendan las siguientes estrategias:
+
+## 8.1 Corredores Biológicos
+
+```{r mapa-conceptual, echo=FALSE, fig.cap="Estrategia de corredores biológicos", out.width="80%"}
+# Crear un diagrama conceptual simple
+library(DiagrammeR)
+
+grViz("
+digraph conservacion {
+  graph [layout = dot, rankdir = LR, bgcolor = transparent]
+  
+  node [shape = box, style = filled, fillcolor = lightblue]
+  A [label = 'Fragmento\nPequeño', fillcolor = '#FFCDD2']
+  B [label = 'Corredor\nBiológico', fillcolor = '#C8E6C9']
+  C [label = 'Fragmento\nGrande', fillcolor = '#FFF9C4']
+  D [label = 'Bosque\nContinuo', fillcolor = '#C8E6C9']
+  
+  A -> B [label = ' Conectar ', fontsize = 10]
+  B -> C [label = ' Migración ', fontsize = 10]
+  C -> D [label = ' Flujo génico ', fontsize = 10]
+  
+  node [shape = ellipse, fillcolor = lightgray]
+  E [label = 'Mayor\ndiversidad']
+  F [label = 'Recolonización']
+  G [label = 'Resiliencia']
+  
+  B -> E
+  B -> F
+  B -> G
+}
+")
+```
+
+## 8.2 Acciones Prioritarias
+
+1. **Proteger fragmentos grandes** como reservas de biodiversidad
+2. **Crear corredores** entre fragmentos para permitir migración
+3. **Restaurar zonas de borde** para reducir efecto de borde
+4. **Controlar especies invasoras** (rata) antes que se establezcan
+5. **Monitorear especies clave** para evaluar salud del ecosistema
+6. **Promover regeneración** de especies dispersoras de semillas
+-->
+
+---
+
+# 9. Conclusiones
+
+## Elabora una lista resumiendo tus conclusiones.
+
+<!-- **Respuesta:**
+
+1. **La fragmentación del hábitat reduce significativamente la diversidad**
+2. **Las especies con roles ecológicos especializados son más vulnerables**
+3. **Los fragmentos pequeños sufren mayor efecto de borde e invasión**
+4. **La pérdida de especies clave puede desencadenar cascadas tróficas**
+5. **La sucesión secundaria es evidente en fragmentos perturbados**
+6. **La teoría de biogeografía de islas se aplica a fragmentos de hábitat**
+7. **La conectividad entre fragmentos es crucial para la conservación**
+-->
+
+---
+
+# 10. Referencias y Recursos
+
+## 10.1 Referencias Clave
+
+- MacArthur, R.H. & Wilson, E.O. (1967). *The Theory of Island Biogeography*
+- Fahrig, L. (2003). Effects of habitat fragmentation on biodiversity. *Annual Review of Ecology, Evolution, and Systematics*
+- Odum, E. P., & Barrett, G. W. (2005). *Fundamentals of Ecology* (5ª ed.). Thomson Brooks/Cole.
+- Smith, T. M., & Smith, R. L. (2007). *Ecología* (6ª ed.). Pearson/Addison Wesley.
+- Haddad et al. (2015). Habitat fragmentation and its lasting impact on Earth's ecosystems. *Science Advances*
+
+## 10.2 Paquetes de R Utilizados
+
+```{r session-info}
+sessionInfo()
+```
+
+---
+
+**FIN DE LA PRÁCTICA**
+
+*Fecha: `r Sys.Date()`*
