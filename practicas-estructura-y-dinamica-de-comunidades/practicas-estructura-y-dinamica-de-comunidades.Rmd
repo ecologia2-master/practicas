@@ -1,7 +1,7 @@
 ---
 title: "Práctica : Análisis de Dinámica Comunitaria en Ecosistemas Fragmentados"
 subtitle: "Estructura y Dinámica de Comunidades"
-date: "`r Sys.Date()`"
+date: "Última actualización: `r Sys.Date()`"
 output:
   # pdf_document:
   #   toc: true
@@ -25,7 +25,11 @@ knitr::opts_chunk$set(
   fig.height = 6,
   fig.align = 'center'
 )
+```
 
+> ANTES DE CONTINUAR: comienza por aquí, cargando estos paquetes. Si la sesión de R se cierra, deberás comenzar por aquí nuevamente.
+
+```{r}
 # Cargar librerías necesarias
 library(tidyverse)
 library(vegan)
@@ -837,7 +841,7 @@ Basándonos en los resultados, se recomiendan las siguientes estrategias:
 
 ## 8.1 Corredores Biológicos
 
-```{r mapa-conceptual, echo=FALSE, fig.cap="Estrategia de corredores biológicos", out.width="80%"}
+```{r mapa-conceptual, echo=FALSE, fig.cap="Estrategia de corredores biológicos", out.width="80%", eval=F}
 # Crear un diagrama conceptual simple
 library(DiagrammeR)
 
