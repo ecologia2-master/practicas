@@ -1,0 +1,10 @@
+"parche_id","area_ha","ocupado","distancia_mas_cercano_km","calidad_habitat","heterocigosidad","riqueza_especies"
+1,42.4,FALSE,5.68,"Media",0.594,31
+2,85.1,FALSE,4.52,"Alta",0.694,34
+3,13.2,TRUE,5.83,"Media",0.477,27
+4,72.9,TRUE,4.54,"Baja",0.523,34
+5,75.1,FALSE,6.12,"Media",0.654,34
+6,122.8,FALSE,3.65,"Alta",0.792,36
+7,58.7,TRUE,1.79,"Baja",0.383,33
+8,84.3,TRUE,6.28,"Baja",0.457,34
+9,29.7,TRUE,7.11,"Alta",0.398,30

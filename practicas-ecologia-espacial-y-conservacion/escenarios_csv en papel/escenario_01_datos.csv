@@ -1,0 +1,9 @@
+﻿parche_id,area_ha,ocupado,distancia_mas_cercano_km,calidad_habitat,heterocigosidad,riqueza_especies,x,y,prob_colonizacion,prob_extincion,criticidad
+1,102.3,False,1.45,Alta,0.0,0,64.03,42.71,0.647,0.129,0.8
+2,64.7,True,1.09,Baja,0.507,33,62.48,98.26,0.573,0.274,0.516
+3,81.3,False,2.84,Media,0.0,0,14.55,14.05,0.38,0.197,0.397
+4,26.5,True,5.24,Media,0.444,29,57.02,74.84,0.106,0.589,0.33
+5,27.7,True,5.75,Baja,0.285,30,6.51,78.88,0.093,0.575,0.335
+6,32.0,True,5.31,Baja,0.586,30,31.34,73.04,0.114,0.527,0.356
+7,35.5,True,7.4,Media,0.503,31,21.71,84.56,0.064,0.492,0.374
+8,70.6,False,2.74,Alta,0.0,0,52.7,55.62,0.365,0.244,0.645

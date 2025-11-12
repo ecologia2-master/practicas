@@ -1,0 +1,422 @@
+---
+title: "Práctica 4: Ecología Espacial y Conservación"
+subtitle: "Análisis de Metapoblaciones y Fragmentación de Hábitat"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Introducción
+
+En esta práctica analizarás un sistema de metapoblaciones en un paisaje fragmentado. Trabajarás con datos de parches de bosque para entender conceptos clave de ecología espacial y conservación.
+
+**Escenario asignado:** _____ (reserva tu escenario en el foro)
+
+---
+
+# Parte 1: Carga de Datos y Exploración
+
+## 1.1 Cargar librerías necesarias
+
+```{r librerias}
+# Instalar si es necesario: install.packages(c("tidyverse", "ggplot2", "vegan"))
+library(tidyverse)
+library(ggplot2)
+library(vegan)
+
+# Establecer semilla para reproducibilidad
+# IMPORTANTE: Cambia este número por tu escenario asignado (1-30)
+escenario <- 1  # <-- CAMBIA ESTE NÚMERO
+set.seed(escenario * 100)
+```
+
+## 1.2 Generar tus datos únicos
+
+```{r generar_datos}
+# Número de parches de bosque en el paisaje
+n_parches <- sample(8:15, 1)
+
+# Generar datos de parches
+datos_parches <- data.frame(
+  parche_id = 1:n_parches,
+  area_ha = round(runif(n_parches, 5, 150), 1),
+  ocupado = sample(c(TRUE, FALSE), n_parches, replace = TRUE, prob = c(0.6, 0.4)),
+  distancia_mas_cercano_km = round(runif(n_parches, 0.5, 8), 2),
+  calidad_habitat = sample(c("Alta", "Media", "Baja"), n_parches, replace = TRUE),
+  heterocigosidad = round(runif(n_parches, 0.35, 0.85), 3),
+  riqueza_especies = round(rnorm(n_parches, mean = 25, sd = 8))
+)
+
+# Ajustar heterocigosidad según área (efecto cuello de botella)
+datos_parches$heterocigosidad <- datos_parches$heterocigosidad * 
+  (0.7 + 0.3 * (datos_parches$area_ha / max(datos_parches$area_ha)))
+datos_parches$heterocigosidad <- round(pmin(datos_parches$heterocigosidad, 0.85), 3)
+
+# Ajustar riqueza según área (relación especies-área)
+datos_parches$riqueza_especies <- round(15 + 10 * log10(datos_parches$area_ha + 1))
+datos_parches$riqueza_especies <- pmax(datos_parches$riqueza_especies, 5)
+
+# Mostrar datos
+print(datos_parches)
+
+# Guardar para referencia
+write.csv(datos_parches, paste0("escenario_", escenario, "_datos.csv"), row.names = FALSE)
+```
+
+"Ocupado" = ¿Tiene población presente?
+En el contexto de metapoblaciones:
+
+TRUE (ocupado): El parche de bosque tiene una población local de una especie de interés presente en ese momento
+FALSE (desocupado): El parche de bosque no tiene la especie de interés, pero es hábitat habitable
+
+
+## 1.3 Visualizar el paisaje
+
+```{r visualizar_paisaje}
+# Generar coordenadas espaciales para los parches
+coords <- data.frame(
+  x = runif(n_parches, 0, 100),
+  y = runif(n_parches, 0, 100)
+)
+
+datos_parches <- cbind(datos_parches, coords)
+
+# Gráfico del paisaje
+ggplot(datos_parches, aes(x = x, y = y)) +
+  geom_point(aes(size = area_ha, color = ocupado, shape = calidad_habitat), alpha = 0.7) +
+  scale_size_continuous(range = c(3, 15), name = "Área (ha)") +
+  scale_color_manual(values = c("TRUE" = "#2E7D32", "FALSE" = "#D32F2F"),
+                     name = "Ocupado",
+                     labels = c("No", "Sí")) +
+  scale_shape_manual(values = c("Alta" = 16, "Media" = 17, "Baja" = 15),
+                     name = "Calidad") +
+  labs(title = paste("Paisaje Fragmentado - Escenario", escenario),
+       subtitle = paste(n_parches, "parches de bosque"),
+       x = "Coordenada X (km)", y = "Coordenada Y (km)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+**PREGUNTA 1:** Describe brevemente el patrón espacial de tu paisaje. ¿Los parches están agrupados o dispersos?
+
+*Tu respuesta:*
+
+
+
+---
+
+# Parte 2: Análisis de Metapoblaciones 
+
+## 2.1 Calcular métricas de metapoblación
+
+```{r metricas_metapoblacion}
+# Proporción de parches ocupados
+prop_ocupados <- mean(datos_parches$ocupado)
+
+# Área total y área ocupada
+area_total <- sum(datos_parches$area_ha)
+area_ocupada <- sum(datos_parches$area_ha[datos_parches$ocupado])
+
+# Tamaño promedio de parches ocupados vs desocupados
+tam_ocupados <- mean(datos_parches$area_ha[datos_parches$ocupado])
+tam_desocupados <- mean(datos_parches$area_ha[!datos_parches$ocupado])
+
+# Distancia promedio entre parches
+dist_promedio <- mean(datos_parches$distancia_mas_cercano_km)
+
+# Resumen
+cat("=== MÉTRICAS DE LA METAPOBLACIÓN ===\n")
+cat("Proporción de parches ocupados:", round(prop_ocupados * 100, 1), "%\n")
+cat("Área total del paisaje:", area_total, "ha\n")
+cat("Área ocupada:", round(area_ocupada, 1), "ha\n")
+cat("Tamaño promedio parches ocupados:", round(tam_ocupados, 1), "ha\n")
+cat("Tamaño promedio parches desocupados:", round(tam_desocupados, 1), "ha\n")
+cat("Distancia promedio al parche más cercano:", round(dist_promedio, 2), "km\n")
+```
+
+## 2.2 Modelo de colonización y extinción
+
+Según la teoría de metapoblaciones, la probabilidad de colonización aumenta con el área del parche y disminuye con la distancia. La probabilidad de extinción disminuye con el área.
+
+```{r modelo_dinamica}
+# Calcular probabilidad de colonización (función del área y distancia)
+# P(colonización) = e^(-distancia * 0.3) * (área / área_max)^0.5
+datos_parches$prob_colonizacion <- 
+  exp(-datos_parches$distancia_mas_cercano_km * 0.3) * 
+  sqrt(datos_parches$area_ha / max(datos_parches$area_ha))
+
+# Calcular probabilidad de extinción (función inversa del área)
+# P(extinción) = e^(-área / 50)
+datos_parches$prob_extincion <- exp(-datos_parches$area_ha / 50)
+
+# Visualizar
+datos_long <- datos_parches %>%
+  select(parche_id, area_ha, prob_colonizacion, prob_extincion) %>%
+  pivot_longer(cols = c(prob_colonizacion, prob_extincion),
+               names_to = "Probabilidad", values_to = "Valor")
+
+ggplot(datos_long, aes(x = area_ha, y = Valor, color = Probabilidad)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "loess", se = FALSE) +
+  scale_color_manual(values = c("#1976D2", "#D32F2F"),
+                     labels = c("Colonización", "Extinción")) +
+  labs(title = "Dinámica de Metapoblación",
+       x = "Área del parche (ha)",
+       y = "Probabilidad") +
+  theme_minimal()
+```
+
+prob_colonizacion (0.0 - 1.0)
+
+Probabilidad de que un parche desocupado sea colonizado por dispersores.
+
+0.0-0.2 = Muy difícil de colonizar (lejos y/o pequeño)
+0.2-0.5 = Dificultad media
+0.5-0.8 = Fácil de colonizar (cerca y/o grande)
+0.8-1.0 = Muy fácil de colonizar
+
+
+prob_extincion (0.0 - 1.0)
+
+Probabilidad de que la población local en un parche se extinga.
+
+0.0-0.2 = Muy estable (extinción improbable)
+0.2-0.4 = Riesgo moderado
+0.4-0.7 = Alto riesgo de extinción
+0.7-1.0 = Extinción casi segura
+
+**PREGUNTA 2:** ¿Qué relación observas entre el área del parche y las probabilidades de colonización/extinción?
+
+*Tu respuesta:*
+
+
+
+**PREGUNTA 3:** Según estos resultados, ¿qué parches (grandes o pequeños) son más importantes para la persistencia de la metapoblación? ¿Por qué?
+
+*Tu respuesta:*
+
+
+
+---
+
+# Parte 3: Efectos de Fragmentación y Genética 
+
+## 3.1 Análisis de diversidad genética
+
+```{r genetica}
+# Relación área-heterocigosidad (efecto cuello de botella)
+ggplot(datos_parches, aes(x = area_ha, y = heterocigosidad)) +
+  geom_point(aes(color = ocupado), size = 4) +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  scale_color_manual(values = c("TRUE" = "#2E7D32", "FALSE" = "#D32F2F"),
+                     name = "Ocupado") +
+  labs(title = "Efecto del Tamaño de Parche en la Diversidad Genética",
+       subtitle = "Evidencia de cuellos de botella en parches pequeños",
+       x = "Área del parche (ha)",
+       y = "Heterocigosidad (H)") +
+  theme_minimal()
+
+# Correlación
+cor_area_het <- cor(datos_parches$area_ha, datos_parches$heterocigosidad)
+cat("\nCorrelación área-heterocigosidad:", round(cor_area_het, 3), "\n")
+
+# Comparar heterocigosidad por tamaño
+datos_parches$categoria_tamano <- cut(datos_parches$area_ha, 
+                                       breaks = c(0, 30, 70, Inf),
+                                       labels = c("Pequeño", "Mediano", "Grande"))
+
+het_por_tamano <- datos_parches %>%
+  group_by(categoria_tamano) %>%
+  summarise(heterocigosidad_promedio = mean(heterocigosidad),
+            n = n())
+
+print(het_por_tamano)
+```
+
+Heterocigosidad (0.0 - 0.85)
+
+Un índice de diversidad genética dentro de la población del parche. Mide qué tan variados son los genes de los individuos.
+
+0.0 = Sin diversidad genética (parche desocupado o población extinta)
+0.3-0.5 = Baja diversidad (señal de cuello de botella poblacional)
+0.5-0.7 = Diversidad media (población saludable)
+0.7-0.85 = Alta diversidad (población grande y viable)
+
+**PREGUNTA 4:** ¿Qué evidencia encuentras de cuellos de botella genéticos en este paisaje? Explica usando tus resultados.
+
+*Tu respuesta:*
+
+
+
+**PREGUNTA 5:** ¿Por qué la deriva genética es más fuerte en poblaciones pequeñas? ¿Qué consecuencias tiene esto para la conservación?
+
+*Tu respuesta:*
+
+
+
+## 3.2 Relación especies-área
+
+```{r especies_area}
+# Gráfico especies-área
+ggplot(datos_parches, aes(x = log10(area_ha), y = riqueza_especies)) +
+  geom_point(aes(color = calidad_habitat), size = 4) +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  scale_color_manual(values = c("Alta" = "#2E7D32", "Media" = "#FBC02D", "Baja" = "#D32F2F")) +
+  labs(title = "Relación Especies-Área",
+       x = "log10(Área en ha)",
+       y = "Riqueza de especies",
+       color = "Calidad de hábitat") +
+  theme_minimal()
+
+# Modelo lineal
+modelo_SAR <- lm(riqueza_especies ~ log10(area_ha), data = datos_parches)
+cat("\n=== MODELO ESPECIES-ÁREA ===\n")
+print(summary(modelo_SAR))
+
+# Predicción: pérdida de especies con reducción de área
+perdida_50 <- predict(modelo_SAR, newdata = data.frame(area_ha = datos_parches$area_ha)) -
+              predict(modelo_SAR, newdata = data.frame(area_ha = datos_parches$area_ha * 0.5))
+cat("\nPérdida promedio de especies si el área se reduce 50%:", round(mean(perdida_50), 1), "especies\n")
+```
+
+**PREGUNTA 6:** Si se perdiera el 50% del área de cada parche por deforestación, ¿cuántas especies se perderían en promedio? ¿Qué implicaciones tiene esto?
+
+*Tu respuesta:*
+
+
+
+---
+
+# Parte 4: Conectividad y Estrategias de Conservación 
+
+## 4.1 Análisis de conectividad
+
+```{r conectividad}
+# Identificar parches críticos (grandes y con alta calidad)
+datos_parches$criticidad <- 
+  (datos_parches$area_ha / max(datos_parches$area_ha)) * 0.5 +
+  (datos_parches$calidad_habitat == "Alta") * 0.3 +
+  (datos_parches$ocupado) * 0.2
+
+# Ordenar por criticidad
+parches_criticos <- datos_parches %>%
+  arrange(desc(criticidad)) %>%
+  select(parche_id, area_ha, calidad_habitat, ocupado, distancia_mas_cercano_km, criticidad)
+
+cat("=== PARCHES CRÍTICOS PARA CONSERVACIÓN ===\n")
+print(head(parches_criticos, 5))
+
+# Visualizar conectividad
+ggplot(datos_parches, aes(x = x, y = y)) +
+  geom_point(aes(size = area_ha, color = criticidad), alpha = 0.7) +
+  scale_size_continuous(range = c(3, 15), name = "Área (ha)") +
+  scale_color_gradient(low = "#FDD835", high = "#1B5E20", name = "Índice de\nCriticidad") +
+  labs(title = "Priorización de Parches para Conservación",
+       x = "Coordenada X (km)", y = "Coordenada Y (km)") +
+  theme_minimal()
+```
+
+criticidad (0.0 - 1.0)
+
+Un índice compuesto que indica qué tan importante es el parche para conservación. Combina múltiples factores en un solo número.
+
+0.0-0.3 = Baja prioridad para conservación
+0.3-0.6 = Prioridad media
+0.6-0.8 = Alta prioridad
+0.8-1.0 = Prioridad crítica (DEBE protegerse)
+
+## 4.2 Proponer corredores biológicos
+
+```{r corredores}
+# Identificar pares de parches que necesitan conectividad
+# (parches ocupados separados por > 3 km)
+parches_ocupados <- datos_parches %>% filter(ocupado == TRUE)
+
+necesidad_corredor <- parches_ocupados %>%
+  filter(distancia_mas_cercano_km > 3) %>%
+  arrange(desc(area_ha))
+
+cat("\n=== PARCHES QUE NECESITAN CORREDORES ===\n")
+cat("Número de parches aislados (>3 km):", nrow(necesidad_corredor), "\n\n")
+if(nrow(necesidad_corredor) > 0) {
+  print(necesidad_corredor %>% select(parche_id, area_ha, distancia_mas_cercano_km))
+}
+```
+
+**PREGUNTA 7:** Basándote en tus análisis, ¿cuáles son los 3 parches más importantes para conservar y por qué?
+
+*Tu respuesta:*
+
+
+
+**PREGUNTA 8:** ¿Qué estrategia de conservación recomendarías para este paisaje? Considera: protección de parches, corredores, restauración, etc.
+
+*Tu respuesta:*
+
+
+
+---
+
+# Parte 5: Síntesis y Contexto local
+
+## 5.1 Aplicación al contexto local
+
+La República Dominicana posee una extraordinaria biodiversidad con alto endemismo, pero enfrenta amenazas por:
+
+- Deforestación para agricultura y desarrollo urbano
+- Fragmentación de bosques 
+- Pérdida de manglares y arrecifes coralinos
+- Presión sobre áreas protegidas
+
+```{r contexto_rd}
+# Resumen final de tu paisaje
+cat("=== RESUMEN DE TU PAISAJE (Escenario", escenario, ") ===\n\n")
+cat("Número total de parches:", n_parches, "\n")
+cat("Porcentaje de paisaje ocupado:", round(prop_ocupados * 100, 1), "%\n")
+cat("Conectividad promedio:", round(1 / mean(datos_parches$distancia_mas_cercano_km), 2), 
+    "(inverso de distancia)\n")
+cat("Diversidad genética promedio:", round(mean(datos_parches$heterocigosidad), 3), "\n")
+cat("Riqueza promedio:", round(mean(datos_parches$riqueza_especies), 1), "especies\n")
+
+# Estado de conservación
+if(prop_ocupados > 0.7 & mean(datos_parches$distancia_mas_cercano_km) < 4) {
+  cat("\nESTADO: Relativamente bien conectado\n")
+} else if(prop_ocupados > 0.5) {
+  cat("\nESTADO: Moderadamente fragmentado - requiere intervención\n")
+} else {
+  cat("\nESTADO: Altamente fragmentado - necesita acción urgente\n")
+}
+```
+
+**PREGUNTA 9:** ¿Cómo se relacionan los problemas de tu paisaje simulado con los problemas reales de conservación en República Dominicana?
+
+*Tu respuesta:*
+
+
+
+**PREGUNTA 10:** Propón UNA medida específica y práctica que podría implementarse en RD para mejorar la conectividad del paisaje.
+
+*Tu respuesta:*
+
+
+
+---
+
+# Conclusiones
+
+Resume en un párrafo los conceptos más importantes que aprendiste en esta práctica sobre ecología espacial y conservación:
+
+*Tu respuesta:*
+
+
+
+---
