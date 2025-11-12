@@ -12,8 +12,8 @@
 
 - Práctica 4. Ecología Espacial y Conservación
 
-  - [Práctica en papel](https://github.com/ecologia2-master/practicas/raw/refs/heads/main/practicas-ecologia-espacial-y-conservacion/practica_en_papel.docx)
-  - [Práctica en R](https://ecologia2-master.github.io/practicas/practicas-ecologia-espacial-y-conservacion/practica_en_R.html](https://ecologia2-master.github.io/practicas/practicas-ecologia-espacial-y-conservacion/practica_en_R.html)
+  - [Práctica en papel https://github.com/ecologia2-master/practicas/raw/refs/heads/main/practicas-ecologia-espacial-y-conservacion/practica_en_papel.docx](https://github.com/ecologia2-master/practicas/raw/refs/heads/main/practicas-ecologia-espacial-y-conservacion/practica_en_papel.docx)
+  - [Práctica en R https://ecologia2-master.github.io/practicas/practicas-ecologia-espacial-y-conservacion/practica_en_R.html](https://ecologia2-master.github.io/practicas/practicas-ecologia-espacial-y-conservacion/practica_en_R.html)
 
 - [Guía para Proyecto de Investigación. https://ecologia2-master.github.io/practicas/guia-para-proyecto-de-investigacion/guia-para-proyecto-de-investigacion.html](https://ecologia2-master.github.io/practicas/guia-para-proyecto-de-investigacion/guia-para-proyecto-de-investigacion.html)
 
